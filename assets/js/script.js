@@ -8,10 +8,11 @@ let answerStatus = document.getElementById('answer-status');
 let playerInitials = document.getElementById('player-initials');
 let saveButton = document.getElementById('save-button');
 let saveScorePage = document.getElementById('save-score-page');
+let finalScoreInfo = document.querySelector('#save-score-page p');
 
 //section:global variables go here 👇
 let questionNumber = 0;
-let gameDuration = 10;
+let gameDuration = 50;
 let countDownTime;
 let questionTimer;
 
@@ -27,19 +28,21 @@ function gameTimer() {
   displayQuestion();
   countDownTime = setInterval(() => {
     gameDuration--;
-    if (gameDuration >= 0) {
+    if (gameDuration > 0) {
       console.log(gameDuration);
       gameTimeDisplay.innerText = `Time Remaining: ${gameDuration} second(s)`;
     } else {
+      gameTimeDisplay.innerText = `Time Remaining: 0 second(s)`;
       clearInterval(countDownTime);
       clearTimeout(questionTimer);
       console.log('clear');
-      gameDuration = 10;
+      // gameDuration = 10;
 
       questionPage.classList.add('hide');
       answerContainer.classList.add('hide');
       saveScorePage.classList.remove('hide');
       answerStatus.classList.add('hide');
+      gameDuration < 0 ?  finalScoreInfo.innerText = `Your final score is 0.` : finalScoreInfo.innerText = `Your final score is ${gameDuration}.`
     }
   }, 1000);
 }
@@ -74,8 +77,12 @@ function targetElement(event) {
      answerContainer.style.borderBottom = "3px solid grey";
    } else {
      console.log('not correct');
-     answerStatus.innerText = "Wrong!";
+     answerStatus.innerText = "Wrong! -- Time remaining reduced by 10 seconds";
      answerContainer.style.borderBottom = "3px solid grey";
+     gameDuration = gameDuration - 10;
+    //  clearTimeout(questionTimer);
+    //  questionNumber++;
+    //  displayQuestion(event, questionNumber);
      //reduce score by 10 points
      //reduce remaining time by 10 seconds
    }
