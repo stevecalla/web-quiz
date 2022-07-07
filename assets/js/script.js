@@ -19,12 +19,12 @@ let highScoresLink = document.getElementById("high-scores-header");
 //section:global variables go here 👇
 let questionNumber = 0;
 let gameDuration = 60;
-let countDownTime;
+let gameTimer;
 let questionTimer;
 
 //section:event listeners go here 👇
 startGameButton.addEventListener("click", startGame);
-answerContainer.addEventListener("click", isAnswerCorrect);
+// answerContainer.addEventListener("click", isAnswerCorrect);
 saveButton.addEventListener("click", savePlayerInitialsAndScore);
 homePageButton.addEventListener("click", backToHomePage);
 clearScoresButton.addEventListener("click", clearLocalStorage);
@@ -37,7 +37,7 @@ function startGame() {
 }
 
 function startGameTimer() {
-  countDownTime = setInterval(() => {
+  gameTimer = setInterval(() => {
     gameDuration--;
     if (gameDuration > 0) {
       console.log(gameDuration);
@@ -51,7 +51,6 @@ function startGameTimer() {
 }
 
 function displayQuestion(questionNumber = 0) {
-  console.log(questionNumber);
   homePageMainContainer.classList.add("hide");
   questionPage.classList.remove("hide");
   questionInput.innerText = `${questionList[questionNumber].question}`;
@@ -139,17 +138,13 @@ function resetGameStatsTimers() {
   gameDuration = 60;
   questionNumber = 0;
   stopTimers();
-  // clearInterval(countDownTime);
-  // clearTimeout(questionTimer);
-  // countDownTime = null;
-  // questionTimer = null;
   gameTimeDisplay.innerText = `Time Remaining: ${gameDuration} second(s)`;
 }
 
 function stopTimers() {
-  clearInterval(countDownTime);
+  clearInterval(gameTimer);
   clearTimeout(questionTimer);
-  countDownTime = null;
+  gameTimer = null;
   questionTimer = null;
 }
 
