@@ -2,7 +2,8 @@
 let startGameButton = document.getElementById("start-button");
 let gameTimeDisplay = document.getElementById("game-timer");
 let answerContainer = document.getElementById("answer-container"); //used to add answer list to the page
-let homePageContainer = document.getElementById("start-page");
+let homePageMainContainer = document.getElementById("home-page");
+let questionPage = document.getElementById("question-page");
 let questionInput = document.getElementById("question-input"); //used to add question to the page
 let answerStatus = document.getElementById("answer-status");
 let playerInitials = document.getElementById("player-initials");
@@ -51,7 +52,8 @@ function startGameTimer() {
 
 function displayQuestion(questionNumber = 0) {
   console.log(questionNumber);
-  homePageContainer.classList.add("hide");
+  homePageMainContainer.classList.add("hide");
+  questionPage.classList.remove("hide");
   questionInput.innerText = `${questionList[questionNumber].question}`;
   answerContainer.innerHTML = ``;
   for (let i = 0; i < questionList[questionNumber].answerList.length; i++) {
@@ -93,11 +95,7 @@ function startQuestionTimer() {
 function endGame() {
   console.log("clear - end game");
   stopTimers();
-  // clearTimeout(questionTimer);
-  // clearInterval(countDownTime);
-  questionInput.classList.add("hide");
-  answerContainer.classList.add("hide");
-  answerStatus.classList.add("hide");
+  questionPage.classList.add("hide");
   saveScorePage.classList.remove("hide");
   gameDuration < 0
     ? (finalScoreInfo.innerText = `Your final score is 0.`)
@@ -112,28 +110,18 @@ function savePlayerInitialsAndScore(event) {
 }
 
 function displayHighScoresPage() {
-  saveScorePage.classList.add("hide");
-  highScoresPage.classList.remove("hide");
-  console.log(document.getElementById('header'));
-  header.classList.add('cloak');
-
-  //hide header, home page
-  header.classList.add('cloak');
-  homePageContainer.classList.add("hide");
-
-  //hide question container
-  questionInput.classList.add("hide");
-  answerContainer.classList.add("hide");
-  answerStatus.classList.add("hide");
-
-  //clear interval timers
-  resetGameStatsTimers();
+  highScoresPage.classList.remove("hide"); //display high scores pge
+  saveScorePage.classList.add("hide"); //hide save score page
+  header.classList.add('cloak'); //visibility hidden for header so it still takes up space
+  homePageMainContainer.classList.add("hide"); //hide header, home page main element
+  questionPage.classList.add("hide"); //hide questions container
+  resetGameStatsTimers(); //clear timers
 }
 
 function backToHomePage() {
   highScoresPage.classList.add("hide");
   header.classList.remove('cloak');
-  homePageContainer.classList.remove("hide");
+  homePageMainContainer.classList.remove("hide");
   resetQuestionContainer();
   resetGameStatsTimers();
 }
@@ -144,9 +132,7 @@ function resetQuestionContainer() {
   answerStatus.innerText = null;
   answerContainer.addEventListener("click", isAnswerCorrect);
   answerContainer.style.borderBottom = null;
-  questionInput.classList.remove("hide");
-  answerContainer.classList.remove("hide");
-  answerStatus.classList.remove("hide");
+  questionPage.classList.add("hide");
 }
 
 function resetGameStatsTimers() {

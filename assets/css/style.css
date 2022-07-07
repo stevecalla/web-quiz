@@ -19,8 +19,8 @@ header {
   /* overflow: hidden; */
 }
 
-/* ---- MAIN - START PAGE ----- */
-.start-page {
+/* ---- MAIN - HOME PAGE ----- */
+.home-page {
   display: flex;
   flex-direction: column;
   justify-content: center;
