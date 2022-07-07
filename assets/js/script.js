@@ -12,6 +12,8 @@ let saveScorePage = document.getElementById('save-score-page');
 //section:global variables go here 👇
 let questionNumber = 0;
 let gameDuration = 10;
+let countDownTime;
+let questionTimer;
 
 //section:event listeners go here 👇
 startGameButton.addEventListener('click', gameTimer);
@@ -23,19 +25,21 @@ saveButton.addEventListener('click', saveInitialsAndScore)
 function gameTimer() {
   console.log('timer');
   displayQuestion();
-  let countDownTime = setInterval(() => {
+  countDownTime = setInterval(() => {
     gameDuration--;
     if (gameDuration >= 0) {
       console.log(gameDuration);
       gameTimeDisplay.innerText = `Time Remaining: ${gameDuration} second(s)`;
     } else {
       clearInterval(countDownTime);
+      clearTimeout(questionTimer);
       console.log('clear');
       gameDuration = 10;
 
       questionPage.classList.add('hide');
       answerContainer.classList.add('hide');
       saveScorePage.classList.remove('hide');
+      answerStatus.classList.add('hide');
     }
   }, 1000);
 }
@@ -76,7 +80,7 @@ function targetElement(event) {
      //reduce remaining time by 10 seconds
    }
 
-  let questionTimer = setTimeout(() => {
+  questionTimer = setTimeout(() => {
     console.log(questionTimer);
     questionNumber++;
     if (questionNumber <= questionList.length - 1) {
