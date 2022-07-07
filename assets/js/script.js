@@ -12,6 +12,8 @@ let finalScoreInfo = document.querySelector("#save-score-page p");
 let highScoresPage = document.getElementById('high-scores-container');
 let header = document.getElementById('header');
 let homePageButton = document.getElementById('back-to-start-page');
+let clearScoresButton = document.getElementById('clear-scores-button');
+let highScoresLink = document.getElementById("high-scores-header");
 
 //section:global variables go here 👇
 let questionNumber = 0;
@@ -24,6 +26,8 @@ startGameButton.addEventListener("click", startGame);
 answerContainer.addEventListener("click", isAnswerCorrect);
 saveButton.addEventListener("click", savePlayerInitialsAndScore);
 homePageButton.addEventListener("click", backToHomePage);
+clearScoresButton.addEventListener("click", clearLocalStorage);
+highScoresLink.addEventListener("click", displayHighScoresPage);
 
 //section:functions and event handlers go here 👇
 function startGame() {
@@ -111,6 +115,18 @@ function displayHighScoresPage() {
   highScoresPage.classList.remove("hide");
   console.log(document.getElementById('header'));
   header.classList.add('cloak');
+
+  //hide header, home page
+  header.classList.add('cloak');
+  homePageContainer.classList.add("hide");
+
+  //hide question container
+  questionInput.classList.add("hide");
+  answerContainer.classList.add("hide");
+  answerStatus.classList.add("hide");
+
+  //clear interval timers
+  resetGameStatsTimers();
 }
 
 function backToHomePage() {
@@ -138,6 +154,12 @@ function resetGameStatsTimers() {
   countDownTime = null;
   questionTimer = null;
   gameTimeDisplay.innerText = `Time Remaining: ${gameDuration} second(s)`;
+}
+
+function clearLocalStorage() {
+  console.log(localStorage);
+  localStorage.clear();
+  console.log(localStorage);
 }
 
 // Creates an H3 element for the answer status
