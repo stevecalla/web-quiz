@@ -30,11 +30,17 @@ header {
   text-align: center;
 }
 
+/* ---- MAIN - START PAGE ----- */
+
 .question-page {
   margin: 0 auto;
   width: 80vh;
   min-width: 450px;
   align-content: center;
   text-align: left;
+}
+
+.hide {
+  display: none;
 }
 
