@@ -7,7 +7,6 @@ I WANT to take a timed quiz on JavaScript fundamentals that stores high scores
 SO THAT I can gauge my progress compared to my peers
 ```
 
-
 ## Index
 
 <!-- <details><summary></summary> -->
@@ -48,8 +47,8 @@ THEN I can save my initials and my score
 
 ## Resources
 
-1. GitHub Repo: <https://github.com/stevecalla/generate-password>
+1. GitHub Repo: <https://github.com/stevecalla/web-quiz>
 
-2. GitHub Hosted URL: <https://stevecalla.github.io/generate-password/>
+2. GitHub Hosted URL: <https://stevecalla.github.io/web-quiz/>
 
 3. Project Manager: [Steve Calla](https://github.com/stevecalla)
