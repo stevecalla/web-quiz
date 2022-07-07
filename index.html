@@ -24,7 +24,7 @@
     <button id="start-button">Start Quiz</button>
   </main>
 
-  <main class="question-page hide" id="question-page">
+  <section class="question-page" id="question-page">
     <h1>Commonly used data types DO NOT include:</h1>
     <ol id="answer-container">
       <li>Strings</li>
@@ -33,7 +33,25 @@
       <li>Numbers</li>
     </ol>
     <h3 id="answer-status"></h3>
-  </main>
+  </section>
+
+  <section class="question-page" id="question-page">
+    <h1>All Done!</h1>
+    <p>Your final score is 100.</p>
+    <form>
+      <label for="player-initials">Enter Initials:</label>
+      <input
+        type="text"
+        id="player-initials"
+        name="player-initials"
+        required
+        minlength="2"
+        maxlength="2"
+        size="5"
+      />
+      <button id="save-button">Save</button>
+    </form>
+  </section>
   
   <script src="./assets/js/script.js"></script>
 </body>
