@@ -10,10 +10,10 @@ let playerInitials = document.getElementById("player-initials");
 let saveButton = document.getElementById("save-button");
 let saveScorePage = document.getElementById("save-score-page");
 let finalScoreInfo = document.querySelector("#save-score-page p");
-let highScoresPage = document.getElementById('high-scores-container');
-let header = document.getElementById('header');
-let homePageButton = document.getElementById('back-to-start-page');
-let clearScoresButton = document.getElementById('clear-scores-button');
+let highScoresPage = document.getElementById("high-scores-container");
+let header = document.getElementById("header");
+let homePageButton = document.getElementById("back-to-start-page");
+let clearScoresButton = document.getElementById("clear-scores-button");
 let highScoresLink = document.getElementById("high-scores-header");
 
 //section:global variables go here 👇
@@ -32,7 +32,7 @@ highScoresLink.addEventListener("click", displayHighScoresPage);
 
 //section:functions and event handlers go here 👇
 function startGame() {
-  startGameTimer()
+  startGameTimer();
   displayQuestion();
 }
 
@@ -111,7 +111,7 @@ function savePlayerInitialsAndScore(event) {
 function displayHighScoresPage() {
   highScoresPage.classList.remove("hide"); //display high scores pge
   saveScorePage.classList.add("hide"); //hide save score page
-  header.classList.add('cloak'); //visibility hidden for header so it still takes up space
+  header.classList.add("cloak"); //visibility hidden for header so it still takes up space
   homePageMainContainer.classList.add("hide"); //hide header, home page main element
   questionPage.classList.add("hide"); //hide questions container
   resetGameStatsTimers(); //clear timers
@@ -119,7 +119,7 @@ function displayHighScoresPage() {
 
 function backToHomePage() {
   highScoresPage.classList.add("hide");
-  header.classList.remove('cloak');
+  header.classList.remove("cloak");
   homePageMainContainer.classList.remove("hide");
   resetQuestionContainer();
   resetGameStatsTimers();
