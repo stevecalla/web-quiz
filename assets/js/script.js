@@ -54,11 +54,11 @@ function targetElement(event) {
   answerContainer.removeEventListener('click', targetElement);
   
   // Creates an H3 element for the answer status
-  var tag = document.createElement('h3');
-  tag.setAttribute('id', 'answer-status');
+  // var tag = document.createElement('h3');
+  // tag.setAttribute('id', 'answer-status');
   // tag.style.borderTop = "3px solid grey";
    // Appends tag as child of question page
-   document.getElementById('question-page').appendChild(tag);
+  //  document.getElementById('question-page').appendChild(tag);
 
    if (selectedAnswer === questionList[questionNumber].correctAnswer) {
      console.log('correct');
@@ -74,19 +74,19 @@ function targetElement(event) {
      //reduce remaining time by 10 seconds
    }
 
-  let timer = setTimeout(() => {
-    console.log(timer);
+  let questionTimer = setTimeout(() => {
+    console.log(questionTimer);
     questionNumber++;
     if (questionNumber <= questionList.length - 1) {
       console.log(questionList.length, questionNumber, questionNumber < questionList.length);
       displayQuestion(event, questionNumber);
-      answerStatus.innerText = null;
+      answerStatus.innerText = '';
       answerStatus.style.border = null;
       answerContainer.style.borderBottom = null;
     } else {
       console.log('clear');
       console.log(questionList.length, questionNumber, questionNumber < questionList.length);
-      clearTimeout(timer);
+      clearTimeout(questionTimer);
     }
   }, 3000);
 
