@@ -7,6 +7,7 @@ let questionPage = document.querySelector('#question-page h1'); //used to add qu
 let answerStatus = document.getElementById('answer-status');
 let playerInitials = document.getElementById('player-initials');
 let saveButton = document.getElementById('save-button');
+let saveScorePage = document.getElementById('save-score-page');
 
 //section:global variables go here 👇
 let questionNumber = 0;
@@ -24,15 +25,16 @@ function gameTimer() {
   displayQuestion();
   let countDownTime = setInterval(() => {
     gameDuration--;
-    if (gameDuration > 0) {
+    if (gameDuration >= 0) {
       console.log(gameDuration);
       gameTimeDisplay.innerText = `Time Remaining: ${gameDuration} second(s)`;
     } else {
       clearInterval(countDownTime);
       console.log('clear');
       gameDuration = 10;
-      
+
       questionPage.classList.add('hide');
+      answerContainer.classList.add('hide');
       saveScorePage.classList.remove('hide');
     }
   }, 1000);
