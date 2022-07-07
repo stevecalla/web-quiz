@@ -41,6 +41,7 @@ function targetElement(event) {
 }
 
 function saveInitialsAndScore(event) {
-  event.preventDefault();
+  // event.preventDefault();
   console.log(playerInitials.value, saveButton.value, saveButton.innerText);
+  localStorage.setItem(playerInitials.value, '22');
 }
