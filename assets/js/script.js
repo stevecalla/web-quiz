@@ -92,8 +92,9 @@ function startQuestionTimer() {
 
 function endGame() {
   console.log("clear - end game");
-  clearTimeout(questionTimer);
-  clearInterval(countDownTime);
+  stopTimers();
+  // clearTimeout(questionTimer);
+  // clearInterval(countDownTime);
   questionInput.classList.add("hide");
   answerContainer.classList.add("hide");
   answerStatus.classList.add("hide");
@@ -151,9 +152,19 @@ function resetQuestionContainer() {
 function resetGameStatsTimers() {
   gameDuration = 60;
   questionNumber = 0;
+  stopTimers();
+  // clearInterval(countDownTime);
+  // clearTimeout(questionTimer);
+  // countDownTime = null;
+  // questionTimer = null;
+  gameTimeDisplay.innerText = `Time Remaining: ${gameDuration} second(s)`;
+}
+
+function stopTimers() {
+  clearInterval(countDownTime);
+  clearTimeout(questionTimer);
   countDownTime = null;
   questionTimer = null;
-  gameTimeDisplay.innerText = `Time Remaining: ${gameDuration} second(s)`;
 }
 
 function clearLocalStorage() {
