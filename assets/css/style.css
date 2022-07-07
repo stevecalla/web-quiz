@@ -8,6 +8,7 @@ html {
   min-width: 450px;
 }
 
+/* ------ HEADER SECTION -------- */
 header {
   display: flex;
   justify-content: space-between;
@@ -18,7 +19,8 @@ header {
   /* overflow: hidden; */
 }
 
-main {
+/* ---- MAIN - START PAGE ----- */
+.start-page {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -27,3 +29,12 @@ main {
   min-width: 450px;
   text-align: center;
 }
+
+.question-page {
+  margin: 0 auto;
+  width: 80vh;
+  min-width: 450px;
+  align-content: center;
+  text-align: left;
+}
+
