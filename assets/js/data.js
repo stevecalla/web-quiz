@@ -6,12 +6,12 @@ const questionList = [
   }, 
   {
     question: 'TBD #2',
-    answerList: ['a', 'b', 'c', 'd'],
+    answerList: ['a', 'b', 'c'],
     correctAnswer: 'a',
   }, 
   {
     question: 'TBD #3',
-    answerList: ['a', 'b', 'c', 'd'],
+    answerList: ['a', 'b', 'c', 'd', 'e'],
     correctAnswer: 'a',
   },
   {
@@ -21,7 +21,7 @@ const questionList = [
   }, 
   {
     question: 'TBD #5',
-    answerList: ['a', 'b', 'c', 'd'],
+    answerList: ['a', 'b', 'c', 'd', 'e', 'g'],
     correctAnswer: 'a',
   }, 
   {
