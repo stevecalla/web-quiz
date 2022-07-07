@@ -9,6 +9,7 @@ let playerInitials = document.getElementById("player-initials");
 let saveButton = document.getElementById("save-button");
 let saveScorePage = document.getElementById("save-score-page");
 let finalScoreInfo = document.querySelector("#save-score-page p");
+let highScoresPage = document.getElementById('high-scores-container');
 
 //section:global variables go here 👇
 let questionNumber = 0;
@@ -106,9 +107,15 @@ function endGame() {
 }
 
 function savePlayerInitialsAndScore(event) {
-  // event.preventDefault();
+  event.preventDefault();
   console.log(playerInitials.value, saveButton.value, saveButton.innerText);
   localStorage.setItem(playerInitials.value, "22");
+  displayHighScoresPage();
+}
+
+function displayHighScoresPage() {
+  saveScorePage.classList.add("hide");
+  highScoresPage.classList.remove("hide");
 }
 
 // Creates an H3 element for the answer status
