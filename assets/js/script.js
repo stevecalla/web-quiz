@@ -2,7 +2,7 @@
 let startGameButton = document.getElementById("start-button");
 let gameTimeDisplay = document.getElementById("game-timer");
 let answerContainer = document.getElementById("answer-container"); //used to add answer list to the page
-let startPageContainer = document.getElementById("start-page");
+let homePageContainer = document.getElementById("start-page");
 let questionInput = document.getElementById("question-input"); //used to add question to the page
 let answerStatus = document.getElementById("answer-status");
 let playerInitials = document.getElementById("player-initials");
@@ -11,6 +11,7 @@ let saveScorePage = document.getElementById("save-score-page");
 let finalScoreInfo = document.querySelector("#save-score-page p");
 let highScoresPage = document.getElementById('high-scores-container');
 let header = document.getElementById('header');
+let homePageButton = document.getElementById('back-to-start-page');
 
 //section:global variables go here 👇
 let questionNumber = 0;
@@ -22,22 +23,12 @@ let questionTimer;
 startGameButton.addEventListener("click", startGame);
 answerContainer.addEventListener("click", isAnswerCorrect);
 saveButton.addEventListener("click", savePlayerInitialsAndScore);
+homePageButton.addEventListener("click", backToHomePage);
 
 //section:functions and event handlers go here 👇
 function startGame() {
   startGameTimer()
   displayQuestion();
-
-  // countDownTime = setInterval(() => {
-  //   gameDuration--;
-  //   if (gameDuration > 0) {
-  //     console.log(gameDuration);
-  //     gameTimeDisplay.innerText = `Time Remaining: ${gameDuration} second(s)`;
-  //   } else {
-  //     gameTimeDisplay.innerText = `Time Remaining: 0 second(s)`;
-  //     endGame();
-  //   }
-  // }, 1000);
 }
 
 function startGameTimer() {
@@ -55,7 +46,8 @@ function startGameTimer() {
 }
 
 function displayQuestion(questionNumber = 0) {
-  startPageContainer.classList.add("hide");
+  console.log(questionNumber);
+  homePageContainer.classList.add("hide");
   questionInput.innerText = `${questionList[questionNumber].question}`;
   answerContainer.innerHTML = ``;
   for (let i = 0; i < questionList[questionNumber].answerList.length; i++) {
@@ -100,8 +92,8 @@ function endGame() {
   clearInterval(countDownTime);
   questionInput.classList.add("hide");
   answerContainer.classList.add("hide");
-  saveScorePage.classList.remove("hide");
   answerStatus.classList.add("hide");
+  saveScorePage.classList.remove("hide");
   gameDuration < 0
     ? (finalScoreInfo.innerText = `Your final score is 0.`)
     : (finalScoreInfo.innerText = `Your final score is ${gameDuration}.`);
@@ -119,6 +111,33 @@ function displayHighScoresPage() {
   highScoresPage.classList.remove("hide");
   console.log(document.getElementById('header'));
   header.classList.add('cloak');
+}
+
+function backToHomePage() {
+  highScoresPage.classList.add("hide");
+  header.classList.remove('cloak');
+  homePageContainer.classList.remove("hide");
+  resetQuestionContainer();
+  resetGameStatsTimers();
+}
+
+function resetQuestionContainer() {
+  questionInput.innerText = null;
+  answerContainer.innerHTML = ``;
+  answerStatus.innerText = null;
+  answerContainer.addEventListener("click", isAnswerCorrect);
+  answerContainer.style.borderBottom = null;
+  questionInput.classList.remove("hide");
+  answerContainer.classList.remove("hide");
+  answerStatus.classList.remove("hide");
+}
+
+function resetGameStatsTimers() {
+  gameDuration = 60;
+  questionNumber = 0;
+  countDownTime = null;
+  questionTimer = null;
+  gameTimeDisplay.innerText = `Time Remaining: ${gameDuration} second(s)`;
 }
 
 // Creates an H3 element for the answer status
