@@ -47,6 +47,7 @@ function gameTimer() {
     }
   }, 1000);
 }
+
 function displayQuestion(event, questionNumber = 0) {
   console.log(questionNumber, 'hello');
   // questionPage.classList.remove('cloak'); //todo:add back to play game; also add hide class to question page
