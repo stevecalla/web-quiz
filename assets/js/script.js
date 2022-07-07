@@ -12,14 +12,13 @@ let finalScoreInfo = document.querySelector("#save-score-page p");
 
 //section:global variables go here 👇
 let questionNumber = 0;
-let gameDuration = 50;
+let gameDuration = 60;
 let countDownTime;
 let questionTimer;
 
 //section:event listeners go here 👇
 startGameButton.addEventListener("click", gameTimer);
 answerContainer.addEventListener("click", targetElement);
-// questionPage.addEventListener('click', targetElement);
 saveButton.addEventListener("click", saveInitialsAndScore);
 
 //section:functions and event handlers go here 👇
@@ -33,19 +32,7 @@ function gameTimer() {
       gameTimeDisplay.innerText = `Time Remaining: ${gameDuration} second(s)`;
     } else {
       gameTimeDisplay.innerText = `Time Remaining: 0 second(s)`;
-      clearInterval(countDownTime);
-      clearTimeout(questionTimer);
-      console.log("clear");
-      // gameDuration = 10;
-
-      //createfunction
-      questionPage.classList.add("hide");
-      answerContainer.classList.add("hide");
-      saveScorePage.classList.remove("hide");
-      answerStatus.classList.add("hide");
-      gameDuration < 0
-        ? (finalScoreInfo.innerText = `Your final score is 0.`)
-        : (finalScoreInfo.innerText = `Your final score is ${gameDuration}.`);
+      endGame();
     }
   }, 1000);
 }
@@ -110,19 +97,22 @@ function targetElement(event) {
         questionNumber,
         questionNumber < questionList.length
       );
-      clearTimeout(questionTimer);
-
-      //create function
-      clearInterval(countDownTime);
-      questionPage.classList.add("hide");
-      answerContainer.classList.add("hide");
-      saveScorePage.classList.remove("hide");
-      answerStatus.classList.add("hide");
-      gameDuration < 0
-        ? (finalScoreInfo.innerText = `Your final score is 0.`)
-        : (finalScoreInfo.innerText = `Your final score is ${gameDuration}.`);
+      endGame();
     }
   }, 3000);
+}
+
+function endGame() {
+  console.log("clear - end game");
+  clearTimeout(questionTimer);
+  clearInterval(countDownTime);
+  questionPage.classList.add("hide");
+  answerContainer.classList.add("hide");
+  saveScorePage.classList.remove("hide");
+  answerStatus.classList.add("hide");
+  gameDuration < 0
+    ? (finalScoreInfo.innerText = `Your final score is 0.`)
+    : (finalScoreInfo.innerText = `Your final score is ${gameDuration}.`);
 }
 
 function saveInitialsAndScore(event) {
