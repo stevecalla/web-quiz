@@ -38,6 +38,7 @@ function gameTimer() {
       console.log('clear');
       // gameDuration = 10;
 
+      //createfunction
       questionPage.classList.add('hide');
       answerContainer.classList.add('hide');
       saveScorePage.classList.remove('hide');
@@ -100,6 +101,14 @@ function targetElement(event) {
       console.log('clear');
       console.log(questionList.length, questionNumber, questionNumber < questionList.length);
       clearTimeout(questionTimer);
+
+      //create function
+      clearInterval(countDownTime);
+      questionPage.classList.add('hide');
+      answerContainer.classList.add('hide');
+      saveScorePage.classList.remove('hide');
+      answerStatus.classList.add('hide');
+      gameDuration < 0 ?  finalScoreInfo.innerText = `Your final score is 0.` : finalScoreInfo.innerText = `Your final score is ${gameDuration}.`
     }
   }, 3000);
 
