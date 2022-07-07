@@ -1,0 +1,29 @@
+* {
+  border: 1px solid red;
+  box-sizing: border-box;
+}
+
+html {
+  width: 100%;
+  min-width: 450px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  width: 100vw;
+  min-width: 450px;
+  text-align: center;
+  padding: 20px;
+  /* overflow: hidden; */
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-width: 450px;
+  text-align: center;
+}
