@@ -32,8 +32,8 @@ header {
 
 /* ---- MAIN - START PAGE ----- */
 
-.question-page,
-.save-score-page {
+.question-container,
+.save-score-container {
   margin: 0 auto;
   width: 80vh;
   min-width: 450px;

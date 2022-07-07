@@ -2,8 +2,8 @@
 let startGameButton = document.getElementById("start-button");
 let gameTimeDisplay = document.getElementById("game-timer");
 let answerContainer = document.getElementById("answer-container"); //used to add answer list to the page
-let startPage = document.getElementById("start-page");
-let questionPage = document.querySelector("#question-page h1"); //used to add question to the page
+let startPageContainer = document.getElementById("start-page");
+let questionInput = document.getElementById("question-input"); //used to add question to the page
 let answerStatus = document.getElementById("answer-status");
 let playerInitials = document.getElementById("player-initials");
 let saveButton = document.getElementById("save-button");
@@ -18,13 +18,13 @@ let questionTimer;
 
 //section:event listeners go here 👇
 startGameButton.addEventListener("click", gameTimer);
-answerContainer.addEventListener("click", targetElement);
+answerContainer.addEventListener("click", isAnswerCorrect);
 saveButton.addEventListener("click", saveInitialsAndScore);
 
 //section:functions and event handlers go here 👇
 function gameTimer() {
-  console.log("timer");
   displayQuestion();
+
   countDownTime = setInterval(() => {
     gameDuration--;
     if (gameDuration > 0) {
@@ -37,76 +37,51 @@ function gameTimer() {
   }, 1000);
 }
 
-function displayQuestion(event, questionNumber = 0) {
-  console.log(questionNumber, "hello");
-  // questionPage.classList.remove('cloak'); //todo:add back to play game; also add hide class to question page
-  // questionPage.classList.add('show'); //todo:add back to play game; also add hide class to question page
-  startPage.classList.add("hide"); //todo:add back to play game
-
-  questionPage.innerText = `${questionList[questionNumber].question}`;
-
+function displayQuestion(questionNumber = 0) {
+  startPageContainer.classList.add("hide");
+  questionInput.innerText = `${questionList[questionNumber].question}`;
   answerContainer.innerHTML = ``;
   for (let i = 0; i < questionList[questionNumber].answerList.length; i++) {
     answerContainer.innerHTML += `
        <li>${questionList[questionNumber].answerList[i]}</li>
     `;
   }
-  answerContainer.addEventListener("click", targetElement);
-  console.log(answerContainer);
+  answerContainer.addEventListener("click", isAnswerCorrect);
 }
 
-function targetElement(event) {
-  console.log(event.target);
-  console.log(event.target.innerText);
+function isAnswerCorrect(event) {
   let selectedAnswer = event.target.innerText;
-  answerContainer.removeEventListener("click", targetElement);
+  let correctAnswer = questionList[questionNumber].correctAnswer;
+  answerContainer.removeEventListener("click", isAnswerCorrect); //prevents selection of another answer
+  answerContainer.style.borderBottom = "3px solid grey";
+  //evaluate if answer is correct
+  selectedAnswer === correctAnswer
+    ? (answerStatus.innerText = "Correct")
+    : ((answerStatus.innerText = `Wrong! Correct answer is "${correctAnswer}" (time reduced by 10 seconds)`),
+      (gameDuration -= 10));
+  setQuestionTimer();
+}
 
-  if (selectedAnswer === questionList[questionNumber].correctAnswer) {
-    console.log("correct");
-    answerStatus.innerText = "Correct";
-    answerContainer.style.borderBottom = "3px solid grey";
-  } else {
-    console.log("not correct");
-    answerStatus.innerText = "Wrong! -- Time remaining reduced by 10 seconds";
-    answerContainer.style.borderBottom = "3px solid grey";
-    gameDuration = gameDuration - 10;
-    //  clearTimeout(questionTimer);
-    //  questionNumber++;
-    //  displayQuestion(event, questionNumber);
-    //reduce score by 10 points
-    //reduce remaining time by 10 seconds
-  }
-
+//scrolls to next question 2 seconds after answer is selected
+function setQuestionTimer() {
   questionTimer = setTimeout(() => {
-    console.log(questionTimer);
     questionNumber++;
     if (questionNumber <= questionList.length - 1) {
-      console.log(
-        questionList.length,
-        questionNumber,
-        questionNumber < questionList.length
-      );
-      displayQuestion(event, questionNumber);
+      displayQuestion(questionNumber);
       answerStatus.innerText = "";
       answerStatus.style.border = null;
       answerContainer.style.borderBottom = null;
     } else {
-      console.log("clear");
-      console.log(
-        questionList.length,
-        questionNumber,
-        questionNumber < questionList.length
-      );
       endGame();
     }
-  }, 3000);
+  }, 2000);
 }
 
 function endGame() {
   console.log("clear - end game");
   clearTimeout(questionTimer);
   clearInterval(countDownTime);
-  questionPage.classList.add("hide");
+  questionInput.classList.add("hide");
   answerContainer.classList.add("hide");
   saveScorePage.classList.remove("hide");
   answerStatus.classList.add("hide");
