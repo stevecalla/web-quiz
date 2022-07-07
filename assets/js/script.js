@@ -10,6 +10,7 @@ let saveButton = document.getElementById("save-button");
 let saveScorePage = document.getElementById("save-score-page");
 let finalScoreInfo = document.querySelector("#save-score-page p");
 let highScoresPage = document.getElementById('high-scores-container');
+let header = document.getElementById('header');
 
 //section:global variables go here 👇
 let questionNumber = 0;
@@ -116,6 +117,8 @@ function savePlayerInitialsAndScore(event) {
 function displayHighScoresPage() {
   saveScorePage.classList.add("hide");
   highScoresPage.classList.remove("hide");
+  console.log(document.getElementById('header'));
+  header.classList.add('cloak');
 }
 
 // Creates an H3 element for the answer status

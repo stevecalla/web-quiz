@@ -46,9 +46,9 @@ header {
   display: none;
 }
 
-/* .cloak {
+.cloak {
   visibility: hidden;
-} */
+}
 
 /* .show {
   display: block;
