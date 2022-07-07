@@ -17,20 +17,35 @@ let countDownTime;
 let questionTimer;
 
 //section:event listeners go here 👇
-startGameButton.addEventListener("click", gameTimer);
+startGameButton.addEventListener("click", startGame);
 answerContainer.addEventListener("click", isAnswerCorrect);
-saveButton.addEventListener("click", saveInitialsAndScore);
+saveButton.addEventListener("click", savePlayerInitialsAndScore);
 
 //section:functions and event handlers go here 👇
-function gameTimer() {
+function startGame() {
+  startGameTimer()
   displayQuestion();
 
+  // countDownTime = setInterval(() => {
+  //   gameDuration--;
+  //   if (gameDuration > 0) {
+  //     console.log(gameDuration);
+  //     gameTimeDisplay.innerText = `Time Remaining: ${gameDuration} second(s)`;
+  //   } else {
+  //     gameTimeDisplay.innerText = `Time Remaining: 0 second(s)`;
+  //     endGame();
+  //   }
+  // }, 1000);
+}
+
+function startGameTimer() {
   countDownTime = setInterval(() => {
     gameDuration--;
     if (gameDuration > 0) {
       console.log(gameDuration);
       gameTimeDisplay.innerText = `Time Remaining: ${gameDuration} second(s)`;
     } else {
+      console.log(gameDuration);
       gameTimeDisplay.innerText = `Time Remaining: 0 second(s)`;
       endGame();
     }
@@ -59,11 +74,11 @@ function isAnswerCorrect(event) {
     ? (answerStatus.innerText = "Correct")
     : ((answerStatus.innerText = `Wrong! Correct answer is "${correctAnswer}" (time reduced by 10 seconds)`),
       (gameDuration -= 10));
-  setQuestionTimer();
+  startQuestionTimer();
 }
 
 //scrolls to next question 2 seconds after answer is selected
-function setQuestionTimer() {
+function startQuestionTimer() {
   questionTimer = setTimeout(() => {
     questionNumber++;
     if (questionNumber <= questionList.length - 1) {
@@ -90,7 +105,7 @@ function endGame() {
     : (finalScoreInfo.innerText = `Your final score is ${gameDuration}.`);
 }
 
-function saveInitialsAndScore(event) {
+function savePlayerInitialsAndScore(event) {
   // event.preventDefault();
   console.log(playerInitials.value, saveButton.value, saveButton.innerText);
   localStorage.setItem(playerInitials.value, "22");
