@@ -30,7 +30,7 @@ header {
   text-align: center;
 }
 
-/* ---- MAIN - START PAGE ----- */
+/* ---- MAIN - QUESTION, SAVE, SCORE PAGES ----- */
 
 .question-container,
 .save-score-container,
@@ -40,6 +40,10 @@ header {
   min-width: 450px;
   align-content: center;
   text-align: left;
+}
+
+.add-border {
+  border-bottom: 3px solid grey;
 }
 
 .hide {

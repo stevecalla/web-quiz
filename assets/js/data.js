@@ -31,7 +31,7 @@ const questionList = [
   },
   {
     question: 'Which of the following keywords is used to define a variable in Javascript?',
-    answerList: ['var', 'let', 'const, 'All of the above'],
+    answerList: ['var', 'let', 'const', 'All of the above'],
     correctAnswer: 'All of the above',
   },
   {

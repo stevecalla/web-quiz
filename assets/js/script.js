@@ -67,7 +67,7 @@ function isAnswerCorrect(event) {
   let selectedAnswer = event.target.innerText;
   let correctAnswer = questionList[questionNumber].correctAnswer;
   answerContainer.removeEventListener("click", isAnswerCorrect); //prevents selection of another answer
-  answerContainer.style.borderBottom = "3px solid grey";
+  answerContainer.classList.add('add-border'); //add solid grey border via class and css vs using .style.borderBottom
   //evaluate if answer is correct
   selectedAnswer === correctAnswer
     ? (answerStatus.innerText = "Correct")
@@ -82,9 +82,8 @@ function startQuestionTimer() {
     questionNumber++;
     if (questionNumber <= questionList.length - 1) {
       displayQuestion(questionNumber);
+      answerContainer.classList.remove('add-border'); //add solid grey border via class and css vs using .style.borderBottom
       answerStatus.innerText = "";
-      answerStatus.style.border = null;
-      answerContainer.style.borderBottom = null;
     } else {
       endGame();
     }
@@ -130,7 +129,8 @@ function resetQuestionContainer() {
   answerContainer.innerHTML = ``;
   answerStatus.innerText = null;
   answerContainer.addEventListener("click", isAnswerCorrect);
-  answerContainer.style.borderBottom = null;
+  answerContainer.classList.remove('add-border'); //add solid grey border via class and css vs using .style.borderBottom
+  // answerContainer.style.borderBottom = null;
   questionPage.classList.add("hide");
 }
 
