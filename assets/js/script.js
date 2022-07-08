@@ -40,7 +40,7 @@ function startGameTimer() {
   gameTimer = setInterval(() => {
     gameDuration--;
     if (gameDuration > 0) {
-      console.log(gameDuration);
+      // console.log(gameDuration);
       gameTimeDisplay.innerText = `Time Remaining: ${gameDuration} second(s)`;
     } else {
       console.log(gameDuration);
@@ -50,16 +50,19 @@ function startGameTimer() {
   }, 1000);
 }
 
+//replace innerhtml with create element append child text content
 function displayQuestion(questionNumber = 0) {
   homePageMainContainer.classList.add("hide");
   questionPage.classList.remove("hide");
   questionInput.innerText = `${questionList[questionNumber].question}`;
-  answerContainer.innerHTML = ``;
+
+  answerContainer.textContent = null;
   for (let i = 0; i < questionList[questionNumber].answerList.length; i++) {
-    answerContainer.innerHTML += `
-       <li>${questionList[questionNumber].answerList[i]}</li>
-    `;
+    answerContainer.appendChild(document.createElement('li'));
+    console.log(answerContainer.children[i]);
+    answerContainer.children[i].textContent = `${questionList[questionNumber].answerList[i]}`;
   }
+
   answerContainer.addEventListener("click", isAnswerCorrect);
 }
 
@@ -82,7 +85,7 @@ function startQuestionTimer() {
     questionNumber++;
     if (questionNumber <= questionList.length - 1) {
       displayQuestion(questionNumber);
-      answerContainer.classList.remove('add-border'); //add solid grey border via class and css vs using .style.borderBottom
+      answerContainer.classList.remove('add-border');
       answerStatus.innerText = "";
     } else {
       endGame();
@@ -126,11 +129,10 @@ function backToHomePage() {
 
 function resetQuestionContainer() {
   questionInput.innerText = null;
-  answerContainer.innerHTML = ``;
+  answerContainer.textContent = null;
   answerStatus.innerText = null;
   answerContainer.addEventListener("click", isAnswerCorrect);
-  answerContainer.classList.remove('add-border'); //add solid grey border via class and css vs using .style.borderBottom
-  // answerContainer.style.borderBottom = null;
+  answerContainer.classList.remove('add-border');
   questionPage.classList.add("hide");
 }
 

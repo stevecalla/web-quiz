@@ -21,7 +21,7 @@ const questionList = [
   }, 
   {
     question: 'A very useful tool used during development and debugging for printing the content to the debugger is:',
-    answerList: ['Javascript', 'Termina/Bash', 'For Loops', 'console.log'],
+    answerList: ['Javascript', 'Terminal/Bash', 'For Loops', 'console.log'],
     correctAnswer: 'console.log',
   }, 
   {
