@@ -42,6 +42,18 @@ header {
   text-align: left;
 }
 
+.answer-container {
+  height: 75px;
+}
+
+.answer-status {
+  height: 24px;
+}
+
+.question-number {
+  text-align: right;
+}
+
 .add-border {
   border-bottom: 3px solid grey;
 }

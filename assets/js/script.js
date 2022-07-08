@@ -15,6 +15,7 @@ let header = document.getElementById("header");
 let homePageButton = document.getElementById("back-to-start-page");
 let clearScoresButton = document.getElementById("clear-scores-button");
 let highScoresLink = document.getElementById("high-scores-header");
+let displayQuestionNumber = document.getElementById('question-number');
 
 //section:global variables go here 👇
 let questionNumber = 0;
@@ -62,6 +63,7 @@ function displayQuestion(questionNumber = 0) {
     choiceList.textContent = answer;
   });
   answerContainer.addEventListener("click", isAnswerCorrect); //assign event listener to the new answer choices
+  displayQuestionNumber.textContent = `Question ${questionNumber + 1} of ${questionList.length}`;
 }
 
 function isAnswerCorrect(event) {
