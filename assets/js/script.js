@@ -41,20 +41,19 @@ function startGameTimer() {
     gameDuration--;
     if (gameDuration > 0) {
       // console.log(gameDuration);
-      gameTimeDisplay.innerText = `Time Remaining: ${gameDuration} second(s)`;
+      gameTimeDisplay.textContent = `Time Remaining: ${gameDuration} second(s)`;
     } else {
       console.log(gameDuration);
-      gameTimeDisplay.innerText = `Time Remaining: 0 second(s)`;
+      gameTimeDisplay.textContent = `Time Remaining: 0 second(s)`;
       endGame();
     }
   }, 1000);
 }
 
-//replace innerhtml with create element append child text content
 function displayQuestion(questionNumber = 0) {
   homePageMainContainer.classList.add("hide");
   questionPage.classList.remove("hide");
-  questionInput.innerText = `${questionList[questionNumber].question}`;
+  questionInput.textContent = `${questionList[questionNumber].question}`;
 
   answerContainer.textContent = null;
   for (let i = 0; i < questionList[questionNumber].answerList.length; i++) {
@@ -67,14 +66,14 @@ function displayQuestion(questionNumber = 0) {
 }
 
 function isAnswerCorrect(event) {
-  let selectedAnswer = event.target.innerText;
+  let selectedAnswer = event.target.textContent;
   let correctAnswer = questionList[questionNumber].correctAnswer;
   answerContainer.removeEventListener("click", isAnswerCorrect); //prevents selection of another answer
   answerContainer.classList.add('add-border'); //add solid grey border via class and css vs using .style.borderBottom
   //evaluate if answer is correct
   selectedAnswer === correctAnswer
-    ? (answerStatus.innerText = "Correct")
-    : ((answerStatus.innerText = `Wrong! Correct answer is "${correctAnswer}" (time reduced by 10 seconds)`),
+    ? (answerStatus.textContent = "Correct")
+    : ((answerStatus.textContent = `Wrong! Correct answer is "${correctAnswer}" (time reduced by 10 seconds)`),
       (gameDuration -= 10));
   startQuestionTimer();
 }
@@ -86,7 +85,7 @@ function startQuestionTimer() {
     if (questionNumber <= questionList.length - 1) {
       displayQuestion(questionNumber);
       answerContainer.classList.remove('add-border');
-      answerStatus.innerText = "";
+      answerStatus.textContent = "";
     } else {
       endGame();
     }
@@ -99,13 +98,13 @@ function endGame() {
   questionPage.classList.add("hide");
   saveScorePage.classList.remove("hide");
   gameDuration < 0
-    ? (finalScoreInfo.innerText = `Your final score is 0.`)
-    : (finalScoreInfo.innerText = `Your final score is ${gameDuration}.`);
+    ? (finalScoreInfo.textContent = `Your final score is 0.`)
+    : (finalScoreInfo.textContent = `Your final score is ${gameDuration}.`);
 }
 
 function savePlayerInitialsAndScore(event) {
   event.preventDefault();
-  console.log(playerInitials.value, saveButton.value, saveButton.innerText);
+  console.log(playerInitials.value, 'value', saveButton.value, 'textcontent', saveButton.textContent);
   localStorage.setItem(playerInitials.value, "22");
   displayHighScoresPage();
 }
@@ -128,9 +127,9 @@ function backToHomePage() {
 }
 
 function resetQuestionContainer() {
-  questionInput.innerText = null;
+  questionInput.textContent = null;
   answerContainer.textContent = null;
-  answerStatus.innerText = null;
+  answerStatus.textContent = null;
   answerContainer.addEventListener("click", isAnswerCorrect);
   answerContainer.classList.remove('add-border');
   questionPage.classList.add("hide");
@@ -140,7 +139,7 @@ function resetGameStatsTimers() {
   gameDuration = 60;
   questionNumber = 0;
   stopTimers();
-  gameTimeDisplay.innerText = `Time Remaining: ${gameDuration} second(s)`;
+  gameTimeDisplay.textContent = `Time Remaining: ${gameDuration} second(s)`;
 }
 
 function stopTimers() {
