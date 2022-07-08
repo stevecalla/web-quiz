@@ -51,18 +51,17 @@ function startGameTimer() {
 }
 
 function displayQuestion(questionNumber = 0) {
-  homePageMainContainer.classList.add("hide");
-  questionPage.classList.remove("hide");
-  questionInput.textContent = `${questionList[questionNumber].question}`;
-
-  answerContainer.textContent = null;
-  for (let i = 0; i < questionList[questionNumber].answerList.length; i++) {
-    answerContainer.appendChild(document.createElement('li'));
-    console.log(answerContainer.children[i]);
-    answerContainer.children[i].textContent = `${questionList[questionNumber].answerList[i]}`;
-  }
-
-  answerContainer.addEventListener("click", isAnswerCorrect);
+  let question = questionList[questionNumber].question; 
+  let answerList = questionList[questionNumber].answerList;
+  homePageMainContainer.classList.add("hide"); //hide home page
+  questionPage.classList.remove("hide"); //show question page
+  questionInput.textContent = question; //insert question
+  answerContainer.textContent = null; //clear prior answers
+  answerList.forEach(answer => { //populate answers in list
+    let choiceList = answerContainer.appendChild(document.createElement('li'));
+    choiceList.textContent = answer;
+  });
+  answerContainer.addEventListener("click", isAnswerCorrect); //assign event listener to the new answer choices
 }
 
 function isAnswerCorrect(event) {
