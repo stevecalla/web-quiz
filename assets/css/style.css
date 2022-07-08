@@ -42,8 +42,12 @@ header {
   text-align: left;
 }
 
+.question-input {
+  height: 125px;
+}
+
 .answer-container {
-  height: 75px;
+  height: 100px;
 }
 
 .answer-status {
