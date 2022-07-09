@@ -64,7 +64,7 @@ function displayQuestion(questionNumber = 0) {
     choiceList.textContent = answer;
   });
   answerContainer.addEventListener("click", isAnswerCorrect); //assign event listener to the new answer choices
-  displayQuestionNumber.textContent = `Question ${questionNumber + 1} of ${
+  displayQuestionNumber.textContent = `Question: ${questionNumber + 1} of ${
     questionList.length
   }`;
 }
