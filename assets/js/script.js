@@ -15,7 +15,7 @@ let header = document.getElementById("header");
 let homePageButton = document.getElementById("back-to-start-page");
 let clearScoresButton = document.getElementById("clear-scores-button");
 let highScoresLink = document.getElementById("high-scores-header");
-let displayQuestionNumber = document.getElementById('question-number');
+let displayQuestionNumber = document.getElementById("question-number");
 
 //section:global variables go here 👇
 let questionNumber = 0;
@@ -52,25 +52,28 @@ function startGameTimer() {
 }
 
 function displayQuestion(questionNumber = 0) {
-  let question = questionList[questionNumber].question; 
+  let question = questionList[questionNumber].question;
   let answerList = questionList[questionNumber].answerList;
   homePageMainContainer.classList.add("hide"); //hide home page
   questionPage.classList.remove("hide"); //show question page
   questionInput.textContent = question; //insert question
   answerContainer.textContent = null; //clear prior answers
-  answerList.forEach(answer => { //populate answers in list
-    let choiceList = answerContainer.appendChild(document.createElement('li'));
+  answerList.forEach((answer) => {
+    //populate answers in list
+    let choiceList = answerContainer.appendChild(document.createElement("li"));
     choiceList.textContent = answer;
   });
   answerContainer.addEventListener("click", isAnswerCorrect); //assign event listener to the new answer choices
-  displayQuestionNumber.textContent = `Question ${questionNumber + 1} of ${questionList.length}`;
+  displayQuestionNumber.textContent = `Question ${questionNumber + 1} of ${
+    questionList.length
+  }`;
 }
 
 function isAnswerCorrect(event) {
   let selectedAnswer = event.target.textContent;
   let correctAnswer = questionList[questionNumber].correctAnswer;
   answerContainer.removeEventListener("click", isAnswerCorrect); //prevents selection of another answer
-  answerContainer.classList.add('add-border'); //add solid grey border via class and css vs using .style.borderBottom
+  answerContainer.classList.add("add-border"); //add solid grey border via class and css vs using .style.borderBottom
   //evaluate if answer is correct
   selectedAnswer === correctAnswer
     ? (answerStatus.textContent = "Correct")
@@ -85,7 +88,7 @@ function startQuestionTimer() {
     questionNumber++;
     if (questionNumber <= questionList.length - 1) {
       displayQuestion(questionNumber);
-      answerContainer.classList.remove('add-border');
+      answerContainer.classList.remove("add-border");
       answerStatus.textContent = "";
     } else {
       endGame();
@@ -105,7 +108,13 @@ function endGame() {
 
 function savePlayerInitialsAndScore(event) {
   event.preventDefault();
-  console.log(playerInitials.value, 'value', saveButton.value, 'textcontent', saveButton.textContent);
+  console.log(
+    playerInitials.value,
+    "value",
+    saveButton.value,
+    "textcontent",
+    saveButton.textContent
+  );
   localStorage.setItem(playerInitials.value, "22");
   displayHighScoresPage();
 }
@@ -132,7 +141,7 @@ function resetQuestionContainer() {
   answerContainer.textContent = null;
   answerStatus.textContent = null;
   answerContainer.addEventListener("click", isAnswerCorrect);
-  answerContainer.classList.remove('add-border');
+  answerContainer.classList.remove("add-border");
   questionPage.classList.add("hide");
 }
 
