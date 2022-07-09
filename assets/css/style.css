@@ -44,18 +44,22 @@ header {
 
 .question-input {
   height: 125px;
+  margin-bottom: 0px;
 }
 
 .answer-container {
   height: 100px;
+  margin: 0px;
 }
 
 .answer-status {
   height: 24px;
+  margin: 0px;
 }
 
 .question-number {
   text-align: right;
+  margin: 0px;
 }
 
 .add-border {

@@ -45,13 +45,13 @@ const questionList = [
     questionId: 8,
     question: 'Which of the following methods is used to access HTML elements using Javascript??',
     answerList: ['getElementByid()', 'getElementbyClassName', 'Both A and B', 'None of the above'],
-    correctAnswer: 'Object-Oriented',
+    correctAnswer: 'Both A and B',
   },
   {
     questionId: 9,
     question: 'Upon encountering empty statements, what does the Javascript Interpreter do?',
     answerList: ['Throws an error', 'Ignores the statement', 'Gives a warning', 'None of the above'],
-    correctAnswer: 'Object-Oriented',
+    correctAnswer: 'Ignores the statement',
   },
   {
     questionId: 10,
