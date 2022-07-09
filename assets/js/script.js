@@ -29,7 +29,10 @@ startGameButton.addEventListener("click", startGame);
 saveButton.addEventListener("click", savePlayerInitialsAndScore);
 homePageButton.addEventListener("click", backToHomePage);
 clearScoresButton.addEventListener("click", clearLocalStorage);
-highScoresLink.addEventListener("click", displayHighScoresPage);
+// highScoresLink.addEventListener("click", displayHighScoresPage);
+highScoresLink.addEventListener("click", function() {
+  showHidePages(highScoresPage);
+});
 
 //section:functions and event handlers go here 👇
 function startGame() {
@@ -52,10 +55,13 @@ function startGameTimer() {
 }
 
 function displayQuestion(questionNumber = 0) {
+  showHidePages(questionPage);
+  insertQuestionContent(questionNumber);
+}
+
+function insertQuestionContent(questionNumber) {
   let question = questionList[questionNumber].question;
   let answerList = questionList[questionNumber].answerList;
-  homePageMainContainer.classList.add("hide"); //hide home page
-  questionPage.classList.remove("hide"); //show question page
   questionInput.textContent = question; //insert question
   answerContainer.textContent = null; //clear prior answers
   answerList.forEach((answer) => {
@@ -63,10 +69,10 @@ function displayQuestion(questionNumber = 0) {
     let choiceList = answerContainer.appendChild(document.createElement("li"));
     choiceList.textContent = answer;
   });
-  answerContainer.addEventListener("click", isAnswerCorrect); //assign event listener to the new answer choices
   displayQuestionNumber.textContent = `Question: ${questionNumber + 1} of ${
     questionList.length
   }`;
+  answerContainer.addEventListener("click", isAnswerCorrect); //assign event listener to the new answer choices
 }
 
 function isAnswerCorrect(event) {
@@ -99,8 +105,11 @@ function startQuestionTimer() {
 function endGame() {
   console.log("clear - end game");
   stopTimers();
-  questionPage.classList.add("hide");
-  saveScorePage.classList.remove("hide");
+
+  showHidePages(saveScorePage)
+  // questionPage.classList.add("hide");
+  // saveScorePage.classList.remove("hide");
+
   gameDuration < 0
     ? (finalScoreInfo.textContent = `Your final score is 0.`)
     : (finalScoreInfo.textContent = `Your final score is ${gameDuration}.`);
@@ -116,16 +125,37 @@ function savePlayerInitialsAndScore(event) {
     saveButton.textContent
   );
   localStorage.setItem(playerInitials.value, "22");
-  displayHighScoresPage();
+  showHidePages(highScoresPage);
+  // displayHighScoresPage();
 }
 
-function displayHighScoresPage() {
-  highScoresPage.classList.remove("hide"); //display high scores pge
-  saveScorePage.classList.add("hide"); //hide save score page
-  header.classList.add("cloak"); //visibility hidden for header so it still takes up space
-  homePageMainContainer.classList.add("hide"); //hide header, home page main element
-  questionPage.classList.add("hide"); //hide questions container
-  resetGameStatsTimers(); //clear timers
+// function displayHighScoresPage() {
+//   highScoresPage.classList.remove("hide"); //display high scores pge
+//   saveScorePage.classList.add("hide"); //hide save score page
+//   header.classList.add("cloak"); //visibility hidden for header so it still takes up space
+//   homePageMainContainer.classList.add("hide"); //hide header, home page main element
+//   questionPage.classList.add("hide"); //hide questions container
+//   resetGameStatsAndTimers(); //clear timers
+// }
+
+function showHidePages(showPage) {
+  console.log(showPage);
+  let allPages = [homePageMainContainer, questionPage, saveScorePage, highScoresPage];
+  // console.log(!allPages.includes(showPage));
+  // allPages.includes(showPage) ? highS coresPage : showPage;
+  // console.log(showPage);
+  let hidePages= allPages.filter(element => element !== showPage);
+  //page to show
+  showPage.classList.remove('hide');
+  //pages to hide
+  for (let i = 0; i < hidePages.length; i++) {
+    hidePages[i].classList.add('hide');
+    console.log(hidePages[i])
+  };
+  //cloak header
+  if (showPage === highScoresPage) {
+    header.classList.add("cloak"); //visibility hidden for header so it still takes up space
+  } 
 }
 
 function backToHomePage() {
@@ -133,7 +163,7 @@ function backToHomePage() {
   header.classList.remove("cloak");
   homePageMainContainer.classList.remove("hide");
   resetQuestionContainer();
-  resetGameStatsTimers();
+  resetGameStatsAndTimers();
 }
 
 function resetQuestionContainer() {
@@ -145,7 +175,7 @@ function resetQuestionContainer() {
   questionPage.classList.add("hide");
 }
 
-function resetGameStatsTimers() {
+function resetGameStatsAndTimers() {
   gameDuration = 60;
   questionNumber = 0;
   stopTimers();
