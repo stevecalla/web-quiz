@@ -19,13 +19,13 @@ let displayQuestionNumber = document.getElementById("question-number");
 
 //section:global variables go here 👇
 let questionNumber = 0;
-let gameDuration = 60;
+let gameDuration;
 let gameTimer;
 let questionTimer;
 
 //section:event listeners go here 👇
 startGameButton.addEventListener("click", startGame);
-saveButton.addEventListener("click", savePlayerInitialsAndScore);
+saveButton.addEventListener("click", locallyStoreGameStats);
 homePageButton.addEventListener("click", backToHomePage);
 clearScoresButton.addEventListener("click", clearLocalStorage);
 highScoresLink.addEventListener("click", function () {
@@ -33,7 +33,12 @@ highScoresLink.addEventListener("click", function () {
 });
 
 //section:functions and event handlers go here 👇
+function setGameDuration() {
+  gameDuration = 2;
+}
+
 function startGame() {
+  setGameDuration();
   startGameTimer();
   displayQuestion();
 }
@@ -110,18 +115,76 @@ function endGame() {
     : (finalScoreInfo.textContent = `Your final score is ${gameDuration}.`);
 }
 
-function savePlayerInitialsAndScore(event) {
+function locallyStoreGameStats(event) {
+  //todo:find high scores
+  //todo:fix score less than 0... global game duration less than 0 === 0
+  //todo:when clear local storage also clear game board
+  //todo:clear initials input
   event.preventDefault();
-  console.log(
-    playerInitials.value,
-    "value",
-    saveButton.value,
-    "textcontent",
-    saveButton.textContent
-  );
-  localStorage.setItem(playerInitials.value, "22");
+  let allGames = [];
+  let gameStats = {};
+  let scoreList = document.querySelector('#high-scores-container ol');
+
+  scoreList.textContent = '';
+
+  if (JSON.parse(localStorage.getItem('webQuizStats')) !== null) {
+    allGames = JSON.parse(localStorage.getItem('webQuizStats'));
+  }
+
+  gameStats = {
+    "player": playerInitials.value,
+    "score": gameDuration,
+  };
+
+  //keep high scores for each player
+
+  // for (let i = 0; i < allGames.length; i++) {
+  //   // console.log(allGames[i].player === gameStats.player);
+  //   // if (allGames[i].player === gameStats.player && allGames[i].score <= gameStats.score) {
+  //   //   allGames.slice(i, i + 1);
+  //   //   allGames.push(gameStats);
+  //   // }
+  //   // if (allGames[i].player === gameStats.player) {
+  //   //   // allGames.slice(i, i + 1);
+  //   //   // allGames.push(gameStats);
+  //   // }   
+  // }
+
+  // for (let i = 0; i < allGames.length; i++) {
+  //   if (allGames[i].player === gameStats.player) {
+  //     return;
+  //   }
+  // }
+
+  allGames.push(gameStats);
+  console.log('1 = ', allGames);
+
+  // allGames.sort(function(a, b) {
+  //   const nameA = a.player.toUpperCase(); // ignore upper and lowercase
+  //   const nameB = b.player.toUpperCase(); // ignore upper and lowercase
+  //   if (nameA < nameB) {
+  //     return -1;
+  //   }
+  //   if (nameA > nameB) {
+  //     return 1;
+  //   }
+  
+  //   // names must be equal
+  //   return 0;
+  // });
+
+  // // allGames.sort((first, second) => first.score - second.score);
+  // console.log('2 = ', allGames);
+
+  localStorage.setItem('webQuizStats', JSON.stringify(allGames));
+  console.log(JSON.parse(localStorage.getItem('webQuizStats')));
+
+  allGames.forEach(game => {
+    let gamePlayed = scoreList.appendChild(document.createElement('li'));
+    gamePlayed.textContent = `${game.player} - ${game.score}`;
+  })
+
   showHidePages(highScoresPage);
-  // displayHighScoresPage();
 }
 
 function showHidePages(showPage) {
@@ -159,7 +222,7 @@ function resetQuestionContainer() {
 }
 
 function resetGameStatsAndTimers() {
-  gameDuration = 60;
+  setGameDuration();
   questionNumber = 0;
   stopTimers();
   gameTimeDisplay.textContent = `Time Remaining: ${gameDuration} second(s)`;
