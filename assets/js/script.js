@@ -25,12 +25,10 @@ let questionTimer;
 
 //section:event listeners go here 👇
 startGameButton.addEventListener("click", startGame);
-// answerContainer.addEventListener("click", isAnswerCorrect);
 saveButton.addEventListener("click", savePlayerInitialsAndScore);
 homePageButton.addEventListener("click", backToHomePage);
 clearScoresButton.addEventListener("click", clearLocalStorage);
-// highScoresLink.addEventListener("click", displayHighScoresPage);
-highScoresLink.addEventListener("click", function() {
+highScoresLink.addEventListener("click", function () {
   showHidePages(highScoresPage);
 });
 
@@ -92,13 +90,12 @@ function isAnswerCorrect(event) {
 function startQuestionTimer() {
   questionTimer = setTimeout(() => {
     questionNumber++;
-    if (questionNumber <= questionList.length - 1) {
-      displayQuestion(questionNumber);
-      answerContainer.classList.remove("add-border");
-      answerStatus.textContent = "";
-    } else {
-      endGame();
-    }
+
+    questionNumber <= questionList.length - 1
+      ? ((answerStatus.textContent = ""),
+        displayQuestion(questionNumber),
+        answerContainer.classList.remove("add-border"))
+      : endGame();
   }, 2000);
 }
 
@@ -106,9 +103,7 @@ function endGame() {
   console.log("clear - end game");
   stopTimers();
 
-  showHidePages(saveScorePage)
-  // questionPage.classList.add("hide");
-  // saveScorePage.classList.remove("hide");
+  showHidePages(saveScorePage);
 
   gameDuration < 0
     ? (finalScoreInfo.textContent = `Your final score is 0.`)
@@ -129,39 +124,27 @@ function savePlayerInitialsAndScore(event) {
   // displayHighScoresPage();
 }
 
-// function displayHighScoresPage() {
-//   highScoresPage.classList.remove("hide"); //display high scores pge
-//   saveScorePage.classList.add("hide"); //hide save score page
-//   header.classList.add("cloak"); //visibility hidden for header so it still takes up space
-//   homePageMainContainer.classList.add("hide"); //hide header, home page main element
-//   questionPage.classList.add("hide"); //hide questions container
-//   resetGameStatsAndTimers(); //clear timers
-// }
-
 function showHidePages(showPage) {
-  console.log(showPage);
-  let allPages = [homePageMainContainer, questionPage, saveScorePage, highScoresPage];
-  // console.log(!allPages.includes(showPage));
-  // allPages.includes(showPage) ? highS coresPage : showPage;
-  // console.log(showPage);
-  let hidePages= allPages.filter(element => element !== showPage);
-  //page to show
-  showPage.classList.remove('hide');
-  //pages to hide
-  for (let i = 0; i < hidePages.length; i++) {
-    hidePages[i].classList.add('hide');
-    console.log(hidePages[i])
-  };
-  //cloak header
-  if (showPage === highScoresPage) {
-    header.classList.add("cloak"); //visibility hidden for header so it still takes up space
-  } 
+  let allPages = [
+    homePageMainContainer,
+    questionPage,
+    saveScorePage,
+    highScoresPage,
+  ];
+
+  for (let i = 0; i < allPages.length; i++) {
+    allPages[i] === showPage
+      ? showPage.classList.remove("hide")
+      : allPages[i].classList.add("hide");
+  }
+
+  showPage === highScoresPage
+    ? header.classList.add("cloak")
+    : header.classList.remove("cloak");
 }
 
 function backToHomePage() {
-  highScoresPage.classList.add("hide");
-  header.classList.remove("cloak");
-  homePageMainContainer.classList.remove("hide");
+  showHidePages(homePageMainContainer);
   resetQuestionContainer();
   resetGameStatsAndTimers();
 }
@@ -194,12 +177,3 @@ function clearLocalStorage() {
   localStorage.clear();
   console.log(localStorage);
 }
-
-// Creates an H3 element for the answer status
-// var tag = document.createElement('h3');
-// tag.setAttribute('id', 'answer-status');
-// tag.style.borderTop = "3px solid grey";
-// Appends tag as child of question page
-//  document.getElementById('question-page').appendChild(tag);
-//  tag.textContent = "Correct!"; // Adds text content to created tag
-//  tag.textContent = "Wrong!"; // Adds text content to created tag
