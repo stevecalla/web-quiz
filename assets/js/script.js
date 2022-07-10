@@ -27,7 +27,7 @@ let questionTimer;
 
 //section:event listeners go here 👇
 startGameButton.addEventListener("click", startGame);
-saveButton.addEventListener("click", locallyStoreGameStats);
+saveButton.addEventListener("click", processSavingGame);
 homePageButton.addEventListener("click", backToHomePage);
 clearScoresButton.addEventListener("click", clearLocalStorage);
 highScoresLink.addEventListener("click", function () {
@@ -36,6 +36,11 @@ highScoresLink.addEventListener("click", function () {
 });
 
 //section:functions and event handlers go here 👇
+window.onload = function() {
+  scoreList.textContent = "";
+  getLocalStorage() === null ? noGamesPlayedText.textContent = `No Games Played Yet` : displayHighScores(createHighScoreList(getLocalStorage()));
+};
+
 function setGameDuration() {
   gameDuration = 60;
 }
@@ -118,51 +123,51 @@ function endGame() {
     : (finalScoreInfo.textContent = `Your final score is ${gameDuration}.`);
 }
 
-function locallyStoreGameStats(event) {
-  //todo:DONE - filter for high scores DONE
   //todo:fix score less than 0... global game duration less than 0 === 0
-  //todo:DONE - when clear local storage also clear game board
-  //todo:DONE - touppercase for input box and game stats
-  //todo:DONE - clear initials input
-  //todo:DONE - focus initials input box
-  //todo:DONE - high scores click not clearing question timer?
-  //todo:DONE - validation on input box?
+function processSavingGame(event) {
   event.preventDefault();
-  let gameStats = {};
   let allGames = [];
-  let highScoreGames = [];
-  // let scoreList = document.querySelector('#high-scores-container ol');
+  scoreList.textContent = ""; //reset scores
+  if (validateInitialsInput() === 'invalid input') {//validate input, if invalid display error message & exist function
+    return;
+  }
+  allGames = getLocalStorage(); //get local storage
+  allGames = addCurrentGameAndSortAllGames(allGames); //sort allGames as prep to create high score games list
+  let highScoreGames = createHighScoreList(allGames);
+  displayHighScores(highScoreGames);
+  setLocalStorage(allGames, highScoreGames);
+  playerInitials.value = ""; //clear playerInitials
+  showHidePages(highScoresPage); //show high scores page
+}
 
+function validateInitialsInput() {
   if (playerInitials.value === "") {
-    // displayMessage("error", "Email cannot be blank");
-    console.log("aaaaa");
     playerInitials.focus();
-
     errorMessage.textContent = "";
     errorMessage.classList.remove("hide");
     errorMessage.textContent = "Player initials can not be blank";
-    return;
+    return 'invalid input';
   }
+}
 
-  scoreList.textContent = "";
-
-  if (JSON.parse(localStorage.getItem("allGames")) !== null) {
-    allGames = JSON.parse(localStorage.getItem("allGames"));
-  }
-
+function addCurrentGameAndSortAllGames(allGames) {
+  let gameStats = {};
   gameStats = {
-    id: allGames.length + 1,
+    id: allGames ? allGames.length + 1 : 1,
     player: playerInitials.value.toUpperCase(),
     score: gameDuration,
   };
-
   allGames.push(gameStats);
   allGames.sort((first, second) => first.score - second.score);
   allGames = sortAllGamesbyPlayer(allGames);
-  console.log(allGames);
+  return allGames;
+}
 
-  // console.log(allGames);
-
+function createHighScoreList(allGames) {
+  if (!allGames) {
+    return;
+  }
+  let highScoreGames = [];
   for (let i = 0; i < allGames.length; i++) {
     // console.log(i, i + 1, allGames.length);
     if (allGames.length === 1) {
@@ -173,19 +178,18 @@ function locallyStoreGameStats(event) {
       highScoreGames.push(allGames[i]);
     }
   }
+  highScoreGames.sort((first, second) => second.score - first.score);
+  return highScoreGames;
+}
 
-  // console.log(highScoreGames);
-
-  localStorage.setItem("allGames", JSON.stringify(allGames));
-  localStorage.setItem("highScoreGames", JSON.stringify(highScoreGames));
-
+function displayHighScores(highScoreGames) {
+  if (!highScoreGames) {
+    return;
+  }
   highScoreGames.forEach((game) => {
     let gamePlayed = scoreList.appendChild(document.createElement("li"));
     gamePlayed.textContent = `${game.player} - ${game.score}`;
   });
-
-  playerInitials.value = "";
-  showHidePages(highScoresPage);
 }
 
 function showHidePages(showPage) {
@@ -210,11 +214,11 @@ function showHidePages(showPage) {
     ? (playerInitials.focus(), errorMessage.classList.add("hide"))
     : playerInitials.blur();
 
-  if (scoreList.textContent === "History Cleared") {
-    scoreList.textContent = "";
-    let noGamesPlayedText = scoreList.appendChild(document.createElement("p"));
-    noGamesPlayedText.textContent = `No Games Played Yet`;
-  }
+  // if (scoreList.textContent === "History Cleared") {
+  //   scoreList.textContent = "";
+  //   let noGamesPlayedText = scoreList.appendChild(document.createElement("p"));
+  //   noGamesPlayedText.textContent = `No Games Played Yet`;
+  // }
 }
 
 function backToHomePage() {
@@ -246,15 +250,6 @@ function stopTimers() {
   questionTimer = null;
 }
 
-function clearLocalStorage() {
-  localStorage.clear();
-  scoreList.textContent = "";
-  let clearHistoryMessageText = scoreList.appendChild(
-    document.createElement("p")
-  );
-  clearHistoryMessageText.textContent = `History Cleared`;
-}
-
 function sortAllGamesbyPlayer(allGames) {
   allGames.sort(function (a, b) {
     const nameA = a.player.toUpperCase(); // ignore upper and lowercase
@@ -270,3 +265,26 @@ function sortAllGamesbyPlayer(allGames) {
   });
   return allGames;
 }
+
+function getLocalStorage() {
+  let gameHistory = [];
+  if (JSON.parse(localStorage.getItem("allGames")) !== null) {
+    gameHistory = JSON.parse(localStorage.getItem("allGames"));
+  }
+  return gameHistory;
+}
+
+function setLocalStorage(allGames, highScoreGames) {
+  localStorage.setItem("allGames", JSON.stringify(allGames));
+  localStorage.setItem("highScoreGames", JSON.stringify(highScoreGames));
+}
+
+function clearLocalStorage() {
+  localStorage.clear();
+  scoreList.textContent = "";
+  let clearHistoryMessageText = scoreList.appendChild(
+    document.createElement("p")
+  );
+  clearHistoryMessageText.textContent = `History Cleared`;
+}
+

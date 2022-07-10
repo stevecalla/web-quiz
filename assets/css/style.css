@@ -64,48 +64,120 @@ header {
 .high-scores-container {
   margin: 0 auto;
   width: 80vh;
-  /* min-width: 450px; */
-  /* display: flex;
-  flex-direction: column;
-  align-content: space-between;
-  flex: 0 0 700px; */
-  /* align-content: center; */
   text-align: left;
-  /* margin: 40px; */
 }
 
+/* ---- QUESTION PAGE ----- */
 .question-input {
   height: 125px;
   margin-bottom: 0px;
+  padding: 0px 12px;
 }
 
 .answer-container {
-  height: 100px;
+  height: 150px;
   margin: 0px;
 }
 
+.answer-container li {
+  width: 200px;
+  height: 30px;
+  margin: 5px;
+  padding: 5px;
+  color: white;
+  background-color: black;
+  border-radius: 3px;
+}
+
+.answer-container li::marker {
+  color: black;
+}
+
+.answer-container li:hover {
+  color: black;
+  background-color: white;
+}
+
 .answer-status {
-  height: 24px;
+  height: 50px;
   margin: 0px;
 }
 
 .question-number {
   text-align: right;
   margin: 0px;
+  padding-right: 8px;
 }
 
 .add-border {
   border-bottom: 3px solid grey;
 }
 
+/* ---- SAVE PAGE ----- */
 .player-initials {
+  width: 125px;
+  height: 30px;
   text-transform: uppercase;
+}
+
+.save-button {
+  width: 100px;
+  height: 30px;
+  margin: 5px;
+  padding: 5px;
+  color: white;
+  background-color: black;
+  border-radius: 3px;
+}
+
+.save-button:hover {
+  color: black;
+  background-color: white;
 }
 
 .error-message {
   color: red;
   font-weight: bold;
 }
+
+/* ---- SCORE PAGE ----- */
+.high-scores-container li {
+  width: 275px;
+  height: 30px;
+  margin: 5px;
+  padding: 5px;
+  color: white;
+  background-color: black;
+  border-radius: 3px;
+}
+
+.high-scores-container li::marker {
+  color: black;
+}
+
+.high-scores-container li:hover {
+  color: black;
+  background-color: white;
+}
+
+.back-to-start-button, 
+.clear-scores-button {
+  width: 150px;
+  height: 30px;
+  /* margin: 5px; */
+  padding: 5px;
+  color: white;
+  background-color: black;
+  border-radius: 3px;
+}
+
+.back-to-start-button:hover , 
+.clear-scores-button:hover {
+  color: black;
+  background-color: white;
+}
+
+/* ---- HIDE SHOW ----- */
 
 .hide {
   display: none;
@@ -192,12 +264,12 @@ header {
   }
 
   .answer-container {
-    height: 100px;
+    /* height: 100px; */
     margin: 0px;
   }
 
   .answer-status {
-    height: 50px;
+    /* height: 50px; */
     margin: 5px 0px;
   }
 
