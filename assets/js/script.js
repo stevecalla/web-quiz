@@ -16,8 +16,8 @@ let homePageButton = document.getElementById("back-to-start-page");
 let clearScoresButton = document.getElementById("clear-scores-button");
 let highScoresLink = document.getElementById("high-scores-header");
 let displayQuestionNumber = document.getElementById("question-number");
-let scoreList = document.querySelector('#high-scores-container ol');
-let errorMessage = document.getElementById('error-message');
+let scoreList = document.querySelector("#high-scores-container ol");
+let errorMessage = document.getElementById("error-message");
 
 //section:global variables go here 👇
 let questionNumber = 0;
@@ -126,7 +126,7 @@ function locallyStoreGameStats(event) {
   //todo:DONE - clear initials input
   //todo:DONE - focus initials input box
   //todo:DONE - high scores click not clearing question timer?
-  //todo:validation on input box?
+  //todo:DONE - validation on input box?
   event.preventDefault();
   let gameStats = {};
   let allGames = [];
@@ -135,25 +135,25 @@ function locallyStoreGameStats(event) {
 
   if (playerInitials.value === "") {
     // displayMessage("error", "Email cannot be blank");
-    console.log('aaaaa')
+    console.log("aaaaa");
     playerInitials.focus();
 
-    errorMessage.textContent = '';
-    errorMessage.classList.remove('hide');
+    errorMessage.textContent = "";
+    errorMessage.classList.remove("hide");
     errorMessage.textContent = "Player initials can not be blank";
     return;
   }
 
-  scoreList.textContent = '';
+  scoreList.textContent = "";
 
-  if (JSON.parse(localStorage.getItem('allGames')) !== null) {
-    allGames = JSON.parse(localStorage.getItem('allGames'));
+  if (JSON.parse(localStorage.getItem("allGames")) !== null) {
+    allGames = JSON.parse(localStorage.getItem("allGames"));
   }
 
   gameStats = {
-    "id": allGames.length + 1,
-    "player": playerInitials.value.toUpperCase(),
-    "score": gameDuration,
+    id: allGames.length + 1,
+    player: playerInitials.value.toUpperCase(),
+    score: gameDuration,
   };
 
   allGames.push(gameStats);
@@ -163,7 +163,7 @@ function locallyStoreGameStats(event) {
   console.log(allGames);
 
   for (let i = 0; i < allGames.length; i++) {
-    console.log(i, i + 1, allGames.length)
+    console.log(i, i + 1, allGames.length);
     if (allGames.length === 1) {
       highScoreGames.push(allGames[i]);
     } else if (i + 1 === allGames.length) {
@@ -173,15 +173,15 @@ function locallyStoreGameStats(event) {
     }
   }
 
-  console.log(highScoreGames)
+  console.log(highScoreGames);
 
-  localStorage.setItem('allGames', JSON.stringify(allGames));
-  localStorage.setItem('highScoreGames', JSON.stringify(highScoreGames));
+  localStorage.setItem("allGames", JSON.stringify(allGames));
+  localStorage.setItem("highScoreGames", JSON.stringify(highScoreGames));
 
-  highScoreGames.forEach(game => {
-    let gamePlayed = scoreList.appendChild(document.createElement('li'));
+  highScoreGames.forEach((game) => {
+    let gamePlayed = scoreList.appendChild(document.createElement("li"));
     gamePlayed.textContent = `${game.player} - ${game.score}`;
-  })
+  });
 
   playerInitials.value = "";
   showHidePages(highScoresPage);
@@ -201,16 +201,19 @@ function showHidePages(showPage) {
       : allPages[i].classList.add("hide");
   }
 
-  showPage === highScoresPage ? header.classList.add("cloak") : header.classList.remove("cloak");
+  showPage === highScoresPage
+    ? header.classList.add("cloak")
+    : header.classList.remove("cloak");
 
-  showPage === saveScorePage ? (playerInitials.focus(), 
-  errorMessage.classList.add('hide')) : playerInitials.blur();
+  showPage === saveScorePage
+    ? (playerInitials.focus(), errorMessage.classList.add("hide"))
+    : playerInitials.blur();
 
-  if (scoreList.textContent === 'History Cleared') {
-    scoreList.textContent = '';
+  if (scoreList.textContent === "History Cleared") {
+    scoreList.textContent = "";
     let noGamesPlayedText = scoreList.appendChild(document.createElement("p"));
     noGamesPlayedText.textContent = `No Games Played Yet`;
-  } 
+  }
 }
 
 function backToHomePage() {
@@ -244,13 +247,15 @@ function stopTimers() {
 
 function clearLocalStorage() {
   localStorage.clear();
-  scoreList.textContent = '';
-  let clearHistoryMessageText = scoreList.appendChild(document.createElement("p"));
+  scoreList.textContent = "";
+  let clearHistoryMessageText = scoreList.appendChild(
+    document.createElement("p")
+  );
   clearHistoryMessageText.textContent = `History Cleared`;
 }
 
 function sortAllGamesbyPlayer(allGames) {
-  allGames.sort(function(a, b) {
+  allGames.sort(function (a, b) {
     const nameA = a.player.toUpperCase(); // ignore upper and lowercase
     const nameB = b.player.toUpperCase(); // ignore upper and lowercase
     if (nameA < nameB) {
