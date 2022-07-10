@@ -66,6 +66,10 @@ header {
   border-bottom: 3px solid grey;
 }
 
+.player-initials {
+  text-transform: uppercase;
+}
+
 .hide {
   display: none;
 }

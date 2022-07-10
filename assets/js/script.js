@@ -16,6 +16,7 @@ let homePageButton = document.getElementById("back-to-start-page");
 let clearScoresButton = document.getElementById("clear-scores-button");
 let highScoresLink = document.getElementById("high-scores-header");
 let displayQuestionNumber = document.getElementById("question-number");
+let scoreList = document.querySelector('#high-scores-container ol');
 
 //section:global variables go here 👇
 let questionNumber = 0;
@@ -30,11 +31,12 @@ homePageButton.addEventListener("click", backToHomePage);
 clearScoresButton.addEventListener("click", clearLocalStorage);
 highScoresLink.addEventListener("click", function () {
   showHidePages(highScoresPage);
+  resetGameStatsAndTimers();
 });
 
 //section:functions and event handlers go here 👇
 function setGameDuration() {
-  gameDuration = 2;
+  gameDuration = 60;
 }
 
 function startGame() {
@@ -116,74 +118,60 @@ function endGame() {
 }
 
 function locallyStoreGameStats(event) {
-  //todo:find high scores
+  //todo:DONE - filter for high scores DONE
   //todo:fix score less than 0... global game duration less than 0 === 0
-  //todo:when clear local storage also clear game board
-  //todo:clear initials input
+  //todo:DONE - when clear local storage also clear game board
+  //todo:DONE - touppercase for input box and game stats
+  //todo:DONE - clear initials input
+  //todo:DONE - focus initials input box
+  //todo:DONE - high scores click not clearing question timer?
+  //todo:validation on input box?
   event.preventDefault();
-  let allGames = [];
   let gameStats = {};
-  let scoreList = document.querySelector('#high-scores-container ol');
+  let allGames = [];
+  let highScoreGames = [];
+  // let scoreList = document.querySelector('#high-scores-container ol');
 
   scoreList.textContent = '';
 
-  if (JSON.parse(localStorage.getItem('webQuizStats')) !== null) {
-    allGames = JSON.parse(localStorage.getItem('webQuizStats'));
+  if (JSON.parse(localStorage.getItem('allGames')) !== null) {
+    allGames = JSON.parse(localStorage.getItem('allGames'));
   }
 
   gameStats = {
-    "player": playerInitials.value,
+    "id": allGames.length + 1,
+    "player": playerInitials.value.toUpperCase(),
     "score": gameDuration,
   };
 
-  //keep high scores for each player
-
-  // for (let i = 0; i < allGames.length; i++) {
-  //   // console.log(allGames[i].player === gameStats.player);
-  //   // if (allGames[i].player === gameStats.player && allGames[i].score <= gameStats.score) {
-  //   //   allGames.slice(i, i + 1);
-  //   //   allGames.push(gameStats);
-  //   // }
-  //   // if (allGames[i].player === gameStats.player) {
-  //   //   // allGames.slice(i, i + 1);
-  //   //   // allGames.push(gameStats);
-  //   // }   
-  // }
-
-  // for (let i = 0; i < allGames.length; i++) {
-  //   if (allGames[i].player === gameStats.player) {
-  //     return;
-  //   }
-  // }
-
   allGames.push(gameStats);
-  console.log('1 = ', allGames);
+  allGames.sort((first, second) => first.score - second.score);
+  allGames = sortAllGamesbyPlayer(allGames);
 
-  // allGames.sort(function(a, b) {
-  //   const nameA = a.player.toUpperCase(); // ignore upper and lowercase
-  //   const nameB = b.player.toUpperCase(); // ignore upper and lowercase
-  //   if (nameA < nameB) {
-  //     return -1;
-  //   }
-  //   if (nameA > nameB) {
-  //     return 1;
-  //   }
-  
-  //   // names must be equal
-  //   return 0;
-  // });
+  console.log(allGames);
 
-  // // allGames.sort((first, second) => first.score - second.score);
-  // console.log('2 = ', allGames);
+  for (let i = 0; i < allGames.length; i++) {
+    console.log(i, i + 1, allGames.length)
+    if (allGames.length === 1) {
+      highScoreGames.push(allGames[i]);
+    } else if (i + 1 === allGames.length) {
+      highScoreGames.push(allGames[i]);
+    } else if (allGames[i].player !== allGames[i + 1].player) {
+      highScoreGames.push(allGames[i]);
+    }
+  }
 
-  localStorage.setItem('webQuizStats', JSON.stringify(allGames));
-  console.log(JSON.parse(localStorage.getItem('webQuizStats')));
+  console.log(highScoreGames)
 
-  allGames.forEach(game => {
+  localStorage.setItem('allGames', JSON.stringify(allGames));
+  localStorage.setItem('highScoreGames', JSON.stringify(highScoreGames));
+
+  highScoreGames.forEach(game => {
     let gamePlayed = scoreList.appendChild(document.createElement('li'));
     gamePlayed.textContent = `${game.player} - ${game.score}`;
   })
 
+  playerInitials.value = "";
   showHidePages(highScoresPage);
 }
 
@@ -201,9 +189,15 @@ function showHidePages(showPage) {
       : allPages[i].classList.add("hide");
   }
 
-  showPage === highScoresPage
-    ? header.classList.add("cloak")
-    : header.classList.remove("cloak");
+  showPage === highScoresPage ? header.classList.add("cloak") : header.classList.remove("cloak");
+
+  showPage === saveScorePage ? playerInitials.focus() : playerInitials.blur();
+
+  if (scoreList.textContent === 'History Cleared') {
+    scoreList.textContent = '';
+    let noGamesPlayedText = scoreList.appendChild(document.createElement("p"));
+    noGamesPlayedText.textContent = `No Games Played Yet`;
+  } 
 }
 
 function backToHomePage() {
@@ -236,7 +230,24 @@ function stopTimers() {
 }
 
 function clearLocalStorage() {
-  console.log(localStorage);
   localStorage.clear();
-  console.log(localStorage);
+  scoreList.textContent = '';
+  let clearHistoryMessageText = scoreList.appendChild(document.createElement("p"));
+  clearHistoryMessageText.textContent = `History Cleared`;
+}
+
+function sortAllGamesbyPlayer(allGames) {
+  allGames.sort(function(a, b) {
+    const nameA = a.player.toUpperCase(); // ignore upper and lowercase
+    const nameB = b.player.toUpperCase(); // ignore upper and lowercase
+    if (nameA < nameB) {
+      return -1;
+    }
+    if (nameA > nameB) {
+      return 1;
+    }
+    // names must be equal
+    return 0;
+  });
+  return allGames;
 }
