@@ -36,9 +36,11 @@ highScoresLink.addEventListener("click", function () {
 });
 
 //section:functions and event handlers go here 👇
-window.onload = function() {
+window.onload = function () {
   scoreList.textContent = "";
-  getLocalStorage() === null ? noGamesPlayedText.textContent = `No Games Played Yet` : displayHighScores(createHighScoreList(getLocalStorage()));
+  getLocalStorage() === null
+    ? (noGamesPlayedText.textContent = `No Games Played Yet`)
+    : displayHighScores(createHighScoreList(getLocalStorage()));
 };
 
 function setGameDuration() {
@@ -123,12 +125,13 @@ function endGame() {
     : (finalScoreInfo.textContent = `Your final score is ${gameDuration}.`);
 }
 
-  //todo:fix score less than 0... global game duration less than 0 === 0
+//todo:fix score less than 0... global game duration less than 0 === 0
 function processSavingGame(event) {
   event.preventDefault();
   let allGames = [];
   scoreList.textContent = ""; //reset scores
-  if (validateInitialsInput() === 'invalid input') {//validate input, if invalid display error message & exist function
+  if (validateInitialsInput() === "invalid input") {
+    //validate input, if invalid display error message & exist function
     return;
   }
   allGames = getLocalStorage(); //get local storage
@@ -146,7 +149,7 @@ function validateInitialsInput() {
     errorMessage.textContent = "";
     errorMessage.classList.remove("hide");
     errorMessage.textContent = "Player initials can not be blank";
-    return 'invalid input';
+    return "invalid input";
   }
 }
 
@@ -287,4 +290,3 @@ function clearLocalStorage() {
   );
   clearHistoryMessageText.textContent = `History Cleared`;
 }
-

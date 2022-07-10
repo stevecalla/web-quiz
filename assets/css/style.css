@@ -160,7 +160,7 @@ header {
   background-color: white;
 }
 
-.back-to-start-button, 
+.back-to-start-button,
 .clear-scores-button {
   width: 150px;
   height: 30px;
@@ -171,7 +171,7 @@ header {
   border-radius: 3px;
 }
 
-.back-to-start-button:hover , 
+.back-to-start-button:hover,
 .clear-scores-button:hover {
   color: black;
   background-color: white;
@@ -202,7 +202,6 @@ header {
     font-size: 16px;
   }
 
-  
   /* HOME PAGE MOBILE */
   .home-page p {
     width: 650px;
@@ -225,7 +224,7 @@ header {
   html {
     min-width: 360px;
   }
-  
+
   /* HOME PAGE MOBILE*/
   header {
     padding-bottom: 0px;
@@ -260,7 +259,6 @@ header {
 
   .question-input {
     font-size: 26px;
-  
   }
 
   .answer-container {
@@ -278,6 +276,4 @@ header {
     /* text-align: left; */
     margin: 5px 0px;
   }
-
 }
-
