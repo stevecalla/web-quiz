@@ -51,10 +51,10 @@ function startGameTimer() {
     gameDuration--;
     if (gameDuration > 0) {
       // console.log(gameDuration);
-      gameTimeDisplay.textContent = `Time Remaining: ${gameDuration} second(s)`;
+      gameTimeDisplay.textContent = `Time: ${gameDuration} second(s)`;
     } else {
       console.log(gameDuration);
-      gameTimeDisplay.textContent = `Time Remaining: 0 second(s)`;
+      gameTimeDisplay.textContent = `Time: 0 second(s)`;
       endGame();
     }
   }, 1000);
@@ -236,7 +236,7 @@ function resetGameStatsAndTimers() {
   setGameDuration();
   questionNumber = 0;
   stopTimers();
-  gameTimeDisplay.textContent = `Time Remaining: ${gameDuration} second(s)`;
+  gameTimeDisplay.textContent = `Time: ${gameDuration} second(s)`;
 }
 
 function stopTimers() {
