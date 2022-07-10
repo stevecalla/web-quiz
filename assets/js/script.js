@@ -159,11 +159,12 @@ function locallyStoreGameStats(event) {
   allGames.push(gameStats);
   allGames.sort((first, second) => first.score - second.score);
   allGames = sortAllGamesbyPlayer(allGames);
-
   console.log(allGames);
 
+  // console.log(allGames);
+
   for (let i = 0; i < allGames.length; i++) {
-    console.log(i, i + 1, allGames.length);
+    // console.log(i, i + 1, allGames.length);
     if (allGames.length === 1) {
       highScoreGames.push(allGames[i]);
     } else if (i + 1 === allGames.length) {
@@ -173,7 +174,7 @@ function locallyStoreGameStats(event) {
     }
   }
 
-  console.log(highScoreGames);
+  // console.log(highScoreGames);
 
   localStorage.setItem("allGames", JSON.stringify(allGames));
   localStorage.setItem("highScoreGames", JSON.stringify(highScoreGames));
