@@ -6,6 +6,7 @@
 html {
   width: 100%;
   min-width: 450px;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 /* ------ HEADER SECTION -------- */
@@ -68,6 +69,11 @@ header {
 
 .player-initials {
   text-transform: uppercase;
+}
+
+.error-message {
+  color: red;
+  font-weight: bold;
 }
 
 .hide {

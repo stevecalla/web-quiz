@@ -17,6 +17,7 @@ let clearScoresButton = document.getElementById("clear-scores-button");
 let highScoresLink = document.getElementById("high-scores-header");
 let displayQuestionNumber = document.getElementById("question-number");
 let scoreList = document.querySelector('#high-scores-container ol');
+let errorMessage = document.getElementById('error-message');
 
 //section:global variables go here 👇
 let questionNumber = 0;
@@ -132,6 +133,17 @@ function locallyStoreGameStats(event) {
   let highScoreGames = [];
   // let scoreList = document.querySelector('#high-scores-container ol');
 
+  if (playerInitials.value === "") {
+    // displayMessage("error", "Email cannot be blank");
+    console.log('aaaaa')
+    playerInitials.focus();
+
+    errorMessage.textContent = '';
+    errorMessage.classList.remove('hide');
+    errorMessage.textContent = "Player initials can not be blank";
+    return;
+  }
+
   scoreList.textContent = '';
 
   if (JSON.parse(localStorage.getItem('allGames')) !== null) {
@@ -191,7 +203,8 @@ function showHidePages(showPage) {
 
   showPage === highScoresPage ? header.classList.add("cloak") : header.classList.remove("cloak");
 
-  showPage === saveScorePage ? playerInitials.focus() : playerInitials.blur();
+  showPage === saveScorePage ? (playerInitials.focus(), 
+  errorMessage.classList.add('hide')) : playerInitials.blur();
 
   if (scoreList.textContent === 'History Cleared') {
     scoreList.textContent = '';
