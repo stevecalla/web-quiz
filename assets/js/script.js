@@ -54,10 +54,8 @@ function startGameTimer() {
   gameTimer = setInterval(() => {
     gameDuration--;
     if (gameDuration > 0) {
-      // console.log(gameDuration);
       gameTimeDisplay.textContent = `Time: ${gameDuration} second(s)`;
     } else {
-      console.log(gameDuration);
       gameTimeDisplay.textContent = `Time: 0 second(s)`;
       endGame();
     }
@@ -73,13 +71,6 @@ function startQuestionTimer() {
         answerContainer.classList.remove("add-border"))
       : endGame();
   }, 2000);
-}
-
-function stopTimers() {
-  clearInterval(gameTimer);
-  clearTimeout(questionTimer);
-  gameTimer = null;
-  questionTimer = null;
 }
 
 // ==== DISPLAY GAME QUESTIONS ====
@@ -143,18 +134,24 @@ function isAnswerCorrect(event) {
 
 
 //scrolls to next question 2 seconds after answer is selected
-function endGame() {
-  console.log("clear - end game");
-  stopTimers();
 
-  routeToPage(saveScorePage);
-
+function displayScore() {
   gameDuration < 0
-    ? (finalScoreInfo.textContent = `Your final score is 0.`)
-    : (finalScoreInfo.textContent = `Your final score is ${gameDuration}.`);
+  ? (finalScoreInfo.textContent = `Your final score is 0.`)
+  : (finalScoreInfo.textContent = `Your final score is ${gameDuration}.`);
+}
+
+function endGame() {
+  displayScore();
+  resetTimers();
+  resetGameStats();
+  routeToPage(saveScorePage);
 }
 
 //todo:fix score less than 0... global game duration less than 0 === 0
+//todo:0 default for game count
+//todo:formating for answers = can it be consolidated
+//todo:final game duration in endGame necessary?
 
 // ==== SAVE SCORE PAGE ==== //
 function processSavingGame(event) {
@@ -243,17 +240,19 @@ function displayNoScoresOrScoreList(gameHistory, status) {
 function backToHomePage() {
   routeToPage(homePageMainContainer);
   resetQuestionContainer();
+  setGameDuration();
   resetTimers();
   resetGameStats();
 }
 
-// ==== HIG SCORES LINK ROUTER ====
+// ==== HIGH SCORES LINK ROUTER ====
 function highScoresLinkRouter() {
   let wantToSave = confirmDontSave(); 
   if (wantToSave === true) {
     routeToPage(saveScorePage);
   } else {
     routeToPage(highScoresPage);
+    // setGameDuration();
     resetTimers();
     resetGameStats();
   }
@@ -328,8 +327,10 @@ function resetQuestionContainer() {
 }
 
 function resetTimers() {
-  setGameDuration();
-  stopTimers();
+  clearInterval(gameTimer);
+  clearTimeout(questionTimer);
+  gameTimer = null;
+  questionTimer = null;
 }
 
 function resetGameStats() {
