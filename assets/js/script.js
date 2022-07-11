@@ -30,39 +30,12 @@ startGameButton.addEventListener("click", startGame);
 saveButton.addEventListener("click", processSavingGame);
 homePageButton.addEventListener("click", backToHomePage);
 clearScoresButton.addEventListener("click", clearLocalStorage);
-highScoresLink.addEventListener("click", function () {
-  // let a = document.getElementById('save-score-page').offsetTop;
-  // console.log(a)
-
-  let wantToSave = confirmDontSave(); 
-  // console.log(onSaveScorePage)
-
-  if (wantToSave === true) {
-    routeToPage(saveScorePage);
-  } else {
-    routeToPage(highScoresPage);
-    resetTimers();
-    resetGameStats();
-  }
-});
-
-function confirmDontSave() {
-  let wantToSave = false;
-  console.log(document.getElementById('save-score-page').offsetTop)
-  if (document.getElementById('save-score-page').offsetTop > 0) {
-    wantToSave = window.confirm(`Opps. You didn't save the score.\n\nDo you want to enter the score?`)
-  }
-  return wantToSave;
-}
+highScoresLink.addEventListener("click", highScoresLinkRouter);
 
 //section:functions and event handlers go here 👇
 window.onload = function () {
   let gameHistory = getLocalStorage(); //retreives local storage
   displayNoScoresOrScoreList(gameHistory); //determines whether to list scores or indicate no scores exist
-    //todo 
-    //changed game duration to 75
-    //created score message if local storage empty
-    //history cleared = create displayNoScoresOrScoreList function
 };
 
 // ==== START GAME FUNCTIONS ====
@@ -183,7 +156,7 @@ function endGame() {
 
 //todo:fix score less than 0... global game duration less than 0 === 0
 
-// ==== SAVE SCORES PAGE ==== //
+// ==== SAVE SCORE PAGE ==== //
 function processSavingGame(event) {
   event.preventDefault();
   let allGames = [];
@@ -251,7 +224,7 @@ function displayHighScores(highScoreGames) {
   });
 }
 
-// ==== HIGH SCORES PAGE ==== //
+// ==== HIGH SCORE PAGE ==== //
 function displayNoScoresOrScoreList(gameHistory, status) {
   scoreList.textContent = "";
   let noGamesPlayedText = "";
@@ -272,6 +245,26 @@ function backToHomePage() {
   resetQuestionContainer();
   resetTimers();
   resetGameStats();
+}
+
+// ==== HIG SCORES LINK ROUTER ====
+function highScoresLinkRouter() {
+  let wantToSave = confirmDontSave(); 
+  if (wantToSave === true) {
+    routeToPage(saveScorePage);
+  } else {
+    routeToPage(highScoresPage);
+    resetTimers();
+    resetGameStats();
+  }
+}
+
+function confirmDontSave() {
+  let wantToSave = false;
+  if (document.getElementById('save-score-page').offsetTop > 0) { //determines if user is on save score page
+    wantToSave = window.confirm(`Opps. You DIDN'T save the score.\n\nDo you want to save the score?`)
+  }
+  return wantToSave;
 }
 
 // ==== UTILITY FUNCTIONS ====
@@ -361,9 +354,5 @@ function setLocalStorage(allGames, highScoreGames) {
 function clearLocalStorage() {
   localStorage.clear();
   scoreList.textContent = "";
-
-  // let gameHistory = getLocalStorage();
   displayNoScoresOrScoreList('[]', 'storageCleared'); //passes empty array to represent cleared local storage
-
-  // displayNoScoresOrScoreList('storageCleared');
 }
