@@ -65,11 +65,7 @@ function startGameTimer() {
 function startQuestionTimer() {
   questionTimer = setTimeout(() => {
     questionNumber++;
-    questionNumber <= questionList.length - 1
-      ? ((answerStatus.textContent = ""),
-        displayQuestions(questionNumber),
-        answerContainer.classList.remove("add-border"))
-      : endGame();
+    questionNumber <= (questionList.length - 1) ? displayQuestions(questionNumber) : endGame();
   }, 2000);
 }
 
@@ -82,6 +78,8 @@ function displayQuestions(questionNumber = 0) {
 function insertQuestionContent(questionNumber) {
   let question = questionList[questionNumber].question;
   let answerList = questionList[questionNumber].answerList;
+  answerStatus.textContent = "";
+  answerContainer.classList.remove("add-border");
   questionInput.textContent = question; //insert question
   answerContainer.textContent = null; //clear prior answers
 
@@ -102,7 +100,6 @@ function insertQuestionContent(questionNumber) {
     element.classList.add('answer-box-hover');
   })
 
-
   answerContainer.addEventListener("click", isAnswerCorrect); //assign event listener to the new answer choices
 
 }
@@ -121,7 +118,6 @@ function isAnswerCorrect(event) {
   // event.target.classList.remove('answer-box-hover');
   event.target.classList["add"]('answer-box-selected');
 
-
   answerContainer.removeEventListener("click", isAnswerCorrect); //prevents selection of another answer
   answerContainer.classList.add("add-border"); //add solid grey border via class and css vs using .style.borderBottom
   //evaluate if answer is correct
@@ -132,28 +128,17 @@ function isAnswerCorrect(event) {
   startQuestionTimer();
 }
 
+//todo:fix score less than 0... global game duration less than 0 === 0
+//todo:0 default for game count
+//todo:formating for answers = can it be consolidated
 
-//scrolls to next question 2 seconds after answer is selected
-
+// ==== SAVE SCORE PAGE ==== //
 function displayScore() {
   gameDuration < 0
   ? (finalScoreInfo.textContent = `Your final score is 0.`)
   : (finalScoreInfo.textContent = `Your final score is ${gameDuration}.`);
 }
 
-function endGame() {
-  displayScore();
-  resetTimers();
-  resetGameStats();
-  routeToPage(saveScorePage);
-}
-
-//todo:fix score less than 0... global game duration less than 0 === 0
-//todo:0 default for game count
-//todo:formating for answers = can it be consolidated
-//todo:final game duration in endGame necessary?
-
-// ==== SAVE SCORE PAGE ==== //
 function processSavingGame(event) {
   event.preventDefault();
   let allGames = [];
@@ -314,6 +299,13 @@ function sortByPlayer(allGames) {
     return 0;
   });
   return playerSortedGames;
+}
+
+function endGame() {
+  displayScore();
+  resetTimers();
+  resetGameStats();
+  routeToPage(saveScorePage);
 }
 
 // ==== RESET FUNCTIONS ==== 
