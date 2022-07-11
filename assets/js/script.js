@@ -86,7 +86,8 @@ function insertQuestionContent(questionNumber) {
     questionList.length
   }`;
 
-  addHover();
+  // addHover('add');
+  addOrRemoveHover('add');
 
   let xxx = document.querySelectorAll('.answer-container li');
   xxx.forEach(element => {
@@ -107,10 +108,10 @@ function isAnswerCorrect(event) {
   let selectedAnswer = event.target.textContent;
   let correctAnswer = questionList[questionNumber].correctAnswer;
 
-  removeHover();
+  addOrRemoveHover('remove');
 
   // event.target.classList.remove('answer-box-hover');
-  event.target.classList.add('answer-box-selected');
+  event.target.classList["add"]('answer-box-selected');
 
 
   answerContainer.removeEventListener("click", isAnswerCorrect); //prevents selection of another answer
@@ -123,14 +124,14 @@ function isAnswerCorrect(event) {
   startQuestionTimer();
 }
 
-function addHover() {
-  let xxx = document.querySelectorAll('.answer-container li');
-  xxx.forEach(element => element.classList.add('answer-box-hover'));
-}
+// function addHover() {
+//   let xxx = document.querySelectorAll('.answer-container li');
+//   xxx.forEach(element => element.classList.add('answer-box-hover'));
+// }
 
-function removeHover() {
+function addOrRemoveHover(remove) {
   let xxx = document.querySelectorAll('.answer-container li');
-  xxx.forEach(element => element.classList.remove('answer-box-hover'));
+  xxx.forEach(element => element.classList[remove]('answer-box-hover'));
 }
 
 //scrolls to next question 2 seconds after answer is selected
