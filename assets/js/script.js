@@ -37,14 +37,16 @@ highScoresLink.addEventListener("click", function () {
 
 //section:functions and event handlers go here 👇
 window.onload = function () {
-  scoreList.textContent = "";
-  getLocalStorage() === null
-    ? (noGamesPlayedText.textContent = `No Games Played Yet`)
-    : displayHighScores(createHighScoreList(getLocalStorage()));
+  let gameHistory = getLocalStorage(); //retreives local storage
+  displayNoScoresOrScoreList(gameHistory); //determines whether to list scores or indicate no scores exist
+    //todo 
+    //changed game duration to 75
+    //created score message if local storage empty
+    //history cleared = create displayNoScoresOrScoreList function
 };
 
 function setGameDuration() {
-  gameDuration = 60;
+  gameDuration = 75;
 }
 
 function startGame() {
@@ -53,6 +55,7 @@ function startGame() {
   displayQuestion();
 }
 
+// TIMER FUNCTIONS
 function startGameTimer() {
   gameTimer = setInterval(() => {
     gameDuration--;
@@ -66,6 +69,27 @@ function startGameTimer() {
     }
   }, 1000);
 }
+
+function startQuestionTimer() {
+  questionTimer = setTimeout(() => {
+    questionNumber++;
+
+    questionNumber <= questionList.length - 1
+      ? ((answerStatus.textContent = ""),
+        displayQuestion(questionNumber),
+        answerContainer.classList.remove("add-border"))
+      : endGame();
+  }, 2000);
+}
+
+function stopTimers() {
+  clearInterval(gameTimer);
+  clearTimeout(questionTimer);
+  gameTimer = null;
+  questionTimer = null;
+}
+
+// NEXT SECTION?
 
 function displayQuestion(questionNumber = 0) {
   showHidePages(questionPage);
@@ -124,28 +148,12 @@ function isAnswerCorrect(event) {
   startQuestionTimer();
 }
 
-// function addHover() {
-//   let xxx = document.querySelectorAll('.answer-container li');
-//   xxx.forEach(element => element.classList.add('answer-box-hover'));
-// }
-
 function addOrRemoveHover(remove) {
   let xxx = document.querySelectorAll('.answer-container li');
   xxx.forEach(element => element.classList[remove]('answer-box-hover'));
 }
 
 //scrolls to next question 2 seconds after answer is selected
-function startQuestionTimer() {
-  questionTimer = setTimeout(() => {
-    questionNumber++;
-
-    questionNumber <= questionList.length - 1
-      ? ((answerStatus.textContent = ""),
-        displayQuestion(questionNumber),
-        answerContainer.classList.remove("add-border"))
-      : endGame();
-  }, 2000);
-}
 
 function endGame() {
   console.log("clear - end game");
@@ -219,6 +227,7 @@ function createHighScoreList(allGames) {
 }
 
 function displayHighScores(highScoreGames) {
+  console.log(highScoreGames);
   if (!highScoreGames) {
     return;
   }
@@ -250,11 +259,25 @@ function showHidePages(showPage) {
     ? (playerInitials.focus(), errorMessage.classList.add("hide"))
     : playerInitials.blur();
 
-  // if (scoreList.textContent === "History Cleared") {
-  //   scoreList.textContent = "";
-  //   let noGamesPlayedText = scoreList.appendChild(document.createElement("p"));
-  //   noGamesPlayedText.textContent = `No Games Played Yet`;
-  // }
+  if (showPage === highScoresPage) {
+    let gameHistory = getLocalStorage();
+    displayNoScoresOrScoreList(gameHistory); 
+  }
+}
+
+function displayNoScoresOrScoreList(gameHistory, status) {
+  scoreList.textContent = "";
+  let noGamesPlayedText = "";
+
+  if (status === "storageCleared") {
+    noGamesPlayedText = scoreList.appendChild(document.createElement("p"))
+    noGamesPlayedText.textContent = `History Cleared`;
+  } else if (gameHistory.length === 0) {
+    noGamesPlayedText = scoreList.appendChild(document.createElement("p"))
+    noGamesPlayedText.textContent = `No Games Played Yet`;
+  } else {
+    displayHighScores(createHighScoreList(gameHistory));
+  }
 }
 
 function backToHomePage() {
@@ -279,13 +302,6 @@ function resetGameStatsAndTimers() {
   gameTimeDisplay.textContent = `Time: ${gameDuration} second(s)`;
 }
 
-function stopTimers() {
-  clearInterval(gameTimer);
-  clearTimeout(questionTimer);
-  gameTimer = null;
-  questionTimer = null;
-}
-
 function sortAllGamesbyPlayer(allGames) {
   allGames.sort(function (a, b) {
     const nameA = a.player.toUpperCase(); // ignore upper and lowercase
@@ -302,6 +318,7 @@ function sortAllGamesbyPlayer(allGames) {
   return allGames;
 }
 
+// LOCAL STORAGE FUNCTIONS
 function getLocalStorage() {
   let gameHistory = [];
   if (JSON.parse(localStorage.getItem("allGames")) !== null) {
@@ -318,8 +335,9 @@ function setLocalStorage(allGames, highScoreGames) {
 function clearLocalStorage() {
   localStorage.clear();
   scoreList.textContent = "";
-  let clearHistoryMessageText = scoreList.appendChild(
-    document.createElement("p")
-  );
-  clearHistoryMessageText.textContent = `History Cleared`;
+
+  // let gameHistory = getLocalStorage();
+  displayNoScoresOrScoreList('[]', 'storageCleared'); //passes empty array to represent cleared local storage
+
+  // displayNoScoresOrScoreList('storageCleared');
 }

@@ -16,6 +16,12 @@ SO THAT I can gauge my progress compared to my peers
 4. [Technologies](#technologies)
 6. [Resources](#resources)
 
+## Functional/Features Implemented
+
+1. TBD
+2. TBD
+3. EventListner - added event listener inside function after element was created since that element didn't exist at initial loading of the page.
+4. Add/remove hover CSS style on answers using single function & bracket notation to pass "add"/"remove" as a parameter appended to "element.classList[<add or remove>]"
 
 ## Criteria
 
@@ -34,8 +40,6 @@ THEN I can save my initials and my score
 ```
 
 ## Website Preview - Video Preview
-
-<!-- <img src="https://media.giphy.com/media/EvIYpPKoJpXhnHvkjD/giphy-downsized-large.gif" width="100%" height="500"/> -->
 
 <img src="https://media.giphy.com/media/vyRpm5Rk0Ab5LBYt8T/giphy-downsized-large.gif" width="100%" height="425"/>
 
