@@ -85,12 +85,34 @@ function insertQuestionContent(questionNumber) {
   displayQuestionNumber.textContent = `Question: ${questionNumber + 1} of ${
     questionList.length
   }`;
+
+  addHover();
+
+  let xxx = document.querySelectorAll('.answer-container li');
+  xxx.forEach(element => {
+    element.classList.add('answer-box');
+    element.classList.add('answer-box-hover');
+  })
+
+  // for (let i = 0; i < xxx.length; i++) {
+  //   // xxx[i].style.color = 'red';
+  // }
+
+
   answerContainer.addEventListener("click", isAnswerCorrect); //assign event listener to the new answer choices
+
 }
 
 function isAnswerCorrect(event) {
   let selectedAnswer = event.target.textContent;
   let correctAnswer = questionList[questionNumber].correctAnswer;
+
+  removeHover();
+
+  // event.target.classList.remove('answer-box-hover');
+  event.target.classList.add('answer-box-selected');
+
+
   answerContainer.removeEventListener("click", isAnswerCorrect); //prevents selection of another answer
   answerContainer.classList.add("add-border"); //add solid grey border via class and css vs using .style.borderBottom
   //evaluate if answer is correct
@@ -99,6 +121,16 @@ function isAnswerCorrect(event) {
     : ((answerStatus.textContent = `Wrong! Correct answer is "${correctAnswer}" (time reduced by 10 seconds)`),
       (gameDuration -= 10));
   startQuestionTimer();
+}
+
+function addHover() {
+  let xxx = document.querySelectorAll('.answer-container li');
+  xxx.forEach(element => element.classList.add('answer-box-hover'));
+}
+
+function removeHover() {
+  let xxx = document.querySelectorAll('.answer-container li');
+  xxx.forEach(element => element.classList.remove('answer-box-hover'));
 }
 
 //scrolls to next question 2 seconds after answer is selected

@@ -84,18 +84,27 @@ header {
   height: 30px;
   margin: 5px;
   padding: 5px;
-  color: white;
-  background-color: black;
-  border-radius: 3px;
 }
 
 .answer-container li::marker {
   color: black;
 }
 
-.answer-container li:hover {
+.answer-box {
+  color: white;
+  background-color: black;
+  border-radius: 3px;
+}
+
+.answer-box-hover:hover {
   color: black;
   background-color: white;
+}
+
+.answer-box-selected {
+  color: blue;
+  background-color: white;
+  border: 2px solid red;
 }
 
 .answer-status {
