@@ -32,6 +32,11 @@ homePageButton.addEventListener("click", backToHomePage);
 clearScoresButton.addEventListener("click", clearLocalStorage);
 highScoresLink.addEventListener("click", highScoresLinkRouter);
 
+//todo:fix score less than 0... global game duration less than 0 === 0
+//todo:0 default for game count
+//todo:formating for answers = can it be consolidated
+//todo:refactor startGameTimer?
+
 //section:functions and event handlers go here 👇
 window.onload = function () {
   let gameHistory = getLocalStorage(); //retreives local storage
@@ -53,19 +58,18 @@ function setGameDuration() {
 function startGameTimer() {
   gameTimer = setInterval(() => {
     gameDuration--;
-    if (gameDuration > 0) {
-      gameTimeDisplay.textContent = `Time: ${gameDuration} second(s)`;
-    } else {
-      gameTimeDisplay.textContent = `Time: 0 second(s)`;
-      endGame();
-    }
+    gameDuration > 0
+      ? (gameTimeDisplay.textContent = `Time: ${gameDuration} second(s)`)
+      : ((gameTimeDisplay.textContent = `Time: 0 second(s)`), endGame());
   }, 1000);
 }
 
 function startQuestionTimer() {
   questionTimer = setTimeout(() => {
     questionNumber++;
-    questionNumber <= (questionList.length - 1) ? displayQuestions(questionNumber) : endGame();
+    questionNumber <= questionList.length - 1
+      ? displayQuestions(questionNumber)
+      : endGame();
   }, 2000);
 }
 
@@ -92,21 +96,20 @@ function insertQuestionContent(questionNumber) {
     questionList.length
   }`;
 
-  addOrRemoveHover('add');
+  addOrRemoveHover("add");
 
-  let xxx = document.querySelectorAll('.answer-container li');
-  xxx.forEach(element => {
-    element.classList.add('answer-box');
-    element.classList.add('answer-box-hover');
-  })
+  let xxx = document.querySelectorAll(".answer-container li");
+  xxx.forEach((element) => {
+    element.classList.add("answer-box");
+    element.classList.add("answer-box-hover");
+  });
 
   answerContainer.addEventListener("click", isAnswerCorrect); //assign event listener to the new answer choices
-
 }
 
 function addOrRemoveHover(remove) {
-  let xxx = document.querySelectorAll('.answer-container li');
-  xxx.forEach(element => element.classList[remove]('answer-box-hover'));
+  let xxx = document.querySelectorAll(".answer-container li");
+  xxx.forEach((element) => element.classList[remove]("answer-box-hover"));
 }
 
 // ==== VALIDATE ANSWER ====
@@ -114,9 +117,9 @@ function isAnswerCorrect(event) {
   let selectedAnswer = event.target.textContent;
   let correctAnswer = questionList[questionNumber].correctAnswer;
 
-  addOrRemoveHover('remove');
+  addOrRemoveHover("remove");
   // event.target.classList.remove('answer-box-hover');
-  event.target.classList["add"]('answer-box-selected');
+  event.target.classList["add"]("answer-box-selected");
 
   answerContainer.removeEventListener("click", isAnswerCorrect); //prevents selection of another answer
   answerContainer.classList.add("add-border"); //add solid grey border via class and css vs using .style.borderBottom
@@ -128,21 +131,18 @@ function isAnswerCorrect(event) {
   startQuestionTimer();
 }
 
-//todo:fix score less than 0... global game duration less than 0 === 0
-//todo:0 default for game count
-//todo:formating for answers = can it be consolidated
-
 // ==== SAVE SCORE PAGE ==== //
 function displayScore() {
   gameDuration < 0
-  ? (finalScoreInfo.textContent = `Your final score is 0.`)
-  : (finalScoreInfo.textContent = `Your final score is ${gameDuration}.`);
+    ? (finalScoreInfo.textContent = `Your final score is 0.`)
+    : (finalScoreInfo.textContent = `Your final score is ${gameDuration}.`);
 }
 
 function processSavingGame(event) {
   event.preventDefault();
   let allGames = [];
-  if (validateInitialsInput() === "invalid input") { //validate input
+  if (validateInitialsInput() === "invalid input") {
+    //validate input
     return;
   }
   allGames = getLocalStorage(); //get local storage
@@ -190,7 +190,7 @@ function createHighScoreList(allGames) {
         highScoreGames.push(allGames[i]);
       }
     }
-    highScoreGames = sortByScore(highScoreGames, 'desc');
+    highScoreGames = sortByScore(highScoreGames, "desc");
     return highScoreGames;
   }
 }
@@ -212,10 +212,10 @@ function displayNoScoresOrScoreList(gameHistory, status) {
   let noGamesPlayedText = "";
 
   if (status === "storageCleared") {
-    noGamesPlayedText = scoreList.appendChild(document.createElement("p"))
+    noGamesPlayedText = scoreList.appendChild(document.createElement("p"));
     noGamesPlayedText.textContent = `History Cleared`;
   } else if (gameHistory.length === 0) {
-    noGamesPlayedText = scoreList.appendChild(document.createElement("p"))
+    noGamesPlayedText = scoreList.appendChild(document.createElement("p"));
     noGamesPlayedText.textContent = `No Games Played Yet`;
   } else {
     displayHighScores(createHighScoreList(gameHistory));
@@ -232,7 +232,7 @@ function backToHomePage() {
 
 // ==== HIGH SCORES LINK ROUTER ====
 function highScoresLinkRouter() {
-  let wantToSave = confirmDontSave(); 
+  let wantToSave = confirmDontSave();
   if (wantToSave === true) {
     routeToPage(saveScorePage);
   } else {
@@ -245,8 +245,11 @@ function highScoresLinkRouter() {
 
 function confirmDontSave() {
   let wantToSave = false;
-  if (document.getElementById('save-score-page').offsetTop > 0) { //determines if user is on save score page
-    wantToSave = window.confirm(`Opps. You DIDN'T save the score.\n\nDo you want to save the score?`)
+  if (document.getElementById("save-score-page").offsetTop > 0) {
+    //determines if user is on save score page
+    wantToSave = window.confirm(
+      `Opps. You DIDN'T save the score.\n\nDo you want to save the score?`
+    );
   }
   return wantToSave;
 }
@@ -276,12 +279,15 @@ function routeToPage(showPage) {
 
   if (showPage === highScoresPage) {
     let gameHistory = getLocalStorage();
-    displayNoScoresOrScoreList(gameHistory); 
+    displayNoScoresOrScoreList(gameHistory);
   }
 }
 
 function sortByScore(games, order) {
-  let scoreSortedGames = (order === 'desc') ? games.sort((first, second) => second.score - first.score) : games.sort((first, second) => first.score - second.score);
+  let scoreSortedGames =
+    order === "desc"
+      ? games.sort((first, second) => second.score - first.score)
+      : games.sort((first, second) => first.score - second.score);
   return scoreSortedGames;
 }
 
@@ -308,7 +314,7 @@ function endGame() {
   routeToPage(saveScorePage);
 }
 
-// ==== RESET FUNCTIONS ==== 
+// ==== RESET FUNCTIONS ====
 function resetQuestionContainer() {
   questionInput.textContent = null;
   answerContainer.textContent = null;
@@ -347,5 +353,5 @@ function setLocalStorage(allGames, highScoreGames) {
 function clearLocalStorage() {
   localStorage.clear();
   scoreList.textContent = "";
-  displayNoScoresOrScoreList('[]', 'storageCleared'); //passes empty array to represent cleared local storage
+  displayNoScoresOrScoreList("[]", "storageCleared"); //passes empty array to represent cleared local storage
 }
