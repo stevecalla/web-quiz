@@ -6,7 +6,7 @@
 html {
   width: 100%;
   /* min-width: 450px; */
-  font-family: "Raleway", "Nunito Sans", "Notable", sans-serif;
+  font-family: "arial" "Raleway", "Nunito Sans", "Notable", sans-serif;
 }
 
 /* ------ HEADER SECTION -------- */
@@ -164,10 +164,10 @@ header {
   color: black;
 }
 
-.high-scores-container li:hover {
+/* .high-scores-container li:hover {
   color: black;
   background-color: white;
-}
+} */
 
 .back-to-start-button,
 .clear-scores-button {
@@ -208,7 +208,7 @@ header {
 @media screen and (max-width: 768px) {
   header {
     /* font-size: 20px; */
-    font-size: 16px;
+    font-size: 18px;
   }
 
   /* HOME PAGE MOBILE */
@@ -219,7 +219,7 @@ header {
   .home-page p,
   .home-page button {
     /* font-size: 24px; */
-    font-size: 20px;
+    font-size: 22px;
   }
 
   .home-page button {
@@ -237,7 +237,7 @@ header {
   /* HOME PAGE MOBILE*/
   header {
     padding-bottom: 0px;
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .home-page h1 {
@@ -250,7 +250,7 @@ header {
 
   .home-page p,
   .home-page button {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .home-page button {

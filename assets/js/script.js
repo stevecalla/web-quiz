@@ -32,14 +32,6 @@ homePageButton.addEventListener("click", backToHomePage);
 clearScoresButton.addEventListener("click", clearLocalStorage);
 highScoresLink.addEventListener("click", highScoresLinkRouter);
 
-//todo:DONE fix score less than 0; allow negative scoring
-//todo:0 default for game number in display question
-//todo:formating for answers (hover et al) = can it be consolidated
-//todo:DONE refactor startGameTimer?
-//todo:refactor addOrRemove function
-//todo:refactor insertquestion content
-//todo:DONE do timer functions need to be global?
-
 //section:functions and event handlers go here 👇
 window.onload = function () {
   let gameHistory = getLocalStorage(); //retreives local storage
@@ -67,7 +59,7 @@ function startGameTimer() {
   }, 1000);
 }
 
-function startQuestionTimer() {
+function startQuestionTimer() { //after selection of an answer wait 2 second before going to next question or ending game if no more questions
   questionTimer = setTimeout(() => {
     questionNumber++;
     questionNumber <= questionList.length - 1
@@ -85,51 +77,50 @@ function displayQuestions(number) {
 function insertQuestionContent(number) {
   let question = questionList[number].question;
   let answerList = questionList[number].answerList;
+  //insert content
   answerStatus.textContent = "";
-  answerContainer.classList.remove("add-border");
   questionInput.textContent = question; //insert question
-  answerContainer.textContent = null; //clear prior answers
-
+  answerContainer.textContent = ""; //clear prior answers
   answerList.forEach((answer) => { //populate answers in list
     let choiceList = answerContainer.appendChild(document.createElement("li"));
     choiceList.textContent = answer;
   });
-
   displayQuestionNumber.textContent = `Question: ${number + 1} of ${
     questionList.length
   }`;
-
-  addOrRemoveHover("add");
-
-  let xxx = document.querySelectorAll(".answer-container li");
-  xxx.forEach((element) => {
-    element.classList.add("answer-box");
-    element.classList.add("answer-box-hover");
-  });
-
-  answerContainer.addEventListener("click", isAnswerCorrect); //assign event listener to the new answer choices
+  //apply stying
+  applyAnswerStylesAndListener("add", "remove"); //parameters add hover, remove border, add listener
+  //add event listener
+  answerContainer.addEventListener("click", isAnswerCorrect); //add event listener inside function so it apples each time the line elements are created
 }
 
-function addOrRemoveHover(remove) {
-  let xxx = document.querySelectorAll(".answer-container li");
-  xxx.forEach((element) => element.classList[remove]("answer-box-hover"));
+function applyAnswerStylesAndListener(hover, border, addListner) {
+  console.log(hover, border, addListner);
+  let answers = document.querySelectorAll(".answer-container li");
+  console.log(answers);
+  answers.forEach((answer) => {
+    answer.classList.add("answer-box"); //apply styling to each answer
+    answer.classList[hover]("answer-box-hover"); //apply hover styling
+  });
+  answerContainer.classList[border]("add-border"); //add or remove border based on paramter
 }
 
 // ==== VALIDATE ANSWER ====
 function isAnswerCorrect(event) {
-  let selectedAnswer = event.target.textContent;
+  let selectedAnswer = event.target;
   let correctAnswer = questionList[questionNumber].correctAnswer;
-  selectedAnswer === correctAnswer //evaluate if answer is correct
-    ? (answerStatus.textContent = "Correct")
-    : ((answerStatus.textContent = `Wrong! Correct answer is "${correctAnswer}" (time reduced by 10 seconds)`),
-      (gameDuration -= 10), gameTimeDisplay.textContent = `Time: ${gameDuration} second(s)`);
-
-  startQuestionTimer(); //moves to the next question after 2 seconds
-  addOrRemoveHover("remove"); //removes hover from answers
-  event.target.classList["add"]("answer-box-selected"); //applies selected answer styling
-  answerContainer.removeEventListener("click", isAnswerCorrect); //prevents selection of another answer
-  answerContainer.classList.add("add-border"); //add solid grey border using the add-border class
-
+  if (selectedAnswer.matches('li')) {
+    selectedAnswer.textContent === correctAnswer //evaluate if answer is correct
+      ? (answerStatus.textContent = "Correct")
+      : ((answerStatus.textContent = `Wrong! Correct answer is "${correctAnswer}" (time reduced by 10 seconds)`),
+        (gameDuration -= 10), gameTimeDisplay.textContent = `Time: ${gameDuration} second(s)`);
+  
+    startQuestionTimer(); //starts timer to move to the next question after 2 seconds
+    applyAnswerStylesAndListener("remove", "add", "removeListener", selectedAnswer); //parameter remove hover, add border, 
+    event.target.classList.add("answer-box-selected"); //applies selected answer styling
+    //remove event listener
+    answerContainer.removeEventListener("click", isAnswerCorrect);
+  }
   if (questionNumber === questionList.length - 1) { //clears invterval timer after selecting answer on final question
     clearInterval(gameTimer);
   }
@@ -231,7 +222,7 @@ function backToHomePage() {
   routeToPage(homePageMainContainer);
   resetQuestionContainer();
   setGameDuration();
-  resetTimers();
+  resetAllTimers();
   resetGameStats();
 }
 
@@ -243,7 +234,7 @@ function highScoresLinkRouter() {
   } else {
     routeToPage(highScoresPage);
     // setGameDuration();
-    resetTimers();
+    resetAllTimers();
     resetGameStats();
   }
 }
@@ -314,7 +305,7 @@ function sortByPlayer(allGames) {
 
 function endGame() {
   displayScore();
-  resetTimers();
+  resetAllTimers();
   resetGameStats();
   routeToPage(saveScorePage);
 }
@@ -329,7 +320,7 @@ function resetQuestionContainer() {
   questionPage.classList.add("hide");
 }
 
-function resetTimers() {
+function resetAllTimers() {
   clearInterval(gameTimer);
   clearTimeout(questionTimer);
   gameTimer = null;
