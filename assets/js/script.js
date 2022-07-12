@@ -54,17 +54,25 @@ function startGameTimer() {
   gameTimer = setInterval(() => {
     // gameDuration--;
     gameDuration > 0
-    ? (gameDuration--, gameTimeDisplay.textContent = `Time: ${gameDuration} second(s)`)
-    : (document.getElementById('all-done-message').textContent = `Game Over. Out of Time.`, endGame());
+      ? (gameDuration--,
+        (gameTimeDisplay.textContent = `Time: ${gameDuration} second(s)`))
+      : ((document.getElementById(
+          "all-done-message"
+        ).textContent = `Game Over. Out of Time.`),
+        endGame());
   }, 1000);
 }
 
-function startQuestionTimer() { //after selection of an answer wait 2 second before going to next question or ending game if no more questions
+function startQuestionTimer() {
+  //after selection of an answer wait 2 second before going to next question or ending game if no more questions
   questionTimer = setTimeout(() => {
     questionNumber++;
     questionNumber <= questionList.length - 1
-    ? displayQuestions(questionNumber)
-    : (document.getElementById('all-done-message').textContent = `Game Over. No More Questions.`, endGame());
+      ? displayQuestions(questionNumber)
+      : ((document.getElementById(
+          "all-done-message"
+        ).textContent = `Game Over. No More Questions.`),
+        endGame());
   }, 2000);
 }
 
@@ -81,7 +89,8 @@ function insertQuestionContent(number) {
   answerStatus.textContent = "";
   questionInput.textContent = question; //insert question
   answerContainer.textContent = ""; //clear prior answers
-  answerList.forEach((answer) => { //populate answers in list
+  answerList.forEach((answer) => {
+    //populate answers in list
     let choiceList = answerContainer.appendChild(document.createElement("li"));
     choiceList.textContent = answer;
   });
@@ -109,19 +118,26 @@ function applyAnswerStylesAndListener(hover, border, addListner) {
 function isAnswerCorrect(event) {
   let selectedAnswer = event.target;
   let correctAnswer = questionList[questionNumber].correctAnswer;
-  if (selectedAnswer.matches('li')) {
+  if (selectedAnswer.matches("li")) {
     selectedAnswer.textContent === correctAnswer //evaluate if answer is correct
       ? (answerStatus.textContent = "Correct")
       : ((answerStatus.textContent = `Wrong! Correct answer is "${correctAnswer}" (time reduced by 10 seconds)`),
-        (gameDuration -= 10), gameTimeDisplay.textContent = `Time: ${gameDuration} second(s)`);
-  
+        (gameDuration -= 10),
+        (gameTimeDisplay.textContent = `Time: ${gameDuration} second(s)`));
+
     startQuestionTimer(); //starts timer to move to the next question after 2 seconds
-    applyAnswerStylesAndListener("remove", "add", "removeListener", selectedAnswer); //parameter remove hover, add border, 
+    applyAnswerStylesAndListener(
+      "remove",
+      "add",
+      "removeListener",
+      selectedAnswer
+    ); //parameter remove hover, add border,
     event.target.classList.add("answer-box-selected"); //applies selected answer styling
     //remove event listener
     answerContainer.removeEventListener("click", isAnswerCorrect);
   }
-  if (questionNumber === questionList.length - 1) { //clears invterval timer after selecting answer on final question
+  if (questionNumber === questionList.length - 1) {
+    //clears invterval timer after selecting answer on final question
     clearInterval(gameTimer);
   }
 }
@@ -134,7 +150,8 @@ function displayScore() {
 function saveGame(event) {
   event.preventDefault();
   let allGames = [];
-  if (validateInitialsInput() === "invalid input") { //validate input
+  if (validateInitialsInput() === "invalid input") {
+    //validate input
     return;
   }
   allGames = getLocalStorage(); //get local storage
@@ -204,7 +221,9 @@ function displayNoScoresOrScoreList(highScores, status) {
     noGamesPlayedText.textContent = `No Games Played Yet`;
   } else {
     highScores.forEach((game) => {
-      let displayHighScore = scoreList.appendChild(document.createElement("li"));
+      let displayHighScore = scoreList.appendChild(
+        document.createElement("li")
+      );
       displayHighScore.textContent = `${game.player}: ${game.score}`;
     });
   }
@@ -252,9 +271,12 @@ function routeToPage(showPage) {
     highScoresPage,
   ];
 
-  allPages.forEach(page => { //display requested page
-    page === showPage ? showPage.classList.remove("hide") : page.classList.add("hide");
-  })
+  allPages.forEach((page) => {
+    //display requested page
+    page === showPage
+      ? showPage.classList.remove("hide")
+      : page.classList.add("hide");
+  });
 
   showPage === highScoresPage //if high scores page make header information invisable
     ? (header.classList.add("cloak"),
