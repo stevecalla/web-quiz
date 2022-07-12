@@ -33,11 +33,6 @@ clearScoresButton.addEventListener("click", clearLocalStorage);
 highScoresLink.addEventListener("click", highScoresLinkRouter);
 
 //section:functions and event handlers go here 👇
-window.onload = function () {
-  let gameHistory = getLocalStorage(); //retreives local storage
-  displayNoScoresOrScoreList(gameHistory); //determines whether to list scores or indicate no scores exist
-};
-
 // ==== START GAME FUNCTIONS ====
 function startGame() {
   setGameDuration();
@@ -46,7 +41,7 @@ function startGame() {
 }
 
 function setGameDuration() {
-  gameDuration = 75;
+  gameDuration = 5;
 }
 
 // ==== TIMER FUNCTIONS ====
@@ -149,18 +144,13 @@ function displayScore() {
 
 function saveGame(event) {
   event.preventDefault();
-  let allGames = [];
-  if (validateInitialsInput() === "invalid input") {
-    //validate input
+  let gameHistory = [];
+  if (validateInitialsInput() === "invalid input") { //validate input
     return;
   }
-  allGames = getLocalStorage(); //get local storage
-  let updatedAllGames = addCurrentGame(allGames); //sort allGames as prep to create high score games list
-  let sortedAllGames = sortAllGames(updatedAllGames);
-  let highScoreGames = createHighScoreList(sortedAllGames);
-  displayNoScoresOrScoreList(highScoreGames);
-  setLocalStorage(allGames, highScoreGames);
-  routeToPage(highScoresPage); //show high scores page
+  gameHistory = getLocalStorage(); //get local storage
+  addCurrentGame(gameHistory); //sort allGames as prep to create high score games list
+  // sortGames(updateAllGames);
 }
 
 function validateInitialsInput() {
@@ -173,60 +163,61 @@ function validateInitialsInput() {
   }
 }
 
-function addCurrentGame(allGames) {
+function addCurrentGame(updateAllGames) {
   let gameStats = {};
   gameStats = {
-    id: allGames ? allGames.length + 1 : 1,
+    id: updateAllGames ? updateAllGames.length + 1 : 1,
     player: playerInitials.value.toUpperCase(),
     score: gameDuration,
   };
-  allGames.push(gameStats);
-  return allGames;
+  if (gameStats.player) {updateAllGames.push(gameStats)};
+  sortGames(updateAllGames);
+  // return allGames;
 }
 
-function sortAllGames(updatedAllGames) {
-  updatedAllGames = sortByScore(updatedAllGames);
-  updatedAllGames = sortByPlayer(updatedAllGames); //sort by player
-  return updatedAllGames;
+function sortGames(updateAllGames) {
+  let allSortedGames = sortByScore(updateAllGames);
+  allSortedGames = sortByPlayer(updateAllGames); //sort by player
+  createHighScoreList(allSortedGames)
 }
 
-function createHighScoreList(sortedAllGames) {
-  if (sortedAllGames) {
+function createHighScoreList(allSortedGames) {
+  if (allSortedGames) {
     let highScoreGames = [];
-    for (let i = 0; i < sortedAllGames.length; i++) {
-      // console.log(i, i + 1, allGames.length);
-      if (sortedAllGames.length === 1) {
-        highScoreGames.push(sortedAllGames[i]);
-      } else if (i + 1 === sortedAllGames.length) {
-        highScoreGames.push(sortedAllGames[i]);
-      } else if (sortedAllGames[i].player !== sortedAllGames[i + 1].player) {
-        highScoreGames.push(sortedAllGames[i]);
+    for (let i = 0; i < allSortedGames.length; i++) {
+      if (allSortedGames.length === 1) { //if only one element exits push it
+        highScoreGames.push(allSortedGames[i]);
+      } else if (i + 1 === allSortedGames.length) { //if at the last element push it
+        highScoreGames.push(allSortedGames[i]);
+      } else if (allSortedGames[i].player !== allSortedGames[i + 1].player) {
+        highScoreGames.push(allSortedGames[i]);
       }
     }
     highScoreGames = sortByScore(highScoreGames, "desc");
-    return highScoreGames;
+    displayNoScoresOrScoreList(highScoreGames, allSortedGames)
   }
 }
 
 // ==== HIGH SCORE PAGE ==== //
-function displayNoScoresOrScoreList(highScores, status) {
+function displayNoScoresOrScoreList(highScoreGames, allSortedGames, status) {
   scoreList.textContent = "";
   let noGamesPlayedText = "";
-
   if (status === "storageCleared") {
     noGamesPlayedText = scoreList.appendChild(document.createElement("p"));
     noGamesPlayedText.textContent = `History Cleared`;
-  } else if (highScores.length === 0) {
+  } else if (highScoreGames.length === 0) {
     noGamesPlayedText = scoreList.appendChild(document.createElement("p"));
     noGamesPlayedText.textContent = `No Games Played Yet`;
   } else {
-    highScores.forEach((game) => {
+    highScoreGames.forEach((game) => {
       let displayHighScore = scoreList.appendChild(
         document.createElement("li")
       );
       displayHighScore.textContent = `${game.player}: ${game.score}`;
     });
   }
+  setLocalStorage(allSortedGames, highScoreGames);
+  routeToPage(highScoresPage); //show high scores page
 }
 
 function backToHomePage() {
@@ -279,8 +270,9 @@ function routeToPage(showPage) {
   });
 
   showPage === highScoresPage //if high scores page make header information invisable
-    ? (header.classList.add("cloak"),
-      displayNoScoresOrScoreList(getLocalStorage()))
+    ? (header.classList.add("cloak"))
+    // ,
+    // if (displayHighScore.textContent = null) {console.log('yes')})
     : header.classList.remove("cloak");
 
   showPage === saveScorePage //if saveScorePaage then focus the cursor in the player initials box
