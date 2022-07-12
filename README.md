@@ -2,9 +2,7 @@
 ## Overview
 
 ```
-AS A coding boot camp student
-I WANT to take a timed quiz on JavaScript fundamentals that stores high scores
-SO THAT I can gauge my progress compared to my peers
+As a coding boot camp student I want to take a timed quiz on JavaScript fundamentals that stores high scores so that I can gauge my progress compared to my peers
 ```
 
 ## Index
@@ -12,18 +10,31 @@ SO THAT I can gauge my progress compared to my peers
 <!-- <details><summary></summary> -->
 
 1. [Overview](#overview)
+2. [Features](#features)
+3. [Enhancements](#enhancements)
 2. [Acceptance Criteria](#criteria)
 4. [Technologies](#technologies)
 6. [Resources](#resources)
 
-## Functional/Features Implemented
+## Features
 
-1. Alert: A window alert is presented to inform the user why the game ended (either "Out of Time. Game over" or "No More Questions. Game over").
-2. Question Timer: Rather than advance to next question when an answer is selected, a question timer has been set to 2 seconds. When a user selects an answer, the result ("Correct" or "Wrong" is displayed) for 2 seconds so the user can see the answer on the same page as the question then the game advances to the next question.
-3. Negative Scores: If the user is inside 10 seconds then selects a wrong answer the score could be negative because of the 10 second deduction.
-4. EventListner - added event listener inside function after element was created since that element didn't exist at initial loading of the page.
-5. Add/remove hover CSS style on answers using single function & bracket notation to pass "add"/"remove" as a parameter appended to "element.classList["add" or "remove"]"
-6. Validation: When on the save score page, if the user doesn't save the score but clicks the "View High Scores" link, a window confirm popup appears to confirm that they don't want to save it.
+1. Scoring: Based on the demo provided, the final score is represented by the final time remaining at the end of the game. Note that for each incorrect answer 10 seconds is deducted from the time so it is possible not to finish all questions in the time alloted resulting in a time of 0 regardless of the number of correct answers. It's also possible to have a negative score if an incorrect answer occurs in the final 10 seconds (decrementing the time therefore score below 0).
+2. End of Game: At the end of the game the player is notified why the game ended (either "Out of Time. Game over" or "No More Questions. Game over").
+3. Question Timer: Rather than advance to next question when an answer is selected, a question timer has been set to 2 seconds. When a user selects an answer, the result is displayed ("Correct" or "Wrong") so the user can see the answer on the same page. After 2 seconds, the game advances to the next question.
+4. Negative Scores: If the user is inside 10 seconds then selects a wrong answer the score could be negative because of the 10 second deduction.
+5. EventListner: The event listener for each answer selection was placed inside a function after creating the element since the answer element didn't exist at initial loading of the page, and the event listener won't work properly as a global.
+6. Hover: The hover styling is added using a single function that receives a parameter used to determine if hover should be added or removed via bracket on the "element.classList["add" or "remove"] rather than a method for each.
+7. Validation: When on the save score page, if the user clicks the "View High Scores" link without saving the score, a popup appears to confirms if the users wants to save the score or not.
+
+## Enhancements
+
+1. Scoring: Build a scoring system that includes points for correct answers.
+2. Answer Timing: Display correct answers at the end of the game rather than during the game.
+3. Answer History: Provide the player with a summary of the game history for the current game, all games and high scoring games.
+4. Next Button: Allow the player to click a button to advance to the next question (rather than using a timer or automatically moving the player forward).
+5. Back Button: Allow the player to click a back button to visit previously answered questions.
+6. Additional Resources: Provide a link to educational resources (e.g. MDN) for each question respectively.
+
 
 ## Criteria
 
@@ -58,3 +69,5 @@ THEN I can save my initials and my score
 2. GitHub Hosted URL: <https://stevecalla.github.io/web-quiz/>
 
 3. Project Manager: [Steve Calla](https://github.com/stevecalla)
+
+4. Question Source: [Interviewbit.com](https://www.interviewbit.com/javascript-mcq/)

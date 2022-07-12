@@ -61,5 +61,3 @@ const questionList = [
   },
 ]
 
-// https://www.interviewbit.com/javascript-mcq/
-

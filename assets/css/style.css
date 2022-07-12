@@ -5,15 +5,13 @@
 
 html {
   width: 100%;
-  /* min-width: 450px; */
-  font-family: "arial" "Raleway", "Nunito Sans", "Notable", sans-serif;
+  font-family: 'Times New Roman', Times, serif;
 }
 
 /* ------ HEADER SECTION -------- */
 header {
   display: flex;
   justify-content: space-between;
-  /* width: 100vw; */
   text-align: center;
   font-size: 20px;
   padding: 20px;
@@ -30,7 +28,6 @@ header {
   justify-content: center;
   align-items: center;
   width: 100%;
-  /* min-width: 450px; */
   text-align: center;
 }
 
@@ -164,16 +161,10 @@ header {
   color: black;
 }
 
-/* .high-scores-container li:hover {
-  color: black;
-  background-color: white;
-} */
-
 .back-to-start-button,
 .clear-scores-button {
   width: 150px;
   height: 35px;
-  /* margin: 5px; */
   padding: 5px;
   color: white;
   background-color: black;
@@ -186,8 +177,7 @@ header {
   background-color: white;
 }
 
-/* ---- HIDE SHOW ----- */
-
+/* ---- HIDE & SHOW ----- */
 .hide {
   display: none;
 }
@@ -207,7 +197,6 @@ header {
 /* MEDIUM SCREEN SIZE */
 @media screen and (max-width: 768px) {
   header {
-    /* font-size: 20px; */
     font-size: 18px;
   }
 
@@ -218,7 +207,6 @@ header {
 
   .home-page p,
   .home-page button {
-    /* font-size: 24px; */
     font-size: 22px;
   }
 
@@ -271,18 +259,15 @@ header {
   }
 
   .answer-container {
-    /* height: 100px; */
     margin: 0px;
   }
 
   .answer-status {
-    /* height: 50px; */
     margin: 5px 0px;
   }
 
   .question-number {
     text-align: right;
-    /* text-align: left; */
     margin: 5px 0px;
   }
 }
