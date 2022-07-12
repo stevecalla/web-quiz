@@ -18,6 +18,7 @@ let highScoresLink = document.getElementById("high-scores-header");
 let displayQuestionNumber = document.getElementById("question-number");
 let scoreList = document.querySelector("#high-scores-container ol");
 let errorMessage = document.getElementById("error-message");
+// let nextQuestion = document.getElementById("next-question-button");
 
 //section:global variables go here 👇
 let questionNumber = 0;
@@ -31,6 +32,7 @@ saveButton.addEventListener("click", processSavingGame);
 homePageButton.addEventListener("click", backToHomePage);
 clearScoresButton.addEventListener("click", clearLocalStorage);
 highScoresLink.addEventListener("click", highScoresLinkRouter);
+// nextQuestion.addEventListener("click", getNextQuestion);
 
 //todo:fix score less than 0... global game duration less than 0 === 0
 //todo:0 default for game count
@@ -54,16 +56,16 @@ function startGame() {
 }
 
 function setGameDuration() {
-  gameDuration = 5;
+  gameDuration = 75;
 }
 
 // ==== TIMER FUNCTIONS ====
 function startGameTimer() {
   gameTimer = setInterval(() => {
-    gameDuration--;
+    // gameDuration--;
     gameDuration > 0
-      ? (gameTimeDisplay.textContent = `Time: ${gameDuration} second(s)`)
-      : ((gameTimeDisplay.textContent = `Time: 0 second(s)`), endGame());
+    ? (gameDuration--, gameTimeDisplay.textContent = `Time: ${gameDuration} second(s)`)
+    : (document.getElementById('all-done-message').textContent = `Game Over. Out of Time.`, endGame());
   }, 1000);
 }
 
@@ -72,10 +74,10 @@ function startQuestionTimer() {
     console.log(questionNumber, questionList.length, questionList.length - 1)
     questionNumber++;
     console.log(questionNumber, questionList.length, questionList.length - 1)
-    
+
     questionNumber <= questionList.length - 1
     ? displayQuestions(questionNumber)
-    : (window.alert('time up. game over'), endGame());
+    : (document.getElementById('all-done-message').textContent = `Game Over. No More Questions.`, endGame());
   }, 2000);
 }
 
@@ -124,8 +126,8 @@ function isAnswerCorrect(event) {
   let correctAnswer = questionList[questionNumber].correctAnswer;
 
   addOrRemoveHover("remove");
-  // event.target.classList.remove('answer-box-hover');
   event.target.classList["add"]("answer-box-selected");
+
 
   answerContainer.removeEventListener("click", isAnswerCorrect); //prevents selection of another answer
   answerContainer.classList.add("add-border"); //add solid grey border via class and css vs using .style.borderBottom
@@ -135,12 +137,14 @@ function isAnswerCorrect(event) {
     : ((answerStatus.textContent = `Wrong! Correct answer is "${correctAnswer}" (time reduced by 10 seconds)`),
       (gameDuration -= 10));
   startQuestionTimer();
+  // nextQuestion.removeAttribute('disabled', false);
 }
 
 // ==== SAVE SCORE PAGE ==== //
 function displayScore() {
   gameDuration < 0
-    ? (finalScoreInfo.textContent = `Your final score is 0.`)
+    // ? (finalScoreInfo.textContent = `Your final score is 0.`)
+    ? (finalScoreInfo.textContent = `Your final score is ${gameDuration}.`)
     : (finalScoreInfo.textContent = `Your final score is ${gameDuration}.`);
 }
 
