@@ -172,7 +172,7 @@ header {
 .back-to-start-button,
 .clear-scores-button {
   width: 150px;
-  height: 30px;
+  height: 35px;
   /* margin: 5px; */
   padding: 5px;
   color: white;
@@ -223,7 +223,7 @@ header {
   }
 
   .home-page button {
-    width: 150px;
+    width: 140px;
     height: 50px;
   }
 }

@@ -27,7 +27,7 @@ let questionTimer;
 
 //section:event listeners go here 👇
 startGameButton.addEventListener("click", startGame);
-saveButton.addEventListener("click", processSavingGame);
+saveButton.addEventListener("click", saveGame);
 homePageButton.addEventListener("click", backToHomePage);
 clearScoresButton.addEventListener("click", clearLocalStorage);
 highScoresLink.addEventListener("click", highScoresLinkRouter);
@@ -95,9 +95,9 @@ function insertQuestionContent(number) {
 }
 
 function applyAnswerStylesAndListener(hover, border, addListner) {
-  console.log(hover, border, addListner);
+  // console.log(hover, border, addListner);
   let answers = document.querySelectorAll(".answer-container li");
-  console.log(answers);
+  // console.log(answers);
   answers.forEach((answer) => {
     answer.classList.add("answer-box"); //apply styling to each answer
     answer.classList[hover]("answer-box-hover"); //apply hover styling
@@ -128,23 +128,20 @@ function isAnswerCorrect(event) {
 
 // ==== SAVE SCORE PAGE ==== //
 function displayScore() {
-  gameDuration < 0
-    // ? (finalScoreInfo.textContent = `Your final score is 0.`)
-    ? (finalScoreInfo.textContent = `Your final score is ${gameDuration}.`)
-    : (finalScoreInfo.textContent = `Your final score is ${gameDuration}.`);
+  finalScoreInfo.textContent = `Your final score is ${gameDuration}.`;
 }
 
-function processSavingGame(event) {
+function saveGame(event) {
   event.preventDefault();
   let allGames = [];
-  if (validateInitialsInput() === "invalid input") {
-    //validate input
+  if (validateInitialsInput() === "invalid input") { //validate input
     return;
   }
   allGames = getLocalStorage(); //get local storage
-  allGames = addCurrentGameAndSortAllGames(allGames); //sort allGames as prep to create high score games list
-  let highScoreGames = createHighScoreList(allGames);
-  displayHighScores(highScoreGames);
+  let updatedAllGames = addCurrentGame(allGames); //sort allGames as prep to create high score games list
+  let sortedAllGames = sortAllGames(updatedAllGames);
+  let highScoreGames = createHighScoreList(sortedAllGames);
+  displayNoScoresOrScoreList(highScoreGames);
   setLocalStorage(allGames, highScoreGames);
   routeToPage(highScoresPage); //show high scores page
 }
@@ -159,7 +156,7 @@ function validateInitialsInput() {
   }
 }
 
-function addCurrentGameAndSortAllGames(allGames) {
+function addCurrentGame(allGames) {
   let gameStats = {};
   gameStats = {
     id: allGames ? allGames.length + 1 : 1,
@@ -167,23 +164,26 @@ function addCurrentGameAndSortAllGames(allGames) {
     score: gameDuration,
   };
   allGames.push(gameStats);
-  allGames = sortByScore(allGames);
-  allGames = sortByPlayer(allGames); //sort by player
-  playerInitials.value = ""; //clear playerInitials
   return allGames;
 }
 
-function createHighScoreList(allGames) {
-  if (allGames) {
+function sortAllGames(updatedAllGames) {
+  updatedAllGames = sortByScore(updatedAllGames);
+  updatedAllGames = sortByPlayer(updatedAllGames); //sort by player
+  return updatedAllGames;
+}
+
+function createHighScoreList(sortedAllGames) {
+  if (sortedAllGames) {
     let highScoreGames = [];
-    for (let i = 0; i < allGames.length; i++) {
+    for (let i = 0; i < sortedAllGames.length; i++) {
       // console.log(i, i + 1, allGames.length);
-      if (allGames.length === 1) {
-        highScoreGames.push(allGames[i]);
-      } else if (i + 1 === allGames.length) {
-        highScoreGames.push(allGames[i]);
-      } else if (allGames[i].player !== allGames[i + 1].player) {
-        highScoreGames.push(allGames[i]);
+      if (sortedAllGames.length === 1) {
+        highScoreGames.push(sortedAllGames[i]);
+      } else if (i + 1 === sortedAllGames.length) {
+        highScoreGames.push(sortedAllGames[i]);
+      } else if (sortedAllGames[i].player !== sortedAllGames[i + 1].player) {
+        highScoreGames.push(sortedAllGames[i]);
       }
     }
     highScoreGames = sortByScore(highScoreGames, "desc");
@@ -191,35 +191,28 @@ function createHighScoreList(allGames) {
   }
 }
 
-function displayHighScores(highScoreGames) {
-  // console.log(highScoreGames);
-  if (!highScoreGames) {
-    return;
-  }
-  highScoreGames.forEach((game) => {
-    let gamePlayed = scoreList.appendChild(document.createElement("li"));
-    gamePlayed.textContent = `${game.player} - ${game.score}`;
-  });
-}
-
 // ==== HIGH SCORE PAGE ==== //
-function displayNoScoresOrScoreList(gameHistory, status) {
+function displayNoScoresOrScoreList(highScores, status) {
   scoreList.textContent = "";
   let noGamesPlayedText = "";
 
   if (status === "storageCleared") {
     noGamesPlayedText = scoreList.appendChild(document.createElement("p"));
     noGamesPlayedText.textContent = `History Cleared`;
-  } else if (gameHistory.length === 0) {
+  } else if (highScores.length === 0) {
     noGamesPlayedText = scoreList.appendChild(document.createElement("p"));
     noGamesPlayedText.textContent = `No Games Played Yet`;
   } else {
-    displayHighScores(createHighScoreList(gameHistory));
+    highScores.forEach((game) => {
+      let displayHighScore = scoreList.appendChild(document.createElement("li"));
+      displayHighScore.textContent = `${game.player}: ${game.score}`;
+    });
   }
 }
 
 function backToHomePage() {
   routeToPage(homePageMainContainer);
+  playerInitials.value = ""; //clear playerInitials
   resetQuestionContainer();
   setGameDuration();
   resetAllTimers();
@@ -259,24 +252,18 @@ function routeToPage(showPage) {
     highScoresPage,
   ];
 
-  for (let i = 0; i < allPages.length; i++) {
-    allPages[i] === showPage
-      ? showPage.classList.remove("hide")
-      : allPages[i].classList.add("hide");
-  }
+  allPages.forEach(page => { //display requested page
+    page === showPage ? showPage.classList.remove("hide") : page.classList.add("hide");
+  })
 
-  showPage === highScoresPage
-    ? header.classList.add("cloak")
+  showPage === highScoresPage //if high scores page make header information invisable
+    ? (header.classList.add("cloak"),
+      displayNoScoresOrScoreList(getLocalStorage()))
     : header.classList.remove("cloak");
 
-  showPage === saveScorePage
+  showPage === saveScorePage //if saveScorePaage then focus the cursor in the player initials box
     ? (playerInitials.focus(), errorMessage.classList.add("hide"))
     : playerInitials.blur();
-
-  if (showPage === highScoresPage) {
-    let gameHistory = getLocalStorage();
-    displayNoScoresOrScoreList(gameHistory);
-  }
 }
 
 function sortByScore(games, order) {
@@ -338,6 +325,7 @@ function getLocalStorage() {
   if (JSON.parse(localStorage.getItem("allGames")) !== null) {
     gameHistory = JSON.parse(localStorage.getItem("allGames"));
   }
+  // console.log('1', gameHistory);
   return gameHistory;
 }
 
