@@ -34,10 +34,11 @@ highScoresLink.addEventListener("click", highScoresLinkRouter);
 
 //todo:fix score less than 0... global game duration less than 0 === 0
 //todo:0 default for game count
-//todo:formating for answers = can it be consolidated
+//todo:formating for answers (hover et al) = can it be consolidated
 //todo:DONE refactor startGameTimer?
 //todo:refactor addOrRemove function
 //todo:refactor insertquestion content
+//todo:DONE do timer functions need to be global?
 
 //section:functions and event handlers go here 👇
 window.onload = function () {
@@ -53,7 +54,7 @@ function startGame() {
 }
 
 function setGameDuration() {
-  gameDuration = 75;
+  gameDuration = 5;
 }
 
 // ==== TIMER FUNCTIONS ====
