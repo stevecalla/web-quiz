@@ -18,7 +18,6 @@ let highScoresLink = document.getElementById("high-scores-header");
 let displayQuestionNumber = document.getElementById("question-number");
 let scoreList = document.querySelector("#high-scores-container ol");
 let errorMessage = document.getElementById("error-message");
-// let nextQuestion = document.getElementById("next-question-button");
 
 //section:global variables go here 👇
 let questionNumber = 0;
@@ -32,7 +31,6 @@ saveButton.addEventListener("click", processSavingGame);
 homePageButton.addEventListener("click", backToHomePage);
 clearScoresButton.addEventListener("click", clearLocalStorage);
 highScoresLink.addEventListener("click", highScoresLinkRouter);
-// nextQuestion.addEventListener("click", getNextQuestion);
 
 //todo:fix score less than 0... global game duration less than 0 === 0
 //todo:0 default for game count
@@ -95,11 +93,11 @@ function insertQuestionContent(questionNumber) {
   questionInput.textContent = question; //insert question
   answerContainer.textContent = null; //clear prior answers
 
-  answerList.forEach((answer) => {
-    //populate answers in list
+  answerList.forEach((answer) => { //populate answers in list
     let choiceList = answerContainer.appendChild(document.createElement("li"));
     choiceList.textContent = answer;
   });
+
   displayQuestionNumber.textContent = `Question: ${questionNumber + 1} of ${
     questionList.length
   }`;
@@ -124,20 +122,20 @@ function addOrRemoveHover(remove) {
 function isAnswerCorrect(event) {
   let selectedAnswer = event.target.textContent;
   let correctAnswer = questionList[questionNumber].correctAnswer;
-
-  addOrRemoveHover("remove");
-  event.target.classList["add"]("answer-box-selected");
-
-
-  answerContainer.removeEventListener("click", isAnswerCorrect); //prevents selection of another answer
-  answerContainer.classList.add("add-border"); //add solid grey border via class and css vs using .style.borderBottom
-  //evaluate if answer is correct
-  selectedAnswer === correctAnswer
+  selectedAnswer === correctAnswer //evaluate if answer is correct
     ? (answerStatus.textContent = "Correct")
     : ((answerStatus.textContent = `Wrong! Correct answer is "${correctAnswer}" (time reduced by 10 seconds)`),
-      (gameDuration -= 10));
-  startQuestionTimer();
-  // nextQuestion.removeAttribute('disabled', false);
+      (gameDuration -= 10), gameTimeDisplay.textContent = `Time: ${gameDuration} second(s)`);
+
+  startQuestionTimer(); //moves to the next question after 2 seconds
+  addOrRemoveHover("remove"); //removes hover from answers
+  event.target.classList["add"]("answer-box-selected"); //applies selected answer styling
+  answerContainer.removeEventListener("click", isAnswerCorrect); //prevents selection of another answer
+  answerContainer.classList.add("add-border"); //add solid grey border using the add-border class
+
+  if (questionNumber === questionList.length - 1) { //clears invterval timer after selecting answer on final question
+    clearInterval(gameTimer);
+  }
 }
 
 // ==== SAVE SCORE PAGE ==== //
