@@ -32,8 +32,8 @@ homePageButton.addEventListener("click", backToHomePage);
 clearScoresButton.addEventListener("click", clearLocalStorage);
 highScoresLink.addEventListener("click", highScoresLinkRouter);
 
-//todo:fix score less than 0... global game duration less than 0 === 0
-//todo:0 default for game count
+//todo:DONE fix score less than 0; allow negative scoring
+//todo:0 default for game number in display question
 //todo:formating for answers (hover et al) = can it be consolidated
 //todo:DONE refactor startGameTimer?
 //todo:refactor addOrRemove function
@@ -50,7 +50,7 @@ window.onload = function () {
 function startGame() {
   setGameDuration();
   startGameTimer();
-  displayQuestions();
+  displayQuestions(questionNumber);
 }
 
 function setGameDuration() {
@@ -69,10 +69,7 @@ function startGameTimer() {
 
 function startQuestionTimer() {
   questionTimer = setTimeout(() => {
-    console.log(questionNumber, questionList.length, questionList.length - 1)
     questionNumber++;
-    console.log(questionNumber, questionList.length, questionList.length - 1)
-
     questionNumber <= questionList.length - 1
     ? displayQuestions(questionNumber)
     : (document.getElementById('all-done-message').textContent = `Game Over. No More Questions.`, endGame());
@@ -80,14 +77,14 @@ function startQuestionTimer() {
 }
 
 // ==== DISPLAY GAME QUESTIONS ====
-function displayQuestions(questionNumber = 0) {
+function displayQuestions(number) {
   routeToPage(questionPage);
-  insertQuestionContent(questionNumber);
+  insertQuestionContent(number);
 }
 
-function insertQuestionContent(questionNumber) {
-  let question = questionList[questionNumber].question;
-  let answerList = questionList[questionNumber].answerList;
+function insertQuestionContent(number) {
+  let question = questionList[number].question;
+  let answerList = questionList[number].answerList;
   answerStatus.textContent = "";
   answerContainer.classList.remove("add-border");
   questionInput.textContent = question; //insert question
@@ -98,7 +95,7 @@ function insertQuestionContent(questionNumber) {
     choiceList.textContent = answer;
   });
 
-  displayQuestionNumber.textContent = `Question: ${questionNumber + 1} of ${
+  displayQuestionNumber.textContent = `Question: ${number + 1} of ${
     questionList.length
   }`;
 
