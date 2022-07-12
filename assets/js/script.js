@@ -69,10 +69,13 @@ function startGameTimer() {
 
 function startQuestionTimer() {
   questionTimer = setTimeout(() => {
+    console.log(questionNumber, questionList.length, questionList.length - 1)
     questionNumber++;
+    console.log(questionNumber, questionList.length, questionList.length - 1)
+    
     questionNumber <= questionList.length - 1
-      ? displayQuestions(questionNumber)
-      : endGame();
+    ? displayQuestions(questionNumber)
+    : (window.alert('time up. game over'), endGame());
   }, 2000);
 }
 

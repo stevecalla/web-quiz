@@ -19,7 +19,7 @@ SO THAT I can gauge my progress compared to my peers
 ## Functional/Features Implemented
 
 1. TBD
-2. TBD
+2. Question Timer: Rather than advance to next question when an answer is selected, a question timer has been set to 2 seconds. When a user selects an answer, the result ("Correct" or "Wrong" is displayed) for 2 seconds then the game advances to the next question.
 3. EventListner - added event listener inside function after element was created since that element didn't exist at initial loading of the page.
 4. Add/remove hover CSS style on answers using single function & bracket notation to pass "add"/"remove" as a parameter appended to "element.classList["add" or "remove"]"
 5. Validation: When on the save score page, if the user doesn't save the score but clicks the "View High Scores" link, a window confirm popup appears to confirm that they don't want to save it.
