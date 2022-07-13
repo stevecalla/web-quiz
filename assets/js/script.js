@@ -164,6 +164,7 @@ function validateInitialsInput() {
 }
 
 function addCurrentGame(updateAllGames) {
+  console.log(updateAllGames)
   let gameStats = {};
   gameStats = {
     id: updateAllGames ? updateAllGames.length + 1 : 1,
@@ -202,20 +203,26 @@ function createHighScoreList(allSortedGames) {
 function displayNoScoresOrScoreList(highScoreGames, allSortedGames, status) {
   scoreList.textContent = "";
   let noGamesPlayedText = "";
-  if (status === "storageCleared") {
+
+  // console.log(scoreList.textContent, scoreList.textContent === "")
+  // console.log(highScoreGames, highScoreGames.length, highScoreGames.length === 0)
+
+  if ((status === "storageCleared")) {
     noGamesPlayedText = scoreList.appendChild(document.createElement("p"));
     noGamesPlayedText.textContent = `History Cleared`;
-  } else if (highScoreGames.length === 0) {
-    noGamesPlayedText = scoreList.appendChild(document.createElement("p"));
-    noGamesPlayedText.textContent = `No Games Played Yet`;
-  } else {
+  } else if (highScoreGames.length > 0) {
     highScoreGames.forEach((game) => {
       let displayHighScore = scoreList.appendChild(
         document.createElement("li")
       );
       displayHighScore.textContent = `${game.player}: ${game.score}`;
     });
+  } else {
+    noGamesPlayedText = scoreList.appendChild(document.createElement("p"));
+    noGamesPlayedText.textContent = `No Games Played Yet`;
   }
+  if (status === "storageCleared") {status = "No Games"};
+  console.log(status)
   setLocalStorage(allSortedGames, highScoreGames);
   routeToPage(highScoresPage); //show high scores page
 }
@@ -271,8 +278,7 @@ function routeToPage(showPage) {
 
   showPage === highScoresPage //if high scores page make header information invisable
     ? (header.classList.add("cloak"))
-    // ,
-    // if (displayHighScore.textContent = null) {console.log('yes')})
+      // scoreList.textContent = 'No Games Played Yet.')
     : header.classList.remove("cloak");
 
   showPage === saveScorePage //if saveScorePaage then focus the cursor in the player initials box
@@ -351,5 +357,5 @@ function setLocalStorage(allGames, highScoreGames) {
 function clearLocalStorage() {
   localStorage.clear();
   scoreList.textContent = "";
-  displayNoScoresOrScoreList("[]", "storageCleared"); //passes empty array to represent cleared local storage
+  displayNoScoresOrScoreList(null, null, "storageCleared"); //passes empty array to represent cleared local storage
 }
