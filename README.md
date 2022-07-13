@@ -26,6 +26,7 @@ As a coding boot camp student I want to take a timed quiz on JavaScript fundamen
 6. Hover: The hover styling is added using a single function that receives a parameter used to determine if hover should be added or removed via bracket on the "element.classList["add" or "remove"] rather than a method for each.
 7. Validation: When on the save score page, if the user clicks the "View High Scores" link without saving the score, a popup appears to confirms if the users wants to save the score or not.
 8. Correct/Incorrect Answer: Added a green checkmark emoji for correct answers and a red cross mark emoji for incorrect answers.
+9. Sticky Hover Mobile: Researched and implemented media query to address hover sticky issue on mobile devices. It works for my iPhone 7 and iPad but is not guaranteed to work across all devices.
 
 ## Enhancements
 
