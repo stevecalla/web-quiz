@@ -67,24 +67,28 @@ header {
 /* ---- QUESTION PAGE ----- */
 .question-input {
   height: 125px;
-  margin-bottom: 0px;
-  padding: 0px 12px;
 }
 
 .answer-container {
   height: 150px;
   margin: 0px;
+  padding-left: 0px;
+}
+
+.answer-container li,
+.save-score-container,
+.high-scores-container li {
+  font-size: 24px;
 }
 
 .answer-container li {
   width: 200px;
   height: 30px;
-  margin: 5px;
-  padding: 5px;
-}
-
-.answer-container li::marker {
-  color: black;
+  margin: 0px;
+  padding: 0px;
+  padding-left: 0px;
+  /* font-size: 24px; */
+  list-style: none;
 }
 
 .answer-box {
@@ -121,7 +125,7 @@ header {
 
 /* ---- SAVE PAGE ----- */
 .player-initials {
-  width: 125px;
+  width: 100px;
   height: 30px;
   text-transform: uppercase;
 }
@@ -129,8 +133,8 @@ header {
 .save-button {
   width: 100px;
   height: 30px;
-  margin: 5px;
-  padding: 5px;
+  margin: 5px 5px 5px 0px;
+  /* padding: 5px; */
   color: white;
   background-color: black;
   border-radius: 3px;
@@ -147,25 +151,31 @@ header {
 }
 
 /* ---- SCORE PAGE ----- */
+.high-scores-container ol {
+  padding-left: 0px;
+}
+
 .high-scores-container li {
   width: 275px;
   height: 30px;
-  margin: 5px;
-  padding: 5px;
+  margin: 5px 5px 5px 0px;
+  /* padding: 5px; */
   color: white;
   background-color: black;
   border-radius: 3px;
+  /* list-style: none; */
 }
 
-.high-scores-container li::marker {
+/* .high-scores-container li::marker {
   color: black;
-}
+} */
 
 .back-to-start-button,
 .clear-scores-button {
-  width: 150px;
+  width: 165px;
   height: 35px;
-  padding: 5px;
+  /* padding: 5px; */
+  font-size: 24px;
   color: white;
   background-color: black;
   border-radius: 3px;
@@ -239,6 +249,7 @@ header {
   .home-page p,
   .home-page button {
     font-size: 16px;
+    font-size: 22px;
   }
 
   .home-page button {
@@ -258,8 +269,10 @@ header {
     font-size: 26px;
   }
 
-  .answer-container {
-    margin: 0px;
+  .answer-container li,
+  .save-score-container,
+  .high-scores-container li {
+    font-size: 20px;
   }
 
   .answer-status {
@@ -269,5 +282,11 @@ header {
   .question-number {
     text-align: right;
     margin: 5px 0px;
+  }
+
+  .back-to-start-button,
+  .clear-scores-button {
+    width: 150px;
+    font-size: 20px;
   }
 }

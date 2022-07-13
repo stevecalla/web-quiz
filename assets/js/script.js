@@ -84,10 +84,10 @@ function insertQuestionContent(number) {
   answerStatus.textContent = "";
   questionInput.textContent = question; //insert question
   answerContainer.textContent = ""; //clear prior answers
-  answerList.forEach((answer) => {
+  answerList.forEach((answer, index) => {
     //populate answers in list
     let choiceList = answerContainer.appendChild(document.createElement("li"));
-    choiceList.textContent = answer;
+    choiceList.textContent = `${index + 1}. ${answer}`;
   });
   displayQuestionNumber.textContent = `Question: ${number + 1} of ${
     questionList.length
@@ -211,11 +211,11 @@ function displayNoScoresOrScoreList(highScoreGames, allSortedGames, status) {
     noGamesPlayedText = scoreList.appendChild(document.createElement("p"));
     noGamesPlayedText.textContent = `History Cleared`;
   } else if (highScoreGames.length > 0) {
-    highScoreGames.forEach((game) => {
+    highScoreGames.forEach((game, index) => {
       let displayHighScore = scoreList.appendChild(
         document.createElement("li")
       );
-      displayHighScore.textContent = `${game.player}: ${game.score}`;
+      displayHighScore.textContent = `${index + 1}. ${game.player}: ${game.score}`;
     });
   } else {
     noGamesPlayedText = scoreList.appendChild(document.createElement("p"));
