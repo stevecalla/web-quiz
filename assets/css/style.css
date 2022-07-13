@@ -3,9 +3,37 @@
   box-sizing: border-box;
 }
 
+:root {
+  --main-bg-color: black;
+  --main-text-color: white;
+  --main-border-style: 2px solid black;
+  
+  --hover-bg-color: white;
+  --hover-text-color: black;
+  --hover-border-style: 1px solid black;
+
+  --button-border-radius: 3px;
+  --border-override: none;
+}
+
 html {
   width: 100%;
   font-family: "Times New Roman", Times, serif;
+}
+
+/* ---- HOVER STYLES ---- */
+.home-page button:hover,
+.answer-box-hover:hover,
+.save-button:hover,
+.clear-scores-button:hover,
+.back-to-start-button:hover {
+  color: var(--hover-text-color);
+  background-color: var(--hover-bg-color);
+  border: var(--hover-border-style);
+}
+
+.high-scores-link:hover {
+  color: blue;
 }
 
 /* ------ HEADER SECTION -------- */
@@ -15,10 +43,6 @@ header {
   padding: 20px;
   text-align: center;
   font-size: 20px;
-}
-
-.high-scores-link {
-  color: blue;
 }
 
 /* ---- HOME PAGE ----- */
@@ -43,15 +67,11 @@ header {
   height: 60px;
   margin-top: 22px;
   padding: 5px;
-  color: white;
   font-size: 24px;
-  background-color: black;
-  border-radius: 5px;
-}
-
-.home-page button:hover {
-  color: black;
-  background-color: white;
+  color: var(--main-text-color);
+  background-color: var(--main-bg-color);
+  border: var(--border-override);
+  border-radius: var(--button-border-radius);
 }
 
 /* ---- QUESTION, SAVE, SCORE PAGES ----- */
@@ -68,8 +88,8 @@ header {
 .question-input {
   height: 140px;
   padding: 8px;
-  border: 2px solid black;
-  border-radius: 3px;
+  border: var(--main-border-style);
+  border-radius: var(--button-border-radius);
 }
 
 .answer-container {
@@ -85,36 +105,27 @@ header {
 }
 
 .answer-container li {
-  /* width: 200px; */
   height: 30px;
   margin: 5px 0px;
   padding-left: 8px;
-  /* padding-left: 0px; */
-  /* font-size: 24px; */
   list-style: none;
 }
 
 .answer-box {
-  color: white;
-  background-color: black;
-  border-radius: 3px;
-}
-
-.answer-box-hover:hover {
-  color: black;
-  background-color: white;
-  border: 1px solid black;
+  color: var(--main-text-color);
+  background-color: var(--main-bg-color);
+  border-radius: var(--button-border-radius);
 }
 
 .answer-box-selected {
   color: blue;
-  background-color: white;
+  background-color: var(--hover-bg-color);
   border: 2px solid red;
 }
 
 .answer-status {
   height: 50px;
-  margin: 0px;
+  margin: 5px 0px;
   font-size: 20px;
 }
 
@@ -131,16 +142,16 @@ header {
 
 /* ---- SAVE PAGE ----- */
 .game-over-message {
-  padding: 5px;
-  border: 2px solid black;
   padding: 8px;
-  border-radius: 3px;
+  border: var(--main-border-style);
+  border-radius: var(--button-border-radius);
 }
 
 .final-score-message {
-  color: white;
-  background-color: black;
   padding: 5px;
+  color: var(--main-text-color);
+  background-color: var(--main-bg-color);
+  border-radius: var(--button-border-radius);
 }
 
 .player-initials {
@@ -151,17 +162,11 @@ header {
 
 .save-button {
   width: 100px;
-  /* height: 30px; */
   margin: 5px 5px 5px 0px;
-  /* padding: 5px; */
-  color: white;
-  background-color: black;
-  border-radius: 3px;
-}
-
-.save-button:hover {
-  color: black;
-  background-color: white;
+  color: var(--main-text-color);
+  background-color: var(--main-bg-color);
+  border: var(--border-override);
+  border-radius: var(--button-border-radius);
 }
 
 .error-message {
@@ -171,9 +176,9 @@ header {
 
 /* ---- SCORE PAGE ----- */
 .high-scores-title {
-  border: 2px solid black;
-  border-radius: 3px;
   padding: 8px;
+  border: var(--main-border-style);
+  border-radius: var(--button-border-radius);
 }
 
 .high-scores-container ol {
@@ -181,34 +186,23 @@ header {
 }
 
 .high-scores-container li {
-  /* width: 275px; */
   height: 30px;
   margin: 5px 0px 5px 0px;
   padding-left: 8px;
-  color: white;
-  background-color: black;
-  border-radius: 3px;
+  color: var(--main-text-color);
+  background-color: var(--main-bg-color);
+  border-radius: var(--button-border-radius);
 }
-
-/* .high-scores-container li::marker {
-  color: black;
-} */
 
 .back-to-start-button,
 .clear-scores-button {
   width: 165px;
   height: 35px;
-  /* padding: 5px; */
   font-size: 24px;
-  color: white;
-  background-color: black;
-  border-radius: 3px;
-}
-
-.back-to-start-button:hover,
-.clear-scores-button:hover {
-  color: black;
-  background-color: white;
+  color: var(--main-text-color);
+  background-color: var(--main-bg-color);
+  border: var(--border-override);
+  border-radius: var(--button-border-radius);
 }
 
 /* ---- HIDE & SHOW ----- */
@@ -223,10 +217,6 @@ header {
 /* ---------- MOBILE RESPONSIVE ---------- */
 /* --------------------------------------- */
 /* --------------------------------------- */
-
-/* LARGE SCREEN SIZE */
-@media screen and (min-width: 1600px) {
-}
 
 /* MEDIUM SCREEN SIZE */
 @media screen and (max-width: 768px) {
@@ -272,7 +262,6 @@ header {
 
   .home-page p,
   .home-page button {
-    /* font-size: 16px; */
     font-size: 20px;
   }
 
@@ -294,23 +283,18 @@ header {
   }
 
   .answer-container li,
-  .save-score-container,
-  .high-scores-container li {
+  .high-scores-container li,
+  .save-score-container {
     font-size: 20px;
-  }
-
-  .answer-status {
-    margin: 5px 0px;
   }
 
   .question-number {
     text-align: right;
-    margin: 5px 0px;
   }
 
   .back-to-start-button,
   .clear-scores-button {
-    width: 150px;
+    /* width: 150px; */
     font-size: 20px;
   }
 }
