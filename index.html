@@ -26,7 +26,7 @@
     <main class="home-page" id="home-page">
       <h1>Coding Quiz Challenge</h1>
       <p>
-        Try answer the following code-related questions with the time limit.
+        Try answer the following code-related questions within the time limit.
         Keep in mind that incorrect answers will penalize your score/time
       </p>
       <p>by ten seconds!</p>
@@ -45,8 +45,8 @@
     </section>
 
     <section class="save-score-container hide" id="save-score-page">
-      <h1 id="all-done-message">All Done!</h1>
-      <p></p>
+      <h1 class="game-over-message" id="all-done-message">All Done!</h1>
+      <p class="final-score-message"></p>
       <form>
         <label for="player-initials">Enter Initials:</label>
         <input
@@ -65,7 +65,7 @@
     </section>
 
     <section class="high-scores-container hide" id="high-scores-container">
-      <h1>High Scores</h1>
+      <h1 class="high-scores-title">High Scores</h1>
       <ol></ol>
       <button class="back-to-start-button" id="back-to-start-page">
         Back to Home

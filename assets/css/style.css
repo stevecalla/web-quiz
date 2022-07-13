@@ -12,9 +12,9 @@ html {
 header {
   display: flex;
   justify-content: space-between;
+  padding: 20px;
   text-align: center;
   font-size: 20px;
-  padding: 20px;
 }
 
 .high-scores-link {
@@ -66,7 +66,10 @@ header {
 
 /* ---- QUESTION PAGE ----- */
 .question-input {
-  height: 125px;
+  height: 140px;
+  padding: 8px;
+  border: 2px solid black;
+  border-radius: 3px;
 }
 
 .answer-container {
@@ -82,11 +85,11 @@ header {
 }
 
 .answer-container li {
-  width: 200px;
+  /* width: 200px; */
   height: 30px;
-  margin: 0px;
-  padding: 0px;
-  padding-left: 0px;
+  margin: 5px 0px;
+  padding-left: 8px;
+  /* padding-left: 0px; */
   /* font-size: 24px; */
   list-style: none;
 }
@@ -100,6 +103,7 @@ header {
 .answer-box-hover:hover {
   color: black;
   background-color: white;
+  border: 1px solid black;
 }
 
 .answer-box-selected {
@@ -111,12 +115,14 @@ header {
 .answer-status {
   height: 50px;
   margin: 0px;
+  font-size: 20px;
 }
 
 .question-number {
   text-align: right;
   margin: 0px;
   padding-right: 8px;
+  font-size: 18px;
 }
 
 .add-border {
@@ -124,6 +130,19 @@ header {
 }
 
 /* ---- SAVE PAGE ----- */
+.game-over-message {
+  padding: 5px;
+  border: 2px solid black;
+  padding: 8px;
+  border-radius: 3px;
+}
+
+.final-score-message {
+  color: white;
+  background-color: black;
+  padding: 5px;
+}
+
 .player-initials {
   width: 100px;
   height: 30px;
@@ -132,7 +151,7 @@ header {
 
 .save-button {
   width: 100px;
-  height: 30px;
+  /* height: 30px; */
   margin: 5px 5px 5px 0px;
   /* padding: 5px; */
   color: white;
@@ -151,19 +170,24 @@ header {
 }
 
 /* ---- SCORE PAGE ----- */
+.high-scores-title {
+  border: 2px solid black;
+  border-radius: 3px;
+  padding: 8px;
+}
+
 .high-scores-container ol {
   padding-left: 0px;
 }
 
 .high-scores-container li {
-  width: 275px;
+  /* width: 275px; */
   height: 30px;
-  margin: 5px 5px 5px 0px;
-  /* padding: 5px; */
+  margin: 5px 0px 5px 0px;
+  padding-left: 8px;
   color: white;
   background-color: black;
   border-radius: 3px;
-  /* list-style: none; */
 }
 
 /* .high-scores-container li::marker {
@@ -248,8 +272,8 @@ header {
 
   .home-page p,
   .home-page button {
-    font-size: 16px;
-    font-size: 22px;
+    /* font-size: 16px; */
+    font-size: 20px;
   }
 
   .home-page button {

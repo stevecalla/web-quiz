@@ -41,7 +41,7 @@ function startGame() {
 }
 
 function setGameDuration() {
-  gameDuration = 5;
+  gameDuration = 75;
 }
 
 // ==== TIMER FUNCTIONS ====
@@ -114,9 +114,14 @@ function isAnswerCorrect(event) {
   let selectedAnswer = event.target;
   let correctAnswer = questionList[questionNumber].correctAnswer;
   if (selectedAnswer.matches("li")) {
-    selectedAnswer.textContent === correctAnswer //evaluate if answer is correct
-      ? (answerStatus.textContent = "Correct")
+    // selectedAnswer.textContent === correctAnswer //evaluate if answer is correct
+    selectedAnswer.textContent.includes(correctAnswer)//evaluate if answer is correct
+      ? (answerStatus.textContent = "Correct",
+        selectedAnswer.textContent = `${selectedAnswer.textContent} ✅`,
+        selectedAnswer.style.color = 'green')
       : ((answerStatus.textContent = `Wrong! Correct answer is "${correctAnswer}" (time reduced by 10 seconds)`),
+        selectedAnswer.textContent = `${selectedAnswer.textContent} ❌`,
+        selectedAnswer.style.color = 'red',
         (gameDuration -= 10),
         (gameTimeDisplay.textContent = `Time: ${gameDuration} second(s)`));
 
@@ -126,7 +131,7 @@ function isAnswerCorrect(event) {
       "add",
       "removeListener",
       selectedAnswer
-    ); //parameter remove hover, add border,
+    ); //parameter remove hover, add border, //todo:listener, selectedAnswer necesary?
     event.target.classList.add("answer-box-selected"); //applies selected answer styling
     //remove event listener
     answerContainer.removeEventListener("click", isAnswerCorrect);

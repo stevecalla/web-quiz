@@ -14,7 +14,7 @@ const questionList = [
   {
     questionId: 3,
     question: '3) Arrays in Javascript can be used to store _______________.',
-    answerList: ['Numbers and Strings', 'Other Arrays', 'Booleans', 'All of the above'],
+    answerList: ['Numbers & Strings', 'Other Arrays', 'Booleans', 'All of the above'],
     correctAnswer: 'All of the above',
   },
   {
