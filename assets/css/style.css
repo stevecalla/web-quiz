@@ -100,7 +100,8 @@ header {
 
 .answer-container li,
 .save-score-container,
-.high-scores-container li {
+.high-scores-container li,
+.high-scores-container p {
   font-size: 24px;
 }
 
@@ -174,7 +175,7 @@ header {
   font-weight: bold;
 }
 
-/* ---- SCORE PAGE ----- */
+/* ---- HIGH SCORE PAGE ----- */
 .high-scores-title {
   padding: 8px;
   border: var(--main-border-style);
@@ -185,7 +186,8 @@ header {
   padding-left: 0px;
 }
 
-.high-scores-container li {
+.high-scores-container li,
+.high-scores-container p {
   height: 30px;
   margin: 5px 0px 5px 0px;
   padding-left: 8px;
