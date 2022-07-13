@@ -115,17 +115,17 @@ function isAnswerCorrect(event) {
   let correctAnswer = questionList[questionNumber].correctAnswer;
   if (selectedAnswer.matches("li")) {
     // selectedAnswer.textContent === correctAnswer //evaluate if answer is correct
-    selectedAnswer.textContent.includes(correctAnswer)//evaluate if answer is correct
-      ? (answerStatus.textContent = "Correct",
-        selectedAnswer.textContent = `${selectedAnswer.textContent} ✅`,
-        selectedAnswer.style.color = 'green',
-        document.getElementById('correct-answer-sound-effect').play())
+    selectedAnswer.textContent.includes(correctAnswer) //evaluate if answer is correct
+      ? ((answerStatus.textContent = "Correct"),
+        (selectedAnswer.textContent = `${selectedAnswer.textContent} ✅`),
+        (selectedAnswer.style.color = "green"),
+        document.getElementById("correct-answer-sound-effect").play())
       : ((answerStatus.textContent = `Wrong! Correct answer is "${correctAnswer}" (time reduced by 10 seconds)`),
-        selectedAnswer.textContent = `${selectedAnswer.textContent} ❌`,
-        selectedAnswer.style.color = 'red',
+        (selectedAnswer.textContent = `${selectedAnswer.textContent} ❌`),
+        (selectedAnswer.style.color = "red"),
         (gameDuration -= 10),
         (gameTimeDisplay.textContent = `Time: ${gameDuration} second(s)`),
-        document.getElementById('wrong-answer-sound-effect').play());
+        document.getElementById("wrong-answer-sound-effect").play());
 
     startQuestionTimer(); //starts timer to move to the next question after 2 seconds
     applyAnswerStylesAndListener(
@@ -152,7 +152,8 @@ function displayScore() {
 function saveGame(event) {
   event.preventDefault();
   let gameHistory = [];
-  if (validateInitialsInput() === "invalid input") { //validate input
+  if (validateInitialsInput() === "invalid input") {
+    //validate input
     return;
   }
   gameHistory = getLocalStorage(); //get local storage
@@ -171,14 +172,16 @@ function validateInitialsInput() {
 }
 
 function addCurrentGame(updateAllGames) {
-  console.log(updateAllGames)
+  console.log(updateAllGames);
   let gameStats = {};
   gameStats = {
     id: updateAllGames ? updateAllGames.length + 1 : 1,
     player: playerInitials.value.toUpperCase(),
     score: gameDuration,
   };
-  if (gameStats.player) {updateAllGames.push(gameStats)};
+  if (gameStats.player) {
+    updateAllGames.push(gameStats);
+  }
   sortGames(updateAllGames);
   // return allGames;
 }
@@ -186,23 +189,25 @@ function addCurrentGame(updateAllGames) {
 function sortGames(updateAllGames) {
   let allSortedGames = sortByScore(updateAllGames);
   allSortedGames = sortByPlayer(updateAllGames); //sort by player
-  createHighScoreList(allSortedGames)
+  createHighScoreList(allSortedGames);
 }
 
 function createHighScoreList(allSortedGames) {
   if (allSortedGames) {
     let highScoreGames = [];
     for (let i = 0; i < allSortedGames.length; i++) {
-      if (allSortedGames.length === 1) { //if only one element exits push it
+      if (allSortedGames.length === 1) {
+        //if only one element exits push it
         highScoreGames.push(allSortedGames[i]);
-      } else if (i + 1 === allSortedGames.length) { //if at the last element push it
+      } else if (i + 1 === allSortedGames.length) {
+        //if at the last element push it
         highScoreGames.push(allSortedGames[i]);
       } else if (allSortedGames[i].player !== allSortedGames[i + 1].player) {
         highScoreGames.push(allSortedGames[i]);
       }
     }
     highScoreGames = sortByScore(highScoreGames, "desc");
-    displayNoScoresOrScoreList(highScoreGames, allSortedGames)
+    displayNoScoresOrScoreList(highScoreGames, allSortedGames);
   }
 }
 
@@ -214,7 +219,7 @@ function displayNoScoresOrScoreList(highScoreGames, allSortedGames, status) {
   // console.log(scoreList.textContent, scoreList.textContent === "")
   // console.log(highScoreGames, highScoreGames.length, highScoreGames.length === 0)
 
-  if ((status === "storageCleared")) {
+  if (status === "storageCleared") {
     noGamesPlayedText = scoreList.appendChild(document.createElement("p"));
     noGamesPlayedText.textContent = `History Cleared`;
   } else if (highScoreGames.length > 0) {
@@ -222,14 +227,18 @@ function displayNoScoresOrScoreList(highScoreGames, allSortedGames, status) {
       let displayHighScore = scoreList.appendChild(
         document.createElement("li")
       );
-      displayHighScore.textContent = `${index + 1}. ${game.player}: ${game.score}`;
+      displayHighScore.textContent = `${index + 1}. ${game.player}: ${
+        game.score
+      }`;
     });
   } else {
     noGamesPlayedText = scoreList.appendChild(document.createElement("p"));
     noGamesPlayedText.textContent = `No Games Played Yet`;
   }
-  if (status === "storageCleared") {status = "No Games"};
-  console.log(status)
+  if (status === "storageCleared") {
+    status = "No Games";
+  }
+  console.log(status);
   setLocalStorage(allSortedGames, highScoreGames);
   routeToPage(highScoresPage); //show high scores page
 }
@@ -284,9 +293,9 @@ function routeToPage(showPage) {
   });
 
   showPage === highScoresPage //if high scores page make header information invisable
-    ? (header.classList.add("cloak"))
-      // scoreList.textContent = 'No Games Played Yet.')
-    : header.classList.remove("cloak");
+    ? header.classList.add("cloak")
+    : // scoreList.textContent = 'No Games Played Yet.')
+      header.classList.remove("cloak");
 
   showPage === saveScorePage //if saveScorePaage then focus the cursor in the player initials box
     ? (playerInitials.focus(), errorMessage.classList.add("hide"))
