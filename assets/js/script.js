@@ -118,12 +118,14 @@ function isAnswerCorrect(event) {
     selectedAnswer.textContent.includes(correctAnswer)//evaluate if answer is correct
       ? (answerStatus.textContent = "Correct",
         selectedAnswer.textContent = `${selectedAnswer.textContent} ✅`,
-        selectedAnswer.style.color = 'green')
+        selectedAnswer.style.color = 'green',
+        document.getElementById('correct-answer-sound-effect').play())
       : ((answerStatus.textContent = `Wrong! Correct answer is "${correctAnswer}" (time reduced by 10 seconds)`),
         selectedAnswer.textContent = `${selectedAnswer.textContent} ❌`,
         selectedAnswer.style.color = 'red',
         (gameDuration -= 10),
-        (gameTimeDisplay.textContent = `Time: ${gameDuration} second(s)`));
+        (gameTimeDisplay.textContent = `Time: ${gameDuration} second(s)`),
+        document.getElementById('wrong-answer-sound-effect').play());
 
     startQuestionTimer(); //starts timer to move to the next question after 2 seconds
     applyAnswerStylesAndListener(
