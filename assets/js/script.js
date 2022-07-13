@@ -80,6 +80,8 @@ function displayQuestions(number) {
 function insertQuestionContent(number) {
   let question = questionList[number].question;
   let answerList = questionList[number].answerList;
+  const alphabetString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  console.log(alphabetString);
   //insert content
   answerStatus.textContent = "";
   questionInput.textContent = question; //insert question
@@ -87,7 +89,7 @@ function insertQuestionContent(number) {
   answerList.forEach((answer, index) => {
     //populate answers in list
     let choiceList = answerContainer.appendChild(document.createElement("li"));
-    choiceList.textContent = `${index + 1}. ${answer}`;
+    choiceList.textContent = `${alphabetString.charAt(index).toLowerCase()}. ${answer}`;
   });
   displayQuestionNumber.textContent = `Question: ${number + 1} of ${
     questionList.length
