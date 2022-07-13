@@ -220,6 +220,24 @@ header {
 /* --------------------------------------- */
 /* --------------------------------------- */
 
+/* ---- HOVER STYLES ---- */
+/* You can override the hover effect for devices that don't support hover. Like: */
+@media (hover: none) {
+  .home-page button:hover,
+  .answer-box-hover:hover,
+  .save-button:hover,
+  .clear-scores-button:hover,
+  .back-to-start-button:hover {
+    color: var(--main-text-color);
+    background-color: var(--main-text-color);
+    border: var(--border-override);
+  }
+}
+
+/* .high-scores-link:hover {
+  color: blue;
+} */
+
 /* MEDIUM SCREEN SIZE */
 @media screen and (max-width: 768px) {
   header {
