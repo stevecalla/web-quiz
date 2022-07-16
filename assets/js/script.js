@@ -1,10 +1,10 @@
 //section:query selector variables go here 👇
 let startGameButton = document.getElementById("start-button");
 let gameTimeDisplay = document.getElementById("game-timer");
-let answerContainer = document.getElementById("answer-container"); //used to add answer list to the page
+let answerContainer = document.getElementById("answer-container");
 let homePageMainContainer = document.getElementById("home-page");
 let questionPage = document.getElementById("question-page");
-let questionInput = document.getElementById("question-input"); //used to add question to the page
+let questionText = document.getElementById("question-input");
 let answerStatus = document.getElementById("answer-status");
 let playerInitials = document.getElementById("player-initials");
 let saveButton = document.getElementById("save-button");
@@ -42,7 +42,6 @@ function startGame() {
 
 function setGameDuration() {
   gameDuration = 5;
-  // gameTimeDisplay.textContent = `Time: ${gameDuration} second(s)`;
   renderTime();
 }
 
@@ -104,27 +103,31 @@ function routeToPage(showPage) {
 }
 
 function insertQuestionContent(number) {
-  let question = questionList[number].question;
-  let answerList = questionList[number].answerList;
+  let question = questionList[number].question; //get question
+  let answerList = questionList[number].answerList; //get answers
   const alphabetString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; //used to label answers
 
-  //insert content
+  //reset content
   answerStatus.textContent = "";
-  questionInput.textContent = question; //insert question
   answerContainer.textContent = ""; //clear prior answers
+
+  //insert question content
+  questionText.textContent = question; //insert question
   answerList.forEach((answer, index) => { //populate answers in list
     let choiceList = answerContainer.appendChild(document.createElement("li"));
     choiceList.textContent = `${alphabetString.charAt(index).toLowerCase()}. ${answer}`;
-    choiceList.setAttribute('data-text', answer); //set data attribute to use in isAnswerCorrect function
+    choiceList.setAttribute('data-text', answer); //set data attribute; use in isAnswerCorrect function
   });
   renderQuestionNumber.textContent = `Question: ${number + 1} of ${questionList.length}`;
 
-  renderAnswerStylingAndListener("add", "remove"); //apply styling passing add hover, remove border, add listener
-
-  answerContainer.addEventListener("click", isAnswerCorrect); //add event listener inside function so it apples each time the line elements are created
+  // render styling
+  renderAnswersStyling("add", "remove"); //apply styling passing add hover, remove border, add listener
+  
+  // add event listener
+  answerContainer.addEventListener("click", isAnswerCorrect); //add event listener inside function so it apples each time the line 
 }
 
-function renderAnswerStylingAndListener(hover, border, addListner) {
+function renderAnswersStyling(hover, border) {
   let answers = document.querySelectorAll(".answer-container li");
   answers.forEach((answer) => {
     answer.classList.add("answer-box"); //apply styling to each answer
@@ -138,28 +141,37 @@ function isAnswerCorrect(event) {
   let selectedAnswer = event.target;
   let correctAnswer = questionList[questionNumber].correctAnswer;
   let isCorrect = false;
+
+  if (selectedAnswer.matches("li")) {selectedAnswer.dataset.text.includes(correctAnswer) ? isCorrect = true : isCorrect};  
+
   startQuestionTimer(); //starts timer to move to the next question after 2 seconds
-  if (selectedAnswer.matches("li")) {selectedAnswer.dataset.text.includes(correctAnswer) ? isCorrect = true : isCorrect};   
-  renderCorrectMessageAndStyle(isCorrect, selectedAnswer, correctAnswer);
-  renderAnswerStylingAndListener("remove", "add","removeListener", selectedAnswer); //remove hover, add border, //todo:listener, selectedAnswer necesary?
+
+  renderAnswersStyling("remove", "add"); //remove hover, add border
+  renderDurationAdjustment(isCorrect); //decrement time by 10 seconds and render
+  renderSelectedAnswerMessage(isCorrect, correctAnswer);
+  renderSelectedAnswerStyleSound(isCorrect, selectedAnswer);
+
   answerContainer.removeEventListener("click", isAnswerCorrect); //remove event listener
   isLastQuestion(); //clear interval time if last question
 }
 
-function renderCorrectMessageAndStyle(isCorrect, selectedAnswer, correctAnswer) {
-  selectedAnswer.classList.add("answer-box-selected"); //applies common styling
+function renderDurationAdjustment(isCorrect) {
   if (!isCorrect) {
     gameDuration -= 10; 
     renderTime();
-    answerStatus.textContent = `Wrong! Correct answer is "${correctAnswer}" (time reduced by 10 seconds)`;
-    selectedAnswer.classList.add("answer-box-selected-wrong"); //applies selected answer styling
-    document.getElementById("wrong-answer-sound-effect").play();
-  } else {
-    answerStatus.textContent = "Correct";
-    selectedAnswer.classList.add("answer-box-selected-correct"); //applies selected answer styling
-    document.getElementById("correct-answer-sound-effect").play();
-
   }
+}
+
+function renderSelectedAnswerMessage(isCorrect, correctAnswer) {
+  isCorrect ? answerStatus.textContent = "Correct" : answerStatus.textContent = `Wrong! Correct answer is "${correctAnswer}" (time reduced by 10 seconds)`;
+}
+
+function renderSelectedAnswerStyleSound(isCorrect, selectedAnswer) {
+  selectedAnswer.classList.add("answer-box-selected"); //applies common styling
+  isCorrect ? (selectedAnswer.classList.add("answer-box-selected-correct"),
+              document.getElementById("correct-answer-sound-effect").play()) : 
+              (selectedAnswer.classList.add("answer-box-selected-wrong"),
+              document.getElementById("wrong-answer-sound-effect").play());
 }
 
 function isLastQuestion() { //clear interval timer on last question
@@ -348,7 +360,7 @@ function endGame() {
 
 // ==== RESET FUNCTIONS ====
 function resetQuestionContainer() {
-  questionInput.textContent = null;
+  questionText.textContent = null;
   answerContainer.textContent = null;
   answerStatus.textContent = null;
   answerContainer.addEventListener("click", isAnswerCorrect);
