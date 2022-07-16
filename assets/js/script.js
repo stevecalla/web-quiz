@@ -292,20 +292,21 @@ function backToHomePage() {
 // ==== HIGH SCORES LINK ROUTER ====
 function highScoresLinkRouter() {
   let wantToExitPage = confirmExitPage();
-  if (wantToExitPage.page === "questionPage" && wantToExitPage.isExitPage === true) {
-    routeToPage(highScoresPage);
-    saveAndRenderGameHistory();
-  } else if (wantToExitPage.page === "savePage" && wantToExitPage.isExitPage === true) {
+
+  if (wantToExitPage.page === "savePage" && wantToExitPage.isExitPage === true) {
     routeToPage(saveScorePage);
-  } else if ((wantToExitPage.page === "savePage" && wantToExitPage.isExitPage === false)) {
-    routeToPage(highScoresPage);
-    resetAllTimers();
-    resetGameStats(gameDuration);
-    saveAndRenderGameHistory();
-  } else {
-    routeToPage(highScoresPage);
-    saveAndRenderGameHistory();
-  }
+    return;
+  } else if (
+      wantToExitPage.page === "questionPage" && wantToExitPage.isExitPage === true ||
+      wantToExitPage.page === "savePage" && wantToExitPage.isExitPage === false) {
+        routeToPage(highScoresPage);
+        resetAllTimers();
+        resetGameStats(gameDuration);
+        saveAndRenderGameHistory();
+        return;
+      }
+      
+  //if none of the conditions above are satisfied, player stays on the same page
 }
 
 function confirmExitPage() {
