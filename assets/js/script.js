@@ -132,25 +132,25 @@ function renderAnswersStyling(hover, border) {
 
 //==== VALIDATE ANSWER ====
 function isAnswerCorrect(event) {
-  let selectedAnswer = event.target;
+  let selectedEvent = event.target;
+  let selectedAnswer = event.target.getAttribute('data-text');
   let correctAnswer = questionList[questionNumber].correctAnswer;
+  let isLiElement = true;
   let isCorrect = true;
 
-  if (selectedAnswer.matches("li")) {
-    selectedAnswer.dataset.text === correctAnswer
-      ? isCorrect
-      : isCorrect = false;
+  //validate click on answer li elemeent
+  selectedEvent.matches("li") ? isLiElement : isLiElement = false;
+  
+  if (isLiElement) {
+    selectedAnswer === correctAnswer ? isCorrect : isCorrect = false; //validate answer
+    startQuestionTimer(); //starts timer to move to the next question after 2 seconds
+    renderAnswersStyling("remove", "add"); //remove hover, add border
+    renderDurationAdjustment(isCorrect); //decrement time by 10 seconds and render
+    renderSelectedAnswerMessage(isCorrect, correctAnswer);
+    renderSelectedAnswerStyleSound(isCorrect, selectedEvent);
+    answerContainer.removeEventListener("click", isAnswerCorrect); //remove event listener
+    isLastQuestion(); //clear interval time if last question
   }
-
-  startQuestionTimer(); //starts timer to move to the next question after 2 seconds
-
-  renderAnswersStyling("remove", "add"); //remove hover, add border
-  renderDurationAdjustment(isCorrect); //decrement time by 10 seconds and render
-  renderSelectedAnswerMessage(isCorrect, correctAnswer);
-  renderSelectedAnswerStyleSound(isCorrect, selectedAnswer);
-
-  answerContainer.removeEventListener("click", isAnswerCorrect); //remove event listener
-  isLastQuestion(); //clear interval time if last question
 }
 
 function renderDurationAdjustment(isCorrect) {
@@ -161,17 +161,19 @@ function renderDurationAdjustment(isCorrect) {
 }
 
 function renderSelectedAnswerMessage(isCorrect, correctAnswer) {
-  isCorrect
-    ? (answerStatus.textContent = "Correct")
-    : (answerStatus.textContent = `Wrong! Correct answer is "${correctAnswer}" (time reduced by 10 seconds)`);
+  if (isCorrect) {
+    answerStatus.textContent = "Correct";
+  } else {
+    answerStatus.textContent = `Wrong! Correct answer is "${correctAnswer}" (time reduced by 10 seconds)`;
+  }
 }
 
-function renderSelectedAnswerStyleSound(isCorrect, selectedAnswer) {
-  selectedAnswer.classList.add("answer-box-selected"); //applies common styling
-  isCorrect && selectedAnswer.matches("li")
-    ? (selectedAnswer.classList.add("answer-box-selected-correct"),
+function renderSelectedAnswerStyleSound(isCorrect, selectedEvent) {
+  selectedEvent.classList.add("answer-box-selected"); //applies common styling
+  isCorrect
+    ? (selectedEvent.classList.add("answer-box-selected-correct"),
       document.getElementById("correct-answer-sound-effect").play())
-    : (selectedAnswer.classList.add("answer-box-selected-wrong"),
+    : (selectedEvent.classList.add("answer-box-selected-wrong"),
       document.getElementById("wrong-answer-sound-effect").play());
 }
 
