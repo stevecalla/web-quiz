@@ -137,7 +137,7 @@ function isAnswerCorrect(event) {
   let isCorrect = false;
 
   if (selectedAnswer.matches("li")) {
-    selectedAnswer.dataset.text.includes(correctAnswer)
+    selectedAnswer.dataset.text === correctAnswer
       ? (isCorrect = true)
       : isCorrect;
   }
