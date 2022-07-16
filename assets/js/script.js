@@ -206,7 +206,6 @@ function validateInitialsInput() {
     if (
       !alphabetString.includes(playerInitials.value.charAt(i).toUpperCase())
     ) {
-      console.log("validate 3");
       isValid = false;
     }
   }
