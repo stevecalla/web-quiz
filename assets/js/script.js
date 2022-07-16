@@ -133,16 +133,16 @@ function renderAnswersStyling(hover, border) {
 //==== VALIDATE ANSWER ====
 function isAnswerCorrect(event) {
   let selectedEvent = event.target;
-  let selectedAnswer = event.target.getAttribute('data-text');
+  let selectedAnswer = event.target.getAttribute("data-text");
   let correctAnswer = questionList[questionNumber].correctAnswer;
   let isLiElement = true;
   let isCorrect = true;
 
   //validate click on answer li elemeent
-  selectedEvent.matches("li") ? isLiElement : isLiElement = false;
-  
+  selectedEvent.matches("li") ? isLiElement : (isLiElement = false);
+
   if (isLiElement) {
-    selectedAnswer === correctAnswer ? isCorrect : isCorrect = false; //validate answer
+    selectedAnswer === correctAnswer ? isCorrect : (isCorrect = false); //validate answer
     startQuestionTimer(); //starts timer to move to the next question after 2 seconds
     renderAnswersStyling("remove", "add"); //remove hover, add border
     renderDurationAdjustment(isCorrect); //decrement time by 10 seconds and render
