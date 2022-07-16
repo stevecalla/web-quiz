@@ -21,7 +21,7 @@ let errorMessage = document.getElementById("error-message");
 
 //section:global variables go here 👇
 let questionNumber = 0;
-let gameDuration;
+let gameDuration = 0;
 let gameTimer;
 let questionTimer;
 
@@ -42,12 +42,12 @@ function startGame() {
 
 function setGameDuration() {
   gameDuration = 75;
+  gameTimeDisplay.textContent = `Time: ${gameDuration} second(s)`;
 }
 
 // ==== TIMER FUNCTIONS ====
 function startGameTimer() {
   gameTimer = setInterval(() => {
-    // gameDuration--;
     gameDuration > 0
       ? (gameDuration--,
         (gameTimeDisplay.textContent = `Time: ${gameDuration} second(s)`))
@@ -242,7 +242,6 @@ function backToHomePage() {
   routeToPage(homePageMainContainer);
   playerInitials.value = ""; //clear playerInitials
   resetQuestionContainer();
-  setGameDuration();
   resetAllTimers();
   resetGameStats();
 }
@@ -254,7 +253,6 @@ function highScoresLinkRouter() {
     routeToPage(saveScorePage);
   } else {
     routeToPage(highScoresPage);
-    // setGameDuration();
     resetAllTimers();
     resetGameStats();
   }
@@ -346,6 +344,7 @@ function resetAllTimers() {
 }
 
 function resetGameStats() {
+  gameDuration = 0;
   questionNumber = 0;
   gameTimeDisplay.textContent = `Time: ${gameDuration} second(s)`;
 }
