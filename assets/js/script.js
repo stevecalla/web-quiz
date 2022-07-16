@@ -134,12 +134,12 @@ function renderAnswersStyling(hover, border) {
 function isAnswerCorrect(event) {
   let selectedAnswer = event.target;
   let correctAnswer = questionList[questionNumber].correctAnswer;
-  let isCorrect = false;
+  let isCorrect = true;
 
   if (selectedAnswer.matches("li")) {
     selectedAnswer.dataset.text === correctAnswer
-      ? (isCorrect = true)
-      : isCorrect;
+      ? isCorrect
+      : isCorrect = false;
   }
 
   startQuestionTimer(); //starts timer to move to the next question after 2 seconds
