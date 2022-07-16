@@ -120,9 +120,25 @@ header {
 }
 
 .answer-box-selected {
-  color: blue;
   background-color: var(--hover-bg-color);
+}
+
+.answer-box-selected-correct {
+  color: green;
+  border: 2px solid green;
+}
+
+.answer-box-selected-correct:after {
+  content: ' ✅';
+}
+
+.answer-box-selected-wrong {
+  color: red;
   border: 2px solid red;
+}
+
+.answer-box-selected-wrong:after {
+  content: ' ❌';
 }
 
 .answer-status {

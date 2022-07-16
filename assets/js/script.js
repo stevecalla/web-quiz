@@ -81,26 +81,21 @@ function insertQuestionContent(number) {
   let question = questionList[number].question;
   let answerList = questionList[number].answerList;
   const alphabetString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  console.log(alphabetString);
   //insert content
   answerStatus.textContent = "";
   questionInput.textContent = question; //insert question
   answerContainer.textContent = ""; //clear prior answers
-  answerList.forEach((answer, index) => {
-    //populate answers in list
+  answerList.forEach((answer, index) => { //populate answers in list
     let choiceList = answerContainer.appendChild(document.createElement("li"));
     choiceList.textContent = `${alphabetString.charAt(index).toLowerCase()}. ${answer}`;
+    choiceList.setAttribute('data-text', answer); //set data attribute to use in isAnswerCorrect function
   });
-  renderQuestionNumber.textContent = `Question: ${number + 1} of ${
-    questionList.length
-  }`;
-  //apply stying
-  applyAnswerStylesAndListener("add", "remove"); //parameters add hover, remove border, add listener
-  //add event listener
+  renderQuestionNumber.textContent = `Question: ${number + 1} of ${questionList.length}`;
+  renderAnswerStylingAndListener("add", "remove"); //apply styling passing add hover, remove border, add listener
   answerContainer.addEventListener("click", isAnswerCorrect); //add event listener inside function so it apples each time the line elements are created
 }
 
-function applyAnswerStylesAndListener(hover, border, addListner) {
+function renderAnswerStylingAndListener(hover, border, addListner) {
   // console.log(hover, border, addListner);
   let answers = document.querySelectorAll(".answer-container li");
   // console.log(answers);
@@ -115,35 +110,33 @@ function applyAnswerStylesAndListener(hover, border, addListner) {
 function isAnswerCorrect(event) {
   let selectedAnswer = event.target;
   let correctAnswer = questionList[questionNumber].correctAnswer;
-  if (selectedAnswer.matches("li")) {
-    // selectedAnswer.textContent === correctAnswer //evaluate if answer is correct
-    selectedAnswer.textContent.includes(correctAnswer) //evaluate if answer is correct
-      ? ((answerStatus.textContent = "Correct"),
-        (selectedAnswer.textContent = `${selectedAnswer.textContent} ✅`),
-        (selectedAnswer.style.color = "green"),
-        document.getElementById("correct-answer-sound-effect").play())
-      : ((answerStatus.textContent = `Wrong! Correct answer is "${correctAnswer}" (time reduced by 10 seconds)`),
-        (selectedAnswer.textContent = `${selectedAnswer.textContent} ❌`),
-        (selectedAnswer.style.color = "red"),
-        (gameDuration -= 10),
-        (gameTimeDisplay.textContent = `Time: ${gameDuration} second(s)`),
-        document.getElementById("wrong-answer-sound-effect").play());
+  let isCorrect = false;
+  startQuestionTimer(); //starts timer to move to the next question after 2 seconds
+  if (selectedAnswer.matches("li")) {selectedAnswer.dataset.text.includes(correctAnswer) ? isCorrect = true : isCorrect};   
+  renderCorrectMessageAndStyle(isCorrect, selectedAnswer, correctAnswer);
+  renderAnswerStylingAndListener("remove", "add","removeListener", selectedAnswer); //remove hover, add border, //todo:listener, selectedAnswer necesary?
+  answerContainer.removeEventListener("click", isAnswerCorrect); //remove event listener
+  isLastQuestion(); //clear interval time if last question
+}
 
-    startQuestionTimer(); //starts timer to move to the next question after 2 seconds
-    applyAnswerStylesAndListener(
-      "remove",
-      "add",
-      "removeListener",
-      selectedAnswer
-    ); //parameter remove hover, add border, //todo:listener, selectedAnswer necesary?
-    event.target.classList.add("answer-box-selected"); //applies selected answer styling
-    //remove event listener
-    answerContainer.removeEventListener("click", isAnswerCorrect);
+function renderCorrectMessageAndStyle(isCorrect, selectedAnswer, correctAnswer) {
+  selectedAnswer.classList.add("answer-box-selected"); //applies common styling
+  if (!isCorrect) {
+    gameDuration -= 10; 
+    gameTimeDisplay.textContent = `Time: ${gameDuration} second(s)`;
+    answerStatus.textContent = `Wrong! Correct answer is "${correctAnswer}" (time reduced by 10 seconds)`;
+    selectedAnswer.classList.add("answer-box-selected-wrong"); //applies selected answer styling
+    document.getElementById("wrong-answer-sound-effect").play();
+  } else {
+    answerStatus.textContent = "Correct";
+    selectedAnswer.classList.add("answer-box-selected-correct"); //applies selected answer styling
+    document.getElementById("correct-answer-sound-effect").play();
+
   }
-  if (questionNumber === questionList.length - 1) {
-    //clears invterval timer after selecting answer on final question
-    clearInterval(gameTimer);
-  }
+}
+
+function isLastQuestion() { //clear interval timer on last question
+  if (questionNumber === questionList.length - 1) {clearInterval(gameTimer)};
 }
 
 // ==== SAVE SCORE PAGE ==== //
