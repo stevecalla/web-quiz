@@ -34,6 +34,7 @@ html {
 
 .high-scores-link:hover {
   color: blue;
+  cursor: pointer;
 }
 
 /* ------ HEADER SECTION -------- */
