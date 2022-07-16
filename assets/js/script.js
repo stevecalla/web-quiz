@@ -248,25 +248,36 @@ function backToHomePage() {
 
 // ==== HIGH SCORES LINK ROUTER ====
 function highScoresLinkRouter() {
-  let wantToSave = confirmDontSave();
-  if (wantToSave === true) {
+  let wantToExitPage = confirmExitPage();
+  if (wantToExitPage.page === "questionPage" && wantToExitPage.isExitPage === true) {
+    backToHomePage();
+  } 
+  if (wantToExitPage.page === "savePage" && wantToExitPage.isExitPage === true) {
     routeToPage(saveScorePage);
-  } else {
+  } else if ((wantToExitPage.page === "savePage" && wantToExitPage.isExitPage === false)) {
     routeToPage(highScoresPage);
     resetAllTimers();
     resetGameStats();
   }
 }
 
-function confirmDontSave() {
-  let wantToSave = false;
-  if (document.getElementById("save-score-page").offsetTop > 0) {
+function confirmExitPage() {
+  let isExitPage = false;
+  let page = "";
+  if (saveScorePage.offsetTop > 0) {
     //determines if user is on save score page
-    wantToSave = window.confirm(
+    isExitPage = window.confirm(
       `Opps. You DIDN'T save the score.\n\nDo you want to save the score?`
     );
+    page = "savePage";
   }
-  return wantToSave;
+  if (questionPage.offsetTop > 0) {
+    isExitPage = window.confirm(
+      `Opps. You are playing.\n\nDo you want to exit this game?`
+    );
+    page = "questionPage";
+  }
+  return {isExitPage, page};
 }
 
 // ==== UTILITY FUNCTIONS ====
@@ -347,6 +358,7 @@ function resetGameStats() {
   gameDuration = 0;
   questionNumber = 0;
   gameTimeDisplay.textContent = `Time: ${gameDuration} second(s)`;
+  playerInitials.value = ""; //clear playerInitials
 }
 
 // LOCAL STORAGE FUNCTIONS
