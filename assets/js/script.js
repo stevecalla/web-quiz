@@ -15,7 +15,7 @@ let header = document.getElementById("header");
 let homePageButton = document.getElementById("back-to-start-page");
 let clearScoresButton = document.getElementById("clear-scores-button");
 let highScoresLink = document.getElementById("high-scores-header");
-let displayQuestionNumber = document.getElementById("question-number");
+let renderQuestionNumber = document.getElementById("question-number");
 let scoreList = document.querySelector("#high-scores-container ol");
 let errorMessage = document.getElementById("error-message");
 
@@ -37,7 +37,7 @@ highScoresLink.addEventListener("click", highScoresLinkRouter);
 function startGame() {
   setGameDuration();
   startGameTimer();
-  displayQuestions(questionNumber);
+  renderQuestions(questionNumber);
 }
 
 function setGameDuration() {
@@ -63,7 +63,7 @@ function startQuestionTimer() {
   questionTimer = setTimeout(() => {
     questionNumber++;
     questionNumber <= questionList.length - 1
-      ? displayQuestions(questionNumber)
+      ? renderQuestions(questionNumber)
       : ((document.getElementById(
           "all-done-message"
         ).textContent = `Game Over. No More Questions.`),
@@ -72,7 +72,7 @@ function startQuestionTimer() {
 }
 
 // ==== DISPLAY GAME QUESTIONS ====
-function displayQuestions(number) {
+function renderQuestions(number) {
   routeToPage(questionPage);
   insertQuestionContent(number);
 }
@@ -91,7 +91,7 @@ function insertQuestionContent(number) {
     let choiceList = answerContainer.appendChild(document.createElement("li"));
     choiceList.textContent = `${alphabetString.charAt(index).toLowerCase()}. ${answer}`;
   });
-  displayQuestionNumber.textContent = `Question: ${number + 1} of ${
+  renderQuestionNumber.textContent = `Question: ${number + 1} of ${
     questionList.length
   }`;
   //apply stying
@@ -147,7 +147,7 @@ function isAnswerCorrect(event) {
 }
 
 // ==== SAVE SCORE PAGE ==== //
-function displayScore() {
+function renderScore() {
   finalScoreInfo.textContent = `Your final score is ${gameDuration}.`;
 }
 
@@ -209,12 +209,12 @@ function createHighScoreList(allSortedGames) {
       }
     }
     highScoreGames = sortByScore(highScoreGames, "desc");
-    displayNoScoresOrScoreList(highScoreGames, allSortedGames);
+    renderNoScoresOrScoreList(highScoreGames, allSortedGames);
   }
 }
 
 // ==== HIGH SCORE PAGE ==== //
-function displayNoScoresOrScoreList(highScoreGames, allSortedGames, status) {
+function renderNoScoresOrScoreList(highScoreGames, allSortedGames, status) {
   scoreList.textContent = "";
   let noGamesPlayedText = "";
 
@@ -226,10 +226,10 @@ function displayNoScoresOrScoreList(highScoreGames, allSortedGames, status) {
     noGamesPlayedText.textContent = `History Cleared`;
   } else if (highScoreGames.length > 0) {
     highScoreGames.forEach((game, index) => {
-      let displayHighScore = scoreList.appendChild(
+      let renderHighScore = scoreList.appendChild(
         document.createElement("li")
       );
-      displayHighScore.textContent = `${index + 1}. ${game.player}: ${
+      renderHighScore.textContent = `${index + 1}. ${game.player}: ${
         game.score
       }`;
     });
@@ -288,7 +288,7 @@ function routeToPage(showPage) {
   ];
 
   allPages.forEach((page) => {
-    //display requested page
+    //render requested page
     page === showPage
       ? showPage.classList.remove("hide")
       : page.classList.add("hide");
@@ -329,7 +329,7 @@ function sortByPlayer(allGames) {
 }
 
 function endGame() {
-  displayScore();
+  renderScore();
   resetAllTimers();
   resetGameStats();
   routeToPage(saveScorePage);
@@ -375,5 +375,5 @@ function setLocalStorage(allGames, highScoreGames) {
 function clearLocalStorage() {
   localStorage.clear();
   scoreList.textContent = "";
-  displayNoScoresOrScoreList(null, null, "storageCleared"); //passes empty array to represent cleared local storage
+  renderNoScoresOrScoreList(null, null, "storageCleared"); //passes empty array to represent cleared local storage
 }
