@@ -250,32 +250,25 @@ function createHighScoreList(allSortedGames) {
 // ==== HIGH SCORE PAGE ==== //
 function renderHighScores(highScoreGames, allSortedGames, status) {
   scoreList.textContent = "";
-  let noGamesPlayedText = "";
-
-  // console.log(scoreList.textContent, scoreList.textContent === "")
-  // console.log(highScoreGames, highScoreGames.length, highScoreGames.length === 0)
+  let noGamesSavedText = "";
 
   if (status === "storageCleared") {
-    noGamesPlayedText = scoreList.appendChild(document.createElement("p"));
-    noGamesPlayedText.textContent = `History Cleared`;
+  noGamesSavedText = scoreList.appendChild(document.createElement("p"));
+  noGamesSavedText.textContent = `History cleared`;
   } else if (highScoreGames.length > 0) {
     highScoreGames.forEach((game, index) => {
-      let renderHighScore = scoreList.appendChild(
+      let renderScores = scoreList.appendChild(
         document.createElement("li")
       );
-      renderHighScore.textContent = `${index + 1}. ${game.player}: ${
+      renderScores.textContent = `${index + 1}. ${game.player}: ${
         game.score
       }`;
     });
   } else {
-    noGamesPlayedText = scoreList.appendChild(document.createElement("p"));
-    noGamesPlayedText.textContent = `No Games Played Yet`;
+    noGamesSavedText = scoreList.appendChild(document.createElement("p"));
+    noGamesSavedText.textContent = `No scores saved yet`;
+    status = ""; // clears out status so history cleared messages doesn't display
   }
-
-  if (status === "storageCleared") {
-    status = "No Games";
-  }
-  // console.log(status);
   setLocalStorage(allSortedGames, highScoreGames);
   routeToPage(highScoresPage); //show high scores page
 }
