@@ -50,10 +50,8 @@ function setGameDuration() {
 function startGameTimer() {
   gameTimer = setInterval(() => {
     gameDuration > 0
-      ? (gameDuration--,
-        renderTime())
-      : ((gameOverMessage.textContent = `Game Over. Out of Time.`),
-        endGame());
+      ? (gameDuration--, renderTime())
+      : ((gameOverMessage.textContent = `Game Over. Out of Time.`), endGame());
   }, 1000);
 }
 
@@ -75,14 +73,10 @@ function renderQuestions(number) {
 }
 
 function pageRouter(showPage) {
-  let allPages = [
-    homePage,
-    questionPage,
-    saveScorePage,
-    highScoresPage,
-  ];
+  let allPages = [homePage, questionPage, saveScorePage, highScoresPage];
 
-  allPages.forEach((page) => { //render requested page
+  allPages.forEach((page) => {
+    //render requested page
     page === showPage
       ? showPage.classList.remove("hide")
       : page.classList.add("hide");
@@ -108,18 +102,23 @@ function insertQuestionContent(number) {
 
   //insert question content
   questionText.textContent = question; //insert question
-  answerList.forEach((answer, index) => { //populate answers in list
+  answerList.forEach((answer, index) => {
+    //populate answers in list
     let choiceList = answerContainer.appendChild(document.createElement("li"));
-    choiceList.textContent = `${alphabetString.charAt(index).toLowerCase()}. ${answer}`;
-    choiceList.setAttribute('data-text', answer); //set data attribute; use in isAnswerCorrect function
+    choiceList.textContent = `${alphabetString
+      .charAt(index)
+      .toLowerCase()}. ${answer}`;
+    choiceList.setAttribute("data-text", answer); //set data attribute; use in isAnswerCorrect function
   });
-  renderQuestionNumber.textContent = `Question: ${number + 1} of ${questionList.length}`;
+  renderQuestionNumber.textContent = `Question: ${number + 1} of ${
+    questionList.length
+  }`;
 
   //render styling
   renderAnswersStyling("add", "remove"); //apply styling passing add hover, remove border, add listener
-  
+
   //add event listener
-  answerContainer.addEventListener("click", isAnswerCorrect); //add event listener inside function so it apples each time the line 
+  answerContainer.addEventListener("click", isAnswerCorrect); //add event listener inside function so it apples each time the line
 }
 
 function renderAnswersStyling(hover, border) {
@@ -137,7 +136,11 @@ function isAnswerCorrect(event) {
   let correctAnswer = questionList[questionNumber].correctAnswer;
   let isCorrect = false;
 
-  if (selectedAnswer.matches("li")) {selectedAnswer.dataset.text.includes(correctAnswer) ? isCorrect = true : isCorrect};  
+  if (selectedAnswer.matches("li")) {
+    selectedAnswer.dataset.text.includes(correctAnswer)
+      ? (isCorrect = true)
+      : isCorrect;
+  }
 
   startQuestionTimer(); //starts timer to move to the next question after 2 seconds
 
@@ -152,25 +155,31 @@ function isAnswerCorrect(event) {
 
 function renderDurationAdjustment(isCorrect) {
   if (!isCorrect) {
-    gameDuration -= 10; 
+    gameDuration -= 10;
     renderTime();
   }
 }
 
 function renderSelectedAnswerMessage(isCorrect, correctAnswer) {
-  isCorrect ? answerStatus.textContent = "Correct" : answerStatus.textContent = `Wrong! Correct answer is "${correctAnswer}" (time reduced by 10 seconds)`;
+  isCorrect
+    ? (answerStatus.textContent = "Correct")
+    : (answerStatus.textContent = `Wrong! Correct answer is "${correctAnswer}" (time reduced by 10 seconds)`);
 }
 
 function renderSelectedAnswerStyleSound(isCorrect, selectedAnswer) {
   selectedAnswer.classList.add("answer-box-selected"); //applies common styling
-  isCorrect ? (selectedAnswer.classList.add("answer-box-selected-correct"),
-              document.getElementById("correct-answer-sound-effect").play()) : 
-              (selectedAnswer.classList.add("answer-box-selected-wrong"),
-              document.getElementById("wrong-answer-sound-effect").play());
+  isCorrect
+    ? (selectedAnswer.classList.add("answer-box-selected-correct"),
+      document.getElementById("correct-answer-sound-effect").play())
+    : (selectedAnswer.classList.add("answer-box-selected-wrong"),
+      document.getElementById("wrong-answer-sound-effect").play());
 }
 
-function isLastQuestion() { //clear interval timer on last question
-  if (questionNumber === questionList.length - 1) {clearInterval(gameTimer)};
+function isLastQuestion() {
+  //clear interval timer on last question
+  if (questionNumber === questionList.length - 1) {
+    clearInterval(gameTimer);
+  }
 }
 
 //==== SAVE SCORE PAGE ==== //
@@ -180,7 +189,8 @@ function renderScore() {
 
 function saveCurrentGame(event) {
   event.preventDefault();
-  if (validateInitialsInput() === "invalid input") { //validate input
+  if (validateInitialsInput() === "invalid input") {
+    //validate input
     return;
   }
   saveAndRenderGameHistory();
@@ -191,10 +201,12 @@ function validateInitialsInput() {
   let isValid = true;
 
   //validation rules
-  playerInitials.value.length < 2 ? isValid = false : isValid;
+  playerInitials.value.length < 2 ? (isValid = false) : isValid;
   for (let i = 0; i < playerInitials.value.length; i++) {
-    if (!alphabetString.includes(playerInitials.value.charAt(i).toUpperCase())) {
-      console.log('validate 3');
+    if (
+      !alphabetString.includes(playerInitials.value.charAt(i).toUpperCase())
+    ) {
+      console.log("validate 3");
       isValid = false;
     }
   }
@@ -240,11 +252,14 @@ function createHighScoreList(allSortedGames) {
   if (allSortedGames) {
     let highScoreGames = [];
     for (let i = 0; i < allSortedGames.length; i++) {
-      if (allSortedGames.length === 1) { //if only one element exits push it
+      if (allSortedGames.length === 1) {
+        //if only one element exits push it
         highScoreGames.push(allSortedGames[i]);
-      } else if (i + 1 === allSortedGames.length) { //if at the last element push it
+      } else if (i + 1 === allSortedGames.length) {
+        //if at the last element push it
         highScoreGames.push(allSortedGames[i]);
-      } else if (allSortedGames[i].player !== allSortedGames[i + 1].player) { //else push high score
+      } else if (allSortedGames[i].player !== allSortedGames[i + 1].player) {
+        //else push high score
         highScoreGames.push(allSortedGames[i]);
       }
     }
@@ -285,23 +300,30 @@ function backToHomePage() {
 
 //==== HIGH SCORES LINK ROUTER ====
 function highScoresLinkRouter() {
-
   let wantToExitPage = confirmExitPage(); //popup alert to validate exit page
 
   //validation to ensure player wants to exit current page (when playing game or hasn't saved score)
-  if (wantToExitPage.page === "savePage" && wantToExitPage.isExitPage === false) {
+  if (
+    wantToExitPage.page === "savePage" &&
+    wantToExitPage.isExitPage === false
+  ) {
     pageRouter(saveScorePage);
     return;
   } else if (
-      wantToExitPage.page === "savePage" && wantToExitPage.isExitPage === true ||
-      wantToExitPage.page === "questionPage" && wantToExitPage.isExitPage === true ||
-      wantToExitPage.page === "homePage") {
-      if (wantToExitPage.page === "savePage") {playerInitials.value = ""}; //clear initials if didn't click save button
-      pageRouter(highScoresPage);
-      saveAndRenderGameHistory();
-      resetAllTimers();
-      resetGameStats(gameDuration);
-      return;
+    (wantToExitPage.page === "savePage" &&
+      wantToExitPage.isExitPage === true) ||
+    (wantToExitPage.page === "questionPage" &&
+      wantToExitPage.isExitPage === true) ||
+    wantToExitPage.page === "homePage"
+  ) {
+    if (wantToExitPage.page === "savePage") {
+      playerInitials.value = "";
+    } //clear initials if didn't click save button
+    pageRouter(highScoresPage);
+    saveAndRenderGameHistory();
+    resetAllTimers();
+    resetGameStats(gameDuration);
+    return;
   }
 }
 
@@ -310,15 +332,21 @@ function confirmExitPage() {
   let page = "";
 
   //confirm exit page or not
-  saveScorePage.offsetTop > 0 ? (
-    isExitPage = window.confirm(`Opps. You DIDN'T save the score.\n\nDo you want to exit without saving?`),
-    page = "savePage") :
-  questionPage.offsetTop > 0 ? (
-    isExitPage = window.confirm(`Opps. You are playing.\n\nDo you want to exit this game?`),
-    page = "questionPage") :
-  homePage.offsetTop > 0 ? (page = "homePage") : isExitPage;
+  saveScorePage.offsetTop > 0
+    ? ((isExitPage = window.confirm(
+        `Opps. You DIDN'T save the score.\n\nDo you want to exit without saving?`
+      )),
+      (page = "savePage"))
+    : questionPage.offsetTop > 0
+    ? ((isExitPage = window.confirm(
+        `Opps. You are playing.\n\nDo you want to exit this game?`
+      )),
+      (page = "questionPage"))
+    : homePage.offsetTop > 0
+    ? (page = "homePage")
+    : isExitPage;
 
-  return {isExitPage, page};
+  return { isExitPage, page };
 }
 
 //==== UTILITY FUNCTIONS ====

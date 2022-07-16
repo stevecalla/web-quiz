@@ -7,7 +7,7 @@
   --main-bg-color: black;
   --main-text-color: white;
   --main-border-style: 2px solid black;
-  
+
   --hover-bg-color: white;
   --hover-text-color: black;
   --hover-border-style: 1px solid black;
@@ -18,8 +18,8 @@
   --alert-color: red;
 
   --correct-color: green;
-  --correct-emoji: ' ✅';
-  --incorrect-emoji: ' ❌';;
+  --correct-emoji: " ✅";
+  --incorrect-emoji: " ❌";
 }
 
 html {
