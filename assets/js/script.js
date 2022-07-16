@@ -27,7 +27,7 @@ let questionTimer;
 
 //section:event listeners go here 👇
 startGameButton.addEventListener("click", startGame);
-saveButton.addEventListener("click", saveGame);
+saveButton.addEventListener("click", saveCurrentGame);
 homePageButton.addEventListener("click", backToHomePage);
 clearScoresButton.addEventListener("click", clearLocalStorage);
 highScoresLink.addEventListener("click", highScoresLinkRouter);
@@ -183,16 +183,15 @@ function renderScore() {
   finalScoreInfo.textContent = `Your final score is ${gameDuration}.`;
 }
 
-function saveGame(event) {
+function saveCurrentGame(event) {
   event.preventDefault();
-  let gameHistory = [];
-  if (validateInitialsInput() === "invalid input") {
-    //validate input
+  // let gameHistory = [];
+  if (validateInitialsInput() === "invalid input") { // validate input
     return;
   }
-  gameHistory = getLocalStorage(); //get local storage
-  addCurrentGame(gameHistory); //sort allGames as prep to create high score games list
-  // sortGames(updateAllGames);
+  // gameHistory = getLocalStorage(); //get local storage
+  // addCurrentGame(gameHistory); //sort allGames as prep to create high score games list);
+  saveAndRenderGameHistory();
 }
 
 function validateInitialsInput() {
@@ -205,8 +204,12 @@ function validateInitialsInput() {
   }
 }
 
+function saveAndRenderGameHistory() {
+  let gameHistory = getLocalStorage(); //get local storage
+  addCurrentGame(gameHistory); //sort allGames as prep to create high score games list);
+}
+
 function addCurrentGame(updateAllGames) {
-  console.log(updateAllGames);
   let gameStats = {};
   gameStats = {
     id: updateAllGames ? updateAllGames.length + 1 : 1,
@@ -217,7 +220,6 @@ function addCurrentGame(updateAllGames) {
     updateAllGames.push(gameStats);
   }
   sortGames(updateAllGames);
-  // return allGames;
 }
 
 function sortGames(updateAllGames) {
@@ -241,12 +243,12 @@ function createHighScoreList(allSortedGames) {
       }
     }
     highScoreGames = sortByScore(highScoreGames, "desc");
-    renderNoScoresOrScoreList(highScoreGames, allSortedGames);
+    renderHighScores(highScoreGames, allSortedGames);
   }
 }
 
 // ==== HIGH SCORE PAGE ==== //
-function renderNoScoresOrScoreList(highScoreGames, allSortedGames, status) {
+function renderHighScores(highScoreGames, allSortedGames, status) {
   scoreList.textContent = "";
   let noGamesPlayedText = "";
 
@@ -291,15 +293,18 @@ function backToHomePage() {
 function highScoresLinkRouter() {
   let wantToExitPage = confirmExitPage();
   if (wantToExitPage.page === "questionPage" && wantToExitPage.isExitPage === true) {
-    backToHomePage();
-  } 
-
-  if (wantToExitPage.page === "savePage" && wantToExitPage.isExitPage === true) {
+    routeToPage(highScoresPage);
+    saveAndRenderGameHistory();
+  } else if (wantToExitPage.page === "savePage" && wantToExitPage.isExitPage === true) {
     routeToPage(saveScorePage);
   } else if ((wantToExitPage.page === "savePage" && wantToExitPage.isExitPage === false)) {
     routeToPage(highScoresPage);
     resetAllTimers();
     resetGameStats(gameDuration);
+    saveAndRenderGameHistory();
+  } else {
+    routeToPage(highScoresPage);
+    saveAndRenderGameHistory();
   }
 }
 
@@ -400,5 +405,5 @@ function setLocalStorage(allGames, highScoreGames) {
 function clearLocalStorage() {
   localStorage.clear();
   scoreList.textContent = "";
-  renderNoScoresOrScoreList(null, null, "storageCleared"); //passes empty array to represent cleared local storage
+  renderHighScores(null, null, "storageCleared"); //passes empty array to represent cleared local storage
 }
