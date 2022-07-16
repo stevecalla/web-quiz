@@ -42,7 +42,7 @@ function startGame() {
 }
 
 function setGameDuration() {
-  gameDuration = 5;
+  gameDuration = 100;
   renderTime();
 }
 
@@ -387,7 +387,6 @@ function getLocalStorage() {
   if (JSON.parse(localStorage.getItem("allGames")) !== null) {
     gameHistory = JSON.parse(localStorage.getItem("allGames"));
   }
-  //console.log('1', gameHistory);
   return gameHistory;
 }
 

@@ -30,7 +30,7 @@ As a coding boot camp student I want to take a timed quiz on JavaScript fundamen
 
 ## Enhancements
 
-1. Scoring: Build a scoring system that includes points for correct answers.
+1. Scoring: Build a scoring system that includes points for correct answers (compared to current system based on time only).
 2. Answer Timing: Display correct answers at the end of the game rather than during the game.
 3. Answer History: Provide the player with a summary of the game history for the current game, all games and high scoring games.
 4. Next Button: Allow the player to click a button to advance to the next question (rather than using a timer or automatically moving the player forward).
