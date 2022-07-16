@@ -2,7 +2,7 @@
 let startGameButton = document.getElementById("start-button");
 let gameTimeDisplay = document.getElementById("game-timer");
 let answerContainer = document.getElementById("answer-container");
-let homePageMainContainer = document.getElementById("home-page");
+let homePage = document.getElementById("home-page");
 let questionPage = document.getElementById("question-page");
 let questionText = document.getElementById("question-input");
 let answerStatus = document.getElementById("answer-status");
@@ -79,7 +79,7 @@ function renderQuestions(number) {
 
 function routeToPage(showPage) {
   let allPages = [
-    homePageMainContainer,
+    homePage,
     questionPage,
     saveScorePage,
     highScoresPage,
@@ -279,7 +279,7 @@ function renderNoScoresOrScoreList(highScoreGames, allSortedGames, status) {
 }
 
 function backToHomePage() {
-  routeToPage(homePageMainContainer);
+  routeToPage(homePage);
   // playerInitials.value = ""; //clear playerInitials
   resetQuestionContainer();
   resetAllTimers();
