@@ -18,6 +18,7 @@ let highScoresLink = document.getElementById("high-scores-header");
 let renderQuestionNumber = document.getElementById("question-number");
 let scoreList = document.querySelector("#high-scores-container ol");
 let errorMessage = document.getElementById("error-message");
+let gameOverMessage = document.getElementById("all-done-message");
 
 //section:global variables go here 👇
 let questionNumber = 0;
@@ -33,7 +34,7 @@ clearScoresButton.addEventListener("click", clearLocalStorage);
 highScoresLink.addEventListener("click", highScoresLinkRouter);
 
 //section:functions and event handlers go here 👇
-// ==== START GAME FUNCTIONS ====
+//==== START GAME FUNCTIONS ====
 function startGame() {
   setGameDuration();
   startGameTimer();
@@ -45,15 +46,13 @@ function setGameDuration() {
   renderTime();
 }
 
-// ==== TIMER FUNCTIONS ====
+//==== TIMER FUNCTIONS ====
 function startGameTimer() {
   gameTimer = setInterval(() => {
     gameDuration > 0
       ? (gameDuration--,
         renderTime())
-      : ((document.getElementById(
-          "all-done-message"
-        ).textContent = `Game Over. Out of Time.`),
+      : ((gameOverMessage.textContent = `Game Over. Out of Time.`),
         endGame());
   }, 1000);
 }
@@ -64,20 +63,18 @@ function startQuestionTimer() {
     questionNumber++;
     questionNumber <= questionList.length - 1
       ? renderQuestions(questionNumber)
-      : ((document.getElementById(
-          "all-done-message"
-        ).textContent = `Game Over. No More Questions.`),
+      : ((gameOverMessage.textContent = `Game Over. No More Questions.`),
         endGame());
   }, 2000);
 }
 
-// ==== DISPLAY GAME QUESTIONS ====
+//==== DISPLAY GAME QUESTIONS ====
 function renderQuestions(number) {
-  routeToPage(questionPage);
+  pageRouter(questionPage);
   insertQuestionContent(number);
 }
 
-function routeToPage(showPage) {
+function pageRouter(showPage) {
   let allPages = [
     homePage,
     questionPage,
@@ -85,8 +82,7 @@ function routeToPage(showPage) {
     highScoresPage,
   ];
 
-  allPages.forEach((page) => {
-    //render requested page
+  allPages.forEach((page) => { //render requested page
     page === showPage
       ? showPage.classList.remove("hide")
       : page.classList.add("hide");
@@ -94,10 +90,9 @@ function routeToPage(showPage) {
 
   showPage === highScoresPage //if high scores page make header information invisable
     ? header.classList.add("cloak")
-    : // scoreList.textContent = 'No Games Played Yet.')
-      header.classList.remove("cloak");
+    : header.classList.remove("cloak");
 
-  showPage === saveScorePage //if saveScorePaage then focus the cursor in the player initials box
+  showPage === saveScorePage //if saveScorePage then focus the cursor in the player initials box
     ? (playerInitials.focus(), errorMessage.classList.add("hide"))
     : playerInitials.blur();
 }
@@ -120,10 +115,10 @@ function insertQuestionContent(number) {
   });
   renderQuestionNumber.textContent = `Question: ${number + 1} of ${questionList.length}`;
 
-  // render styling
+  //render styling
   renderAnswersStyling("add", "remove"); //apply styling passing add hover, remove border, add listener
   
-  // add event listener
+  //add event listener
   answerContainer.addEventListener("click", isAnswerCorrect); //add event listener inside function so it apples each time the line 
 }
 
@@ -136,7 +131,7 @@ function renderAnswersStyling(hover, border) {
   answerContainer.classList[border]("add-border"); //add or remove border based on paramter
 }
 
-// ==== VALIDATE ANSWER ====
+//==== VALIDATE ANSWER ====
 function isAnswerCorrect(event) {
   let selectedAnswer = event.target;
   let correctAnswer = questionList[questionNumber].correctAnswer;
@@ -178,28 +173,38 @@ function isLastQuestion() { //clear interval timer on last question
   if (questionNumber === questionList.length - 1) {clearInterval(gameTimer)};
 }
 
-// ==== SAVE SCORE PAGE ==== //
+//==== SAVE SCORE PAGE ==== //
 function renderScore() {
   finalScoreInfo.textContent = `Your final score is ${gameDuration}.`;
 }
 
 function saveCurrentGame(event) {
   event.preventDefault();
-  // let gameHistory = [];
-  if (validateInitialsInput() === "invalid input") { // validate input
+  if (validateInitialsInput() === "invalid input") { //validate input
     return;
   }
-  // gameHistory = getLocalStorage(); //get local storage
-  // addCurrentGame(gameHistory); //sort allGames as prep to create high score games list);
   saveAndRenderGameHistory();
 }
 
 function validateInitialsInput() {
-  if (playerInitials.value === "") {
-    playerInitials.focus();
+  const alphabetString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; //used to validate input
+  let isValid = true;
+
+  //validation rules
+  playerInitials.value.length < 2 ? isValid = false : isValid;
+  for (let i = 0; i < playerInitials.value.length; i++) {
+    if (!alphabetString.includes(playerInitials.value.charAt(i).toUpperCase())) {
+      console.log('validate 3');
+      isValid = false;
+    }
+  }
+
+  //validation message
+  if (isValid === false) {
     errorMessage.textContent = "";
+    playerInitials.focus();
     errorMessage.classList.remove("hide");
-    errorMessage.textContent = "Player initials can not be blank";
+    errorMessage.textContent = `Player initials a) can not be blank, b) must be at least 2 letters, c) no special characters, d) no numbers. Try again!`;
     return "invalid input";
   }
 }
@@ -211,90 +216,88 @@ function saveAndRenderGameHistory() {
 
 function addCurrentGame(updateAllGames) {
   let gameStats = {};
+
   gameStats = {
     id: updateAllGames ? updateAllGames.length + 1 : 1,
     player: playerInitials.value.toUpperCase(),
     score: gameDuration,
   };
+
   if (gameStats.player) {
     updateAllGames.push(gameStats);
   }
-  sortGames(updateAllGames);
+
+  sortGames(updateAllGames); //go to next chained function
 }
 
 function sortGames(updateAllGames) {
   let allSortedGames = sortByScore(updateAllGames);
   allSortedGames = sortByPlayer(updateAllGames); //sort by player
-  createHighScoreList(allSortedGames);
+  createHighScoreList(allSortedGames); //go to next chained function
 }
 
 function createHighScoreList(allSortedGames) {
   if (allSortedGames) {
     let highScoreGames = [];
     for (let i = 0; i < allSortedGames.length; i++) {
-      if (allSortedGames.length === 1) {
-        //if only one element exits push it
+      if (allSortedGames.length === 1) { //if only one element exits push it
         highScoreGames.push(allSortedGames[i]);
-      } else if (i + 1 === allSortedGames.length) {
-        //if at the last element push it
+      } else if (i + 1 === allSortedGames.length) { //if at the last element push it
         highScoreGames.push(allSortedGames[i]);
-      } else if (allSortedGames[i].player !== allSortedGames[i + 1].player) {
+      } else if (allSortedGames[i].player !== allSortedGames[i + 1].player) { //else push high score
         highScoreGames.push(allSortedGames[i]);
       }
     }
-    highScoreGames = sortByScore(highScoreGames, "desc");
+    highScoreGames = sortByScore(highScoreGames, "desc"); //sort by score descending
     renderHighScores(highScoreGames, allSortedGames);
   }
 }
 
-// ==== HIGH SCORE PAGE ==== //
+//==== HIGH SCORE PAGE ==== //
 function renderHighScores(highScoreGames, allSortedGames, status) {
   scoreList.textContent = "";
   let noGamesSavedText = "";
 
   if (status === "storageCleared") {
-  noGamesSavedText = scoreList.appendChild(document.createElement("p"));
-  noGamesSavedText.textContent = `History cleared`;
+    noGamesSavedText = scoreList.appendChild(document.createElement("p"));
+    noGamesSavedText.textContent = `History cleared`;
   } else if (highScoreGames.length > 0) {
     highScoreGames.forEach((game, index) => {
-      let renderScores = scoreList.appendChild(
-        document.createElement("li")
-      );
-      renderScores.textContent = `${index + 1}. ${game.player}: ${
-        game.score
-      }`;
+      let renderScores = scoreList.appendChild(document.createElement("li"));
+      renderScores.textContent = `${index + 1}. ${game.player}: ${game.score}`;
     });
   } else {
     noGamesSavedText = scoreList.appendChild(document.createElement("p"));
     noGamesSavedText.textContent = `No scores saved yet`;
-    status = ""; // clears out status so history cleared messages doesn't display
+    status = ""; //clears out status so history cleared messages doesn't display
   }
   setLocalStorage(allSortedGames, highScoreGames);
-  routeToPage(highScoresPage); //show high scores page
+  pageRouter(highScoresPage); //show high scores page
 }
 
 function backToHomePage() {
-  routeToPage(homePage);
-  // playerInitials.value = ""; //clear playerInitials
+  let resetDuration = 0;
+  pageRouter(homePage);
   resetQuestionContainer();
   resetAllTimers();
-  let resetDuration = 0;
   resetGameStats(resetDuration);
 }
 
-// ==== HIGH SCORES LINK ROUTER ====
+//==== HIGH SCORES LINK ROUTER ====
 function highScoresLinkRouter() {
-  let wantToExitPage = confirmExitPage();
 
+  let wantToExitPage = confirmExitPage(); //popup alert to validate exit page
+
+  //validation to ensure player wants to exit current page (when playing game or hasn't saved score)
   if (wantToExitPage.page === "savePage" && wantToExitPage.isExitPage === false) {
-    routeToPage(saveScorePage);
+    pageRouter(saveScorePage);
     return;
   } else if (
       wantToExitPage.page === "savePage" && wantToExitPage.isExitPage === true ||
       wantToExitPage.page === "questionPage" && wantToExitPage.isExitPage === true ||
       wantToExitPage.page === "homePage") {
-      if (wantToExitPage.page === "savePage") {playerInitials.value = ""}; //clear playerInitials if entered without hitting save button
-      routeToPage(highScoresPage);
+      if (wantToExitPage.page === "savePage") {playerInitials.value = ""}; //clear initials if didn't click save button
+      pageRouter(highScoresPage);
       saveAndRenderGameHistory();
       resetAllTimers();
       resetGameStats(gameDuration);
@@ -306,29 +309,19 @@ function confirmExitPage() {
   let isExitPage = false;
   let page = "";
 
-  if (saveScorePage.offsetTop > 0) {
-    //determines if user is on save score page
-    isExitPage = window.confirm(
-      `Opps. You DIDN'T save the score.\n\nDo you want to exit without saving?`
-    );
-    page = "savePage";
-  }
-
-  if (questionPage.offsetTop > 0) {
-    isExitPage = window.confirm(
-      `Opps. You are playing.\n\nDo you want to exit this game?`
-    );
-    page = "questionPage";
-  }
-
-  if (homePage.offsetTop > 0) {
-    page = "homePage";
-  }
+  //confirm exit page or not
+  saveScorePage.offsetTop > 0 ? (
+    isExitPage = window.confirm(`Opps. You DIDN'T save the score.\n\nDo you want to exit without saving?`),
+    page = "savePage") :
+  questionPage.offsetTop > 0 ? (
+    isExitPage = window.confirm(`Opps. You are playing.\n\nDo you want to exit this game?`),
+    page = "questionPage") :
+  homePage.offsetTop > 0 ? (page = "homePage") : isExitPage;
 
   return {isExitPage, page};
 }
 
-// ==== UTILITY FUNCTIONS ====
+//==== UTILITY FUNCTIONS ====
 function renderTime() {
   gameTimeDisplay.textContent = `Time: ${gameDuration} second(s)`;
 }
@@ -343,15 +336,15 @@ function sortByScore(games, order) {
 
 function sortByPlayer(allGames) {
   let playerSortedGames = allGames.sort(function (a, b) {
-    const nameA = a.player.toUpperCase(); // ignore upper and lowercase
-    const nameB = b.player.toUpperCase(); // ignore upper and lowercase
+    const nameA = a.player.toUpperCase(); //ignore upper and lowercase
+    const nameB = b.player.toUpperCase(); //ignore upper and lowercase
     if (nameA < nameB) {
       return -1;
     }
     if (nameA > nameB) {
       return 1;
     }
-    // names must be equal
+    //names must be equal
     return 0;
   });
   return playerSortedGames;
@@ -361,10 +354,10 @@ function endGame() {
   renderScore();
   resetAllTimers();
   resetGameStats(gameDuration);
-  routeToPage(saveScorePage);
+  pageRouter(saveScorePage);
 }
 
-// ==== RESET FUNCTIONS ====
+//==== RESET FUNCTIONS ====
 function resetQuestionContainer() {
   questionText.textContent = null;
   answerContainer.textContent = null;
@@ -388,13 +381,13 @@ function resetGameStats(duration) {
   playerInitials.value = ""; //clear playerInitials
 }
 
-// LOCAL STORAGE FUNCTIONS
+//LOCAL STORAGE FUNCTIONS
 function getLocalStorage() {
   let gameHistory = [];
   if (JSON.parse(localStorage.getItem("allGames")) !== null) {
     gameHistory = JSON.parse(localStorage.getItem("allGames"));
   }
-  // console.log('1', gameHistory);
+  //console.log('1', gameHistory);
   return gameHistory;
 }
 
