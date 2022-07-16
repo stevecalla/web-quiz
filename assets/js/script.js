@@ -168,7 +168,7 @@ function renderSelectedAnswerMessage(isCorrect, correctAnswer) {
 
 function renderSelectedAnswerStyleSound(isCorrect, selectedAnswer) {
   selectedAnswer.classList.add("answer-box-selected"); //applies common styling
-  isCorrect
+  isCorrect && selectedAnswer.matches("li")
     ? (selectedAnswer.classList.add("answer-box-selected-correct"),
       document.getElementById("correct-answer-sound-effect").play())
     : (selectedAnswer.classList.add("answer-box-selected-wrong"),
