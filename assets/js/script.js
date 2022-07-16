@@ -293,38 +293,45 @@ function backToHomePage() {
 function highScoresLinkRouter() {
   let wantToExitPage = confirmExitPage();
 
-  if (wantToExitPage.page === "savePage" && wantToExitPage.isExitPage === true) {
+  if (wantToExitPage.page === "savePage" && wantToExitPage.isExitPage === false) {
     routeToPage(saveScorePage);
     return;
   } else if (
+      wantToExitPage.page === "savePage" && wantToExitPage.isExitPage === true ||
       wantToExitPage.page === "questionPage" && wantToExitPage.isExitPage === true ||
-      wantToExitPage.page === "savePage" && wantToExitPage.isExitPage === false) {
-        routeToPage(highScoresPage);
-        resetAllTimers();
-        resetGameStats(gameDuration);
-        saveAndRenderGameHistory();
-        return;
-      }
-      
-  //if none of the conditions above are satisfied, player stays on the same page
+      wantToExitPage.page === "homePage") {
+      if (wantToExitPage.page === "savePage") {playerInitials.value = ""}; //clear playerInitials if entered without hitting save button
+      routeToPage(highScoresPage);
+      saveAndRenderGameHistory();
+      resetAllTimers();
+      resetGameStats(gameDuration);
+      return;
+  }
 }
 
 function confirmExitPage() {
   let isExitPage = false;
   let page = "";
+
   if (saveScorePage.offsetTop > 0) {
     //determines if user is on save score page
     isExitPage = window.confirm(
-      `Opps. You DIDN'T save the score.\n\nDo you want to save the score?`
+      `Opps. You DIDN'T save the score.\n\nDo you want to exit without saving?`
     );
     page = "savePage";
   }
+
   if (questionPage.offsetTop > 0) {
     isExitPage = window.confirm(
       `Opps. You are playing.\n\nDo you want to exit this game?`
     );
     page = "questionPage";
   }
+
+  if (homePage.offsetTop > 0) {
+    page = "homePage";
+  }
+
   return {isExitPage, page};
 }
 
