@@ -41,8 +41,9 @@ function startGame() {
 }
 
 function setGameDuration() {
-  gameDuration = 75;
-  gameTimeDisplay.textContent = `Time: ${gameDuration} second(s)`;
+  gameDuration = 5;
+  // gameTimeDisplay.textContent = `Time: ${gameDuration} second(s)`;
+  renderTime();
 }
 
 // ==== TIMER FUNCTIONS ====
@@ -50,7 +51,7 @@ function startGameTimer() {
   gameTimer = setInterval(() => {
     gameDuration > 0
       ? (gameDuration--,
-        (gameTimeDisplay.textContent = `Time: ${gameDuration} second(s)`))
+        renderTime())
       : ((document.getElementById(
           "all-done-message"
         ).textContent = `Game Over. Out of Time.`),
@@ -77,10 +78,36 @@ function renderQuestions(number) {
   insertQuestionContent(number);
 }
 
+function routeToPage(showPage) {
+  let allPages = [
+    homePageMainContainer,
+    questionPage,
+    saveScorePage,
+    highScoresPage,
+  ];
+
+  allPages.forEach((page) => {
+    //render requested page
+    page === showPage
+      ? showPage.classList.remove("hide")
+      : page.classList.add("hide");
+  });
+
+  showPage === highScoresPage //if high scores page make header information invisable
+    ? header.classList.add("cloak")
+    : // scoreList.textContent = 'No Games Played Yet.')
+      header.classList.remove("cloak");
+
+  showPage === saveScorePage //if saveScorePaage then focus the cursor in the player initials box
+    ? (playerInitials.focus(), errorMessage.classList.add("hide"))
+    : playerInitials.blur();
+}
+
 function insertQuestionContent(number) {
   let question = questionList[number].question;
   let answerList = questionList[number].answerList;
-  const alphabetString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const alphabetString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; //used to label answers
+
   //insert content
   answerStatus.textContent = "";
   questionInput.textContent = question; //insert question
@@ -91,14 +118,14 @@ function insertQuestionContent(number) {
     choiceList.setAttribute('data-text', answer); //set data attribute to use in isAnswerCorrect function
   });
   renderQuestionNumber.textContent = `Question: ${number + 1} of ${questionList.length}`;
+
   renderAnswerStylingAndListener("add", "remove"); //apply styling passing add hover, remove border, add listener
+
   answerContainer.addEventListener("click", isAnswerCorrect); //add event listener inside function so it apples each time the line elements are created
 }
 
 function renderAnswerStylingAndListener(hover, border, addListner) {
-  // console.log(hover, border, addListner);
   let answers = document.querySelectorAll(".answer-container li");
-  // console.log(answers);
   answers.forEach((answer) => {
     answer.classList.add("answer-box"); //apply styling to each answer
     answer.classList[hover]("answer-box-hover"); //apply hover styling
@@ -123,7 +150,7 @@ function renderCorrectMessageAndStyle(isCorrect, selectedAnswer, correctAnswer) 
   selectedAnswer.classList.add("answer-box-selected"); //applies common styling
   if (!isCorrect) {
     gameDuration -= 10; 
-    gameTimeDisplay.textContent = `Time: ${gameDuration} second(s)`;
+    renderTime();
     answerStatus.textContent = `Wrong! Correct answer is "${correctAnswer}" (time reduced by 10 seconds)`;
     selectedAnswer.classList.add("answer-box-selected-wrong"); //applies selected answer styling
     document.getElementById("wrong-answer-sound-effect").play();
@@ -230,20 +257,22 @@ function renderNoScoresOrScoreList(highScoreGames, allSortedGames, status) {
     noGamesPlayedText = scoreList.appendChild(document.createElement("p"));
     noGamesPlayedText.textContent = `No Games Played Yet`;
   }
+
   if (status === "storageCleared") {
     status = "No Games";
   }
-  console.log(status);
+  // console.log(status);
   setLocalStorage(allSortedGames, highScoreGames);
   routeToPage(highScoresPage); //show high scores page
 }
 
 function backToHomePage() {
   routeToPage(homePageMainContainer);
-  playerInitials.value = ""; //clear playerInitials
+  // playerInitials.value = ""; //clear playerInitials
   resetQuestionContainer();
   resetAllTimers();
-  resetGameStats();
+  let resetDuration = 0;
+  resetGameStats(resetDuration);
 }
 
 // ==== HIGH SCORES LINK ROUTER ====
@@ -252,12 +281,13 @@ function highScoresLinkRouter() {
   if (wantToExitPage.page === "questionPage" && wantToExitPage.isExitPage === true) {
     backToHomePage();
   } 
+
   if (wantToExitPage.page === "savePage" && wantToExitPage.isExitPage === true) {
     routeToPage(saveScorePage);
   } else if ((wantToExitPage.page === "savePage" && wantToExitPage.isExitPage === false)) {
     routeToPage(highScoresPage);
     resetAllTimers();
-    resetGameStats();
+    resetGameStats(gameDuration);
   }
 }
 
@@ -281,29 +311,8 @@ function confirmExitPage() {
 }
 
 // ==== UTILITY FUNCTIONS ====
-function routeToPage(showPage) {
-  let allPages = [
-    homePageMainContainer,
-    questionPage,
-    saveScorePage,
-    highScoresPage,
-  ];
-
-  allPages.forEach((page) => {
-    //render requested page
-    page === showPage
-      ? showPage.classList.remove("hide")
-      : page.classList.add("hide");
-  });
-
-  showPage === highScoresPage //if high scores page make header information invisable
-    ? header.classList.add("cloak")
-    : // scoreList.textContent = 'No Games Played Yet.')
-      header.classList.remove("cloak");
-
-  showPage === saveScorePage //if saveScorePaage then focus the cursor in the player initials box
-    ? (playerInitials.focus(), errorMessage.classList.add("hide"))
-    : playerInitials.blur();
+function renderTime() {
+  gameTimeDisplay.textContent = `Time: ${gameDuration} second(s)`;
 }
 
 function sortByScore(games, order) {
@@ -333,7 +342,7 @@ function sortByPlayer(allGames) {
 function endGame() {
   renderScore();
   resetAllTimers();
-  resetGameStats();
+  resetGameStats(gameDuration);
   routeToPage(saveScorePage);
 }
 
@@ -354,10 +363,10 @@ function resetAllTimers() {
   questionTimer = null;
 }
 
-function resetGameStats() {
-  gameDuration = 0;
+function resetGameStats(duration) {
+  gameDuration = duration;
   questionNumber = 0;
-  gameTimeDisplay.textContent = `Time: ${gameDuration} second(s)`;
+  renderTime();
   playerInitials.value = ""; //clear playerInitials
 }
 
