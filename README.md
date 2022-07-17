@@ -60,9 +60,9 @@ WHEN the game is over
 THEN I can save my initials and my score
 ```
 
-## Website Preview - Video Preview
+## Website Preview - GIF Preview
 
-<img src="https://media.giphy.com/media/vyRpm5Rk0Ab5LBYt8T/giphy-downsized-large.gif" width="100%" height="425"/>
+<img src="https://media.giphy.com/media/e05ymoeVkE2s2xSfQl/giphy-downsized-large.gif" width="100%" height="425"/>
 
 ## Technologies
 
