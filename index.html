@@ -33,18 +33,20 @@
       <h1 class="question-text" id="question-text"></h1>
       <ol class="answer-container" id="answer-container"></ol>
       <h3 class="answer-status" id="answer-status"></h3>
-      <p class="question-number" id="question-number"></p>
+      <div class="sound-number-container">
+        <p class="sound-emoji" id="speaker-muted-emoji">🔊 Sound On</p>
+        <p class="sound-emoji hide" id="speaker-emoji">🔇 Sound Off</p>
+        <p class="question-number" id="question-number"></p>
+      </div>
       <audio
         id="correct-answer-sound-effect"
         src="./assets/images/Game-show-correct-answer.mp3"
-        autoplay
       >
         Your browser does not support the <code>audio</code> element.
       </audio>
       <audio
         id="wrong-answer-sound-effect"
         src="./assets/images/Error-sound-effect.mp3"
-        autoplay
       >
         Your browser does not support the <code>audio</code> element.
       </audio>

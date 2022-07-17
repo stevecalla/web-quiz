@@ -19,6 +19,8 @@
   --correct-color: green;
   --correct-emoji: " ✅";
   --incorrect-emoji: " ❌";
+
+  --link-color: blue;
 }
 
 html {
@@ -47,7 +49,7 @@ header {
 }
 
 .high-scores-link {
-  color: blue;
+  color: var(--link-color);
   cursor: pointer;
 }
 
@@ -153,10 +155,24 @@ header {
   font-size: 20px;
 }
 
+.sound-number-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sound-emoji {
+  margin: 0px;
+  padding-left: 8px;
+  color: var(--link-color);
+  font-size: 18px;
+  cursor: pointer;
+}
+
 .question-number {
-  text-align: right;
   margin: 0px;
   padding-right: 8px;
+  text-align: right;
   font-size: 18px;
 }
 

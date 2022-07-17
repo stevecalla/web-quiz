@@ -40,7 +40,7 @@ As a coding boot camp student I want to take a timed quiz on JavaScript fundamen
 4. Next Button: Allow the player to click a button to advance to the next question (rather than using a timer or automatically moving the player forward).
 5. Back Button: Allow the player to click a back button to visit previously answered questions.
 6. Additional Resources: Provide a link to educational resources (e.g. MDN) for each question respectively.
-7. Sound Effects: Add feature to allow player to disable sound.
+7. Sound Effects: Add features to allow player to control volume, select alternative sounds and/or store the sound preference to local storage.
 8. Page Router: Use anchor tags (<a>) to link to appropriate pages such as the high score page link (which would then show the page in the URL).
 
 

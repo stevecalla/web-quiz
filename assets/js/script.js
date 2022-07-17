@@ -19,12 +19,15 @@ let renderQuestionNumber = document.getElementById("question-number");
 let scoreList = document.querySelector("#high-scores-container ol");
 let errorMessage = document.getElementById("error-message");
 let gameOverMessage = document.getElementById("all-done-message");
+let speaker = document.getElementById('speaker-emoji');
+let speakerMNuted = document.getElementById('speaker-muted-emoji');
 
 //section:global variables go here 👇
 let questionNumber = 0;
 let gameDuration = 0;
 let gameTimer;
 let questionTimer;
+let isSoundPlayable = true;
 
 //section:event listeners go here 👇
 startGameButton.addEventListener("click", startGame);
@@ -32,8 +35,8 @@ saveButton.addEventListener("click", saveCurrentGame);
 homePageButton.addEventListener("click", backToHomePage);
 clearScoresButton.addEventListener("click", clearLocalStorage);
 highScoresLink.addEventListener("click", highScoresLinkRouter);
-
-document.getElementById('correct-answer-sound-effect').setAttribute('autoplay', 'false');
+speaker.addEventListener('click', toggleSound);
+speakerMNuted.addEventListener('click', toggleSound);
 
 //section:functions and event handlers go here 👇
 //==== START GAME FUNCTIONS ====
@@ -149,7 +152,8 @@ function isAnswerCorrect(event) {
     renderAnswersStyling("remove", "add"); //remove hover, add border
     renderDurationAdjustment(isCorrect); //decrement time by 10 seconds and render
     renderSelectedAnswerMessage(isCorrect, correctAnswer);
-    renderSelectedAnswerStyleSound(isCorrect, selectedEvent);
+    renderSelectedAnswerStyle(isCorrect, selectedEvent);
+    playSelectedAnswerSound(isCorrect);
     answerContainer.removeEventListener("click", isAnswerCorrect); //remove event listener
     isLastQuestion(); //clear interval time if last question
   }
@@ -170,13 +174,25 @@ function renderSelectedAnswerMessage(isCorrect, correctAnswer) {
   }
 }
 
-function renderSelectedAnswerStyleSound(isCorrect, selectedEvent) {
+function renderSelectedAnswerStyle(isCorrect, selectedEvent) {
   selectedEvent.classList.add("answer-box-selected"); //applies common styling
   isCorrect
-    ? (selectedEvent.classList.add("answer-box-selected-correct"),
-      document.getElementById("correct-answer-sound-effect").play())
-    : (selectedEvent.classList.add("answer-box-selected-wrong"),
-      document.getElementById("wrong-answer-sound-effect").play());
+    ? selectedEvent.classList.add("answer-box-selected-correct")
+    : selectedEvent.classList.add("answer-box-selected-wrong");
+}
+
+function toggleSound() {
+  isSoundPlayable ? isSoundPlayable = false : isSoundPlayable = true;
+  speaker.classList.toggle('hide');
+  speakerMNuted.classList.toggle('hide');
+}
+
+function playSelectedAnswerSound(isCorrect) {
+  if (isSoundPlayable) { //play sound if isSoundPlayable === true;
+    isCorrect
+      ? document.getElementById("correct-answer-sound-effect").play()
+      : document.getElementById("wrong-answer-sound-effect").play();
+  }
 }
 
 function isLastQuestion() {
