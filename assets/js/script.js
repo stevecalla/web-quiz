@@ -287,7 +287,9 @@ function renderHighScores(highScoreGames, allSortedGames, status) {
     noGamesSavedText.textContent = `No scores saved yet`;
     status = ""; //clears out status so history cleared messages doesn't display
   }
-  if (allSortedGames.length > 0) {setLocalStorage(allSortedGames, highScoreGames)};
+  if (allSortedGames.length > 0) {
+    setLocalStorage(allSortedGames, highScoreGames);
+  }
   pageRouter(highScoresPage); //show high scores page
 }
 
