@@ -161,20 +161,14 @@ header {
   align-items: center;
 }
 
-.material-symbols-outlined {
-  font-family: "Material Symbols Outlined";
-  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 48;
+.speaker-icon {
+  width: 28px;
+  height: 28px;
   margin: 0px;
   padding: 3px;
   background-color: lightgrey;
   border-radius: 50%;
-  font-size: 22px;
   cursor: default;
-}
-
-.speaker-icon {
-  margin: 0px;
-  padding-left: 3px;
 }
 
 .question-number {
