@@ -37,7 +37,7 @@ html {
   border: var(--hover-border-style);
 }
 
-.high-scores-link:hover {
+.high-scores-link {
   color: blue;
   cursor: pointer;
 }
