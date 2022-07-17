@@ -287,7 +287,7 @@ function renderHighScores(highScoreGames, allSortedGames, status) {
     noGamesSavedText.textContent = `No scores saved yet`;
     status = ""; //clears out status so history cleared messages doesn't display
   }
-  setLocalStorage(allSortedGames, highScoreGames);
+  if (allSortedGames.length > 0) {setLocalStorage(allSortedGames, highScoreGames)};
   pageRouter(highScoresPage); //show high scores page
 }
 
@@ -427,5 +427,5 @@ function setLocalStorage(allGames, highScoreGames) {
 function clearLocalStorage() {
   localStorage.clear();
   scoreList.textContent = "";
-  renderHighScores(null, null, "storageCleared"); //passes empty array to represent cleared local storage
+  renderHighScores([], [], "storageCleared"); //passes empty array to represent cleared local storage
 }
