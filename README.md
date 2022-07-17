@@ -42,7 +42,7 @@ As a coding boot camp student I want to take a timed quiz on JavaScript fundamen
 6. Additional Resources: Provide a link to educational resources (e.g. MDN) for each question respectively.
 7. Sound Effects: Add features to allow player to control volume, select alternative sounds and/or store the sound preference to local storage.
 8. Page Router: Use anchor tags (<a>) to link to appropriate pages such as the high score page link (which would then show the page in the URL).
-
+9. Google Speaker Icons: Utilized google speaker volume up and volume off icons. The challenge was that these icons flashed when initially presented on the question page. After multiple attempts using various versions/hacks of preload links in the header (the google icon code doesn't include preload unfortunately for icons) and seeking solutions, the decision was made to cloak the icon on the home page so that it loaded and prevented flash behavior on the quesition page. This is clearly not best practice so additional research will be done or these icons will be swapped for another option.
 
 ## Acceptance Criteria
 
