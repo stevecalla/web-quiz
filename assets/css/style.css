@@ -37,11 +37,6 @@ html {
   border: var(--hover-border-style);
 }
 
-.high-scores-link {
-  color: blue;
-  cursor: pointer;
-}
-
 /* ------ HEADER SECTION -------- */
 header {
   display: flex;
@@ -49,6 +44,11 @@ header {
   padding: 20px;
   text-align: center;
   font-size: 20px;
+}
+
+.high-scores-link {
+  color: blue;
+  cursor: pointer;
 }
 
 /* ---- HOME PAGE ----- */
