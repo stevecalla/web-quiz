@@ -10,6 +10,10 @@
       type="image/jpg"
       href="./assets/images/flavicon-shark.jpeg"
     />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
     <link rel="stylesheet" href="./assets/css/normalize.css" />
     <link rel="stylesheet" href="./assets/css/style.css" />
   </head>
@@ -33,9 +37,13 @@
       <h1 class="question-text" id="question-text"></h1>
       <ol class="answer-container" id="answer-container"></ol>
       <h3 class="answer-status" id="answer-status"></h3>
-      <div class="sound-number-container">
-        <p class="sound-emoji" id="speaker-muted-emoji">🔊 Sound On</p>
-        <p class="sound-emoji hide" id="speaker-emoji">🔇 Sound Off</p>
+      <div class="speaker-number-container">
+        <span class="material-symbols-outlined speaker-icon" id="speaker-icon">
+          volume_up
+        </span>
+        <span class="material-symbols-outlined speaker-icon hide" id="speaker-muted-icon">
+          volume_off
+        </span>
         <p class="question-number" id="question-number"></p>
       </div>
       <audio

@@ -19,8 +19,8 @@ let renderQuestionNumber = document.getElementById("question-number");
 let scoreList = document.querySelector("#high-scores-container ol");
 let errorMessage = document.getElementById("error-message");
 let gameOverMessage = document.getElementById("all-done-message");
-let speaker = document.getElementById('speaker-emoji');
-let speakerMNuted = document.getElementById('speaker-muted-emoji');
+let speaker = document.getElementById("speaker-icon");
+let speakerMNuted = document.getElementById("speaker-muted-icon");
 
 //section:global variables go here 👇
 let questionNumber = 0;
@@ -35,8 +35,8 @@ saveButton.addEventListener("click", saveCurrentGame);
 homePageButton.addEventListener("click", backToHomePage);
 clearScoresButton.addEventListener("click", clearLocalStorage);
 highScoresLink.addEventListener("click", highScoresLinkRouter);
-speaker.addEventListener('click', toggleSound);
-speakerMNuted.addEventListener('click', toggleSound);
+speaker.addEventListener("click", toggleSound);
+speakerMNuted.addEventListener("click", toggleSound);
 
 //section:functions and event handlers go here 👇
 //==== START GAME FUNCTIONS ====
@@ -182,13 +182,14 @@ function renderSelectedAnswerStyle(isCorrect, selectedEvent) {
 }
 
 function toggleSound() {
-  isSoundPlayable ? isSoundPlayable = false : isSoundPlayable = true;
-  speaker.classList.toggle('hide');
-  speakerMNuted.classList.toggle('hide');
+  isSoundPlayable ? (isSoundPlayable = false) : (isSoundPlayable = true);
+  speaker.classList.toggle("hide");
+  speakerMNuted.classList.toggle("hide");
 }
 
 function playSelectedAnswerSound(isCorrect) {
-  if (isSoundPlayable) { //play sound if isSoundPlayable === true;
+  if (isSoundPlayable) {
+    //play sound if isSoundPlayable === true;
     isCorrect
       ? document.getElementById("correct-answer-sound-effect").play()
       : document.getElementById("wrong-answer-sound-effect").play();
