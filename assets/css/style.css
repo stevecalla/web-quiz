@@ -91,7 +91,7 @@ header {
 }
 
 /* ---- QUESTION PAGE ----- */
-.question-input {
+.question-text {
   height: 140px;
   padding: 8px;
   border: var(--main-border-style);
@@ -317,7 +317,7 @@ header {
     max-width: 360px;
   }
 
-  .question-input {
+  .question-text {
     font-size: 26px;
   }
 

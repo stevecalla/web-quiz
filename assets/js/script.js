@@ -4,7 +4,7 @@ let gameTimeDisplay = document.getElementById("game-timer");
 let answerContainer = document.getElementById("answer-container");
 let homePage = document.getElementById("home-page");
 let questionPage = document.getElementById("question-page");
-let questionText = document.getElementById("question-input");
+let questionText = document.getElementById("question-text");
 let answerStatus = document.getElementById("answer-status");
 let playerInitials = document.getElementById("player-initials");
 let saveButton = document.getElementById("save-button");
@@ -32,6 +32,8 @@ saveButton.addEventListener("click", saveCurrentGame);
 homePageButton.addEventListener("click", backToHomePage);
 clearScoresButton.addEventListener("click", clearLocalStorage);
 highScoresLink.addEventListener("click", highScoresLinkRouter);
+
+document.getElementById('correct-answer-sound-effect').setAttribute('autoplay', 'false');
 
 //section:functions and event handlers go here 👇
 //==== START GAME FUNCTIONS ====
