@@ -60,9 +60,20 @@ WHEN the game is over
 THEN I can save my initials and my score
 ```
 
-## Website Preview - GIF Preview
+## Website Preview - Static Screenshot(s)
+
+<img width="1437" alt="Screen Shot 2022-07-19 at 8 11 17 PM" src="assets/images/home-page-screenshot.png">
+
+<img width="1437" alt="Screen Shot 2022-07-19 at 8 11 17 PM" src="assets/images/question-page-screenshot.png">
+
+<img width="1437" alt="Screen Shot 2022-07-19 at 8 11 17 PM" src="assets/images/question-page-correct-answer.png">
+
+
+## Website Preview - Video Preview
 
 <img src="https://media.giphy.com/media/Q8ADsZ8BhVIBepMghO/giphy-downsized-large.gif" width="100%" height="425"/>
+
+<img src="https://media.giphy.com/media/e05ymoeVkE2s2xSfQl/giphy-downsized-large.gif" width="100%" height="425"/>
 
 ## Technologies
 
