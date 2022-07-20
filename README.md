@@ -71,9 +71,9 @@ THEN I can save my initials and my score
 
 ## Website Preview - Video Preview
 
-<img src="https://media.giphy.com/media/Q8ADsZ8BhVIBepMghO/giphy-downsized-large.gif" width="100%" height="425"/>
+<img src="assets/images/web-quiz.gif" width="100%" height="425"/>
 
-<img src="https://media.giphy.com/media/e05ymoeVkE2s2xSfQl/giphy-downsized-large.gif" width="100%" height="425"/>
+<!-- <img src="https://media.giphy.com/media/e05ymoeVkE2s2xSfQl/giphy-downsized-large.gif" width="100%" height="425"/> -->
 
 ## Technologies
 
